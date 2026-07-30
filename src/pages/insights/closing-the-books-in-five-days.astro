@@ -1,0 +1,143 @@
+---
+import Article from '../../layouts/Article.astro';
+import { findInsight } from '../../insights';
+
+const insight = findInsight('closing-the-books-in-five-days')!;
+---
+
+<Article
+  insight={insight}
+  standfirst="A close is slow for structural reasons, not lazy ones. What to fix first when month-end runs long, in the order that actually compounds."
+>
+  <p>
+    When a month-end close takes five weeks, the instinct is to look for
+    slowness — someone working through a queue too gently, a step that could be
+    done faster. That is almost never what is happening. A slow close is usually
+    a close with too many dependencies, and dependencies do not respond to
+    effort.
+  </p>
+
+  <p>
+    Here is the order we would fix things in, based on what tends to compound.
+  </p>
+
+  <h2>1. Stop waiting for information you could already have</h2>
+
+  <p>
+    The single largest component of a long close is usually waiting: for bank
+    statements, for a supplier invoice, for a schedule from an operational team
+    that does not know the close is blocked on them.
+  </p>
+
+  <p>
+    Some of that waiting is unavoidable. Most of it is avoidable by making the
+    request earlier and making its status visible. A request list where both
+    sides can see what is outstanding removes an entire category of delay — the
+    delay caused by nobody realising they were the blocker.
+  </p>
+
+  <p>
+    Measure this before you fix anything else. Take your last three closes and
+    mark, for each day, whether work was happening or whether the close was
+    waiting. If waiting is more than half, nothing downstream matters yet.
+  </p>
+
+  <h2>2. Move reconciliation off the critical path</h2>
+
+  <p>
+    Bank and control account reconciliation is often treated as a month-end
+    task. It does not need to be. Transactions arrive continuously, so they can
+    be classified and matched continuously, with only the exceptions left for
+    the close.
+  </p>
+
+  <p>
+    The shift here is from "reconcile at month end" to "keep reconciled, resolve
+    exceptions at month end". The work is the same in total but almost none of
+    it sits between you and the close. In practice this is the change that moves
+    a five-week close to a two-week close.
+  </p>
+
+  <h2>3. Decide what actually has to be right before you report</h2>
+
+  <p>
+    Not every balance carries the same weight. A close often runs long because
+    every account is treated with equal care, including several that could not
+    move the reported result if they tried.
+  </p>
+
+  <p>
+    Set materiality by account, in writing, and agree it with whoever signs. Then
+    accept that some accounts get a light review and some get a full one. This
+    feels like a compromise on quality; it is the opposite. Attention is finite,
+    and spreading it evenly means the accounts that matter get less of it than
+    they should.
+  </p>
+
+  <h2>4. Kill the second version of the truth</h2>
+
+  <p>
+    Almost every slow close has a workbook in it — a spreadsheet that takes the
+    ledger and turns it into the reported numbers through steps that exist
+    nowhere else.
+  </p>
+
+  <p>
+    The workbook is not the problem in itself. The problem is that it constitutes
+    a second version of the accounts, and the two have to be reconciled by hand
+    every period. Worse, the mapping inside it is usually different from the
+    mapping used for the statutory statements and different again from the one
+    used for tax, so three answers exist for the same question.
+  </p>
+
+  <p>
+    Map the chart of accounts once, in one place, in a way that can carry
+    statutory presentation and tax classification simultaneously. Derive
+    everything else from it. This removes the reconciliation entirely rather than
+    making it faster.
+  </p>
+
+  <h2>5. Only then, look at sequencing</h2>
+
+  <p>
+    Once you are not waiting, not reconciling on the critical path, not
+    over-reviewing immaterial accounts, and not maintaining a parallel set of
+    books — then it is worth looking at the order of tasks and what can run in
+    parallel.
+  </p>
+
+  <p>
+    Doing this step first is the common mistake. Re-sequencing a process whose
+    real constraint is a missing bank statement produces a beautifully
+    sequenced process that still takes five weeks.
+  </p>
+
+  <h2>What five days actually requires</h2>
+
+  <p>
+    A five-day close is not heroics. It is a close where:
+  </p>
+
+  <ul>
+    <li>Nothing is requested for the first time after the period ends.</li>
+    <li>Reconciliations are current on day one, with only exceptions open.</li>
+    <li>
+      Review effort is allocated by materiality that somebody has agreed in
+      advance.
+    </li>
+    <li>
+      The reported figures are derived from the ledger rather than rebuilt
+      beside it.
+    </li>
+    <li>
+      Every figure can be traced to source without asking the person who
+      prepared it.
+    </li>
+  </ul>
+
+  <p>
+    That last one is what makes the speed sustainable rather than fragile. A fast
+    close that depends on one person's knowledge is not fast — it is borrowed
+    against a future month when that person is unavailable.
+  </p>
+</Article>

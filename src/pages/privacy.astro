@@ -1,0 +1,156 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { SITE } from '../consts';
+
+const updated = '30 July 2026';
+---
+
+<Base
+  title="Privacy notice"
+  description="How NUMARATECH handles personal data collected through this website and in the course of providing its services."
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Privacy notice"
+    lead="What we collect, why, and what you can ask us to do about it."
+    meta={[
+      { label: 'Last updated', value: updated },
+      { label: 'Controller', value: SITE.legalName },
+      { label: 'Contact', value: SITE.email },
+    ]}
+  />
+
+  <section class="nt-section nt-wrap">
+    <div class="nt-prose">
+      <p class="nt-lead">
+        This notice covers personal data that {SITE.legalName} handles through
+        this website. Data we process on behalf of a client under a services
+        agreement is governed by that agreement, not by this notice.
+      </p>
+
+      <h2>What we collect</h2>
+
+      <p>There are three ways personal data reaches us from this site.</p>
+
+      <h3>Information you send us</h3>
+      <p>
+        If you use the contact form or email us, we receive what you chose to
+        provide — typically your name, email address, company, and the substance
+        of your enquiry. We use it to answer you and to keep a record of the
+        conversation.
+      </p>
+
+      <h3>Technical information</h3>
+      <p>
+        Our hosting provider records standard request information such as IP
+        address, user agent and the page requested. This is used to serve the
+        site, protect it from abuse, and understand aggregate traffic. We do not
+        combine it with anything that identifies you personally.
+      </p>
+
+      <h3>What we deliberately do not collect</h3>
+      <p>
+        This site sets no advertising or tracking cookies and loads no
+        third-party analytics, fonts or scripts. Fonts are served from our own
+        domain. The Corporate Tax estimator runs entirely in your browser — the
+        figures you enter are never transmitted to us, are not stored, and are
+        gone when you close the tab.
+      </p>
+
+      <h2>Why we are allowed to hold it</h2>
+
+      <p>
+        Where you contact us, we rely on your consent and on our legitimate
+        interest in responding to enquiries about our services. Where we keep
+        records of a commercial relationship, we rely on legitimate interest and
+        on legal obligations that require us to retain certain records.
+      </p>
+
+      <h2>Who else sees it</h2>
+
+      <p>
+        We use a small number of service providers to operate the business, and
+        they see only what their function requires:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Hosting and content delivery.</strong> Serves this site and
+          processes request logs.
+        </li>
+        <li>
+          <strong>Email delivery and mailbox.</strong> Carries and stores
+          messages you send us.
+        </li>
+      </ul>
+
+      <p>
+        We do not sell personal data, and we do not share it for anyone else's
+        marketing. We will disclose data where we are legally required to, and
+        will tell you if that happens unless we are prohibited from doing so.
+      </p>
+
+      <h2>Where it is held</h2>
+
+      <p>
+        Client data processed under a services agreement is hosted in the United
+        Arab Emirates region unless we have agreed otherwise with you in
+        writing. Website enquiry data may be processed outside the UAE by the
+        providers above; where that happens we rely on their contractual data
+        protection commitments.
+      </p>
+
+      <h2>How long we keep it</h2>
+
+      <p>
+        Enquiries that do not become a commercial relationship are deleted
+        within 24 months. Records relating to a client relationship are retained
+        for the period required by applicable law and for as long as needed to
+        deal with any question arising from the engagement, then deleted.
+      </p>
+
+      <h2>Your rights</h2>
+
+      <p>
+        You may ask us to give you a copy of the personal data we hold about
+        you, correct it if it is wrong, delete it where we have no continuing
+        basis to keep it, or stop using it for a particular purpose. Write to
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and we will respond
+        within 30 days.
+      </p>
+
+      <p>
+        If we cannot resolve a concern to your satisfaction, you may raise it
+        with the relevant data protection authority in your jurisdiction.
+      </p>
+
+      <h2>Security</h2>
+
+      <p>
+        Access to data is limited to people who need it for their work, secured
+        with multi-factor authentication, and logged. Client environments are
+        separated per entity. No system is perfect; if we become aware of a
+        breach affecting your data we will tell you promptly and tell you what
+        we know.
+      </p>
+
+      <h2>Changes to this notice</h2>
+
+      <p>
+        We will update this page when our practices change, and revise the date
+        above. Material changes affecting existing clients will be communicated
+        directly rather than only posted here.
+      </p>
+
+      <h2>Contact</h2>
+
+      <p>
+        Questions about this notice or about how we handle your data:
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, or write to us at
+        {' '}{SITE.address.line1}, {SITE.address.city},
+        {' '}{SITE.address.country}.
+      </p>
+    </div>
+  </section>
+</Base>

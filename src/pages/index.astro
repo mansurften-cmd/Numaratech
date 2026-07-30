@@ -1,0 +1,647 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import StatStrip from '../components/StatStrip.astro';
+import LineDiagram from '../components/LineDiagram.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Arrow from '../components/Arrow.astro';
+import { SITE, UAE_CT } from '../consts';
+import { insightsNewestFirst, formatInsightDate } from '../insights';
+
+const nf = new Intl.NumberFormat('en-AE');
+
+const parameters = [
+  {
+    figure: `${UAE_CT.standardRate * 100}%`,
+    label: 'Standard CT rate',
+    note: 'Applied to taxable income above the zero band.',
+  },
+  {
+    figure: nf.format(UAE_CT.zeroBandCeiling),
+    label: `Zero band (${UAE_CT.currency})`,
+    note: 'Taxable income up to this amount is taxed at 0%.',
+  },
+  {
+    figure: nf.format(UAE_CT.smallBusinessReliefRevenueCap),
+    label: `Small Business Relief cap (${UAE_CT.currency})`,
+    note: 'Revenue ceiling for electing the relief.',
+  },
+  {
+    figure: '2023',
+    label: 'Regime in force',
+    note: `Financial years beginning on or after ${UAE_CT.effectiveFrom}.`,
+  },
+];
+
+const products = [
+  {
+    variant: 'tax' as const,
+    name: 'Corporate Tax Engine',
+    href: '/platform/corporate-tax/',
+    line: 'From trial balance to filed return',
+    body:
+      'Pulls the trial balance, applies the adjustments you have defined, computes the liability, and keeps the working papers attached to every line.',
+  },
+  {
+    variant: 'statements' as const,
+    name: 'FS Studio',
+    href: '/platform/fs-studio/',
+    line: 'IFRS statements, generated',
+    body:
+      'Financial statements built from the ledger rather than retyped into a template. Change a mapping and every affected note updates with it.',
+  },
+  {
+    variant: 'portal' as const,
+    name: 'Client Portal',
+    href: '/platform/client-portal/',
+    line: 'One thread per obligation',
+    body:
+      'Documents, queries and approvals in one place, so the year-end file assembles itself as the work happens instead of afterwards.',
+  },
+];
+
+const steps = [
+  {
+    index: '01',
+    title: 'Connect',
+    body:
+      'Read-only connections to your accounting system and banks. Nothing is retyped, so nothing drifts.',
+  },
+  {
+    index: '02',
+    title: 'Normalise',
+    body:
+      'Your chart of accounts is mapped once to a structure that can carry both a statutory statement and a tax computation.',
+  },
+  {
+    index: '03',
+    title: 'Compute',
+    body:
+      'Statements and the tax position are derived, not assembled by hand. Every figure keeps a link back to the entries behind it.',
+  },
+  {
+    index: '04',
+    title: 'File and defend',
+    body:
+      'Submit with the working papers already attached. When a question arrives eighteen months later, the answer is still in the file.',
+  },
+];
+
+const segments = [
+  {
+    title: 'Owner-managed businesses',
+    body:
+      'First Corporate Tax cycle, a lean finance function, and no appetite for a six-figure ERP programme.',
+  },
+  {
+    title: 'Accounting and audit firms',
+    body:
+      'Many entities, one method. Standardise the computation across the portfolio without standardising away judgement.',
+  },
+  {
+    title: 'Free zone entities',
+    body:
+      'Qualifying income tests, de minimis tracking, and the evidence to support the position taken.',
+  },
+  {
+    title: 'Groups and holdings',
+    body:
+      'Consolidation, intra-group eliminations, and transfer pricing documentation that reconciles to the ledger.',
+  },
+];
+
+const insights = insightsNewestFirst().slice(0, 3);
+---
+
+<Base
+  title={`${SITE.name} — ${SITE.tagline}`}
+  description={SITE.description}
+  bareTitle={true}
+>
+  <!-- 01 · Hero ------------------------------------------------------- -->
+  <section class="hero nt-field">
+    <div class="nt-field__rules" aria-hidden="true"></div>
+
+    <div class="nt-wrap hero__inner">
+      <p class="nt-micro nt-micro--accent nt-micro-idx">
+        United Arab Emirates &nbsp;/&nbsp; Finance &amp; compliance systems
+      </p>
+
+      <h1 class="nt-display hero__title">
+        Numbers that<br />survive scrutiny.
+      </h1>
+
+      <p class="nt-lead hero__lead">
+        {SITE.name} builds the layer between your ledger and your filing — the
+        one most UAE businesses are still holding together with spreadsheets.
+        Close the books, compute Corporate Tax, and keep the evidence attached
+        to every figure.
+      </p>
+
+      <div class="nt-btn-row hero__actions">
+        <!-- The single solid navy element on this page. -->
+        <a href="/contact/" class="nt-btn nt-btn--primary">
+          Book a walkthrough
+          <Arrow class="nt-btn__arrow" />
+        </a>
+        <a href="/platform/" class="nt-btn nt-btn--ghost">
+          See the platform
+          <Arrow class="nt-btn__arrow" />
+        </a>
+      </div>
+
+      <p class="hero__foot nt-sm">
+        Built in Dubai for the UAE regime — not a global product with an
+        Emirates checkbox.
+      </p>
+    </div>
+  </section>
+
+  <!-- Statutory parameter strip ---------------------------------------- -->
+  <section class="nt-section nt-section--tight nt-wrap nt-divide">
+    <StatStrip
+      caption="UAE Corporate Tax — statutory parameters"
+      items={parameters}
+    />
+    <p class="strip-note nt-sm">
+      Figures as published by the Federal Tax Authority. Verify against current
+      guidance before relying on them —
+      <a href="/platform/corporate-tax/">run your own numbers</a> through the
+      estimator.
+    </p>
+  </section>
+
+  <!-- 02 · The problem -------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="02"
+      eyebrow="The gap"
+      title="Compliance moved. The tooling stayed where it was."
+      lead="A Corporate Tax regime arrived, statutory financial statements came with it, and e-invoicing is next. Most finance functions absorbed all of it into the same spreadsheet they were already using."
+    />
+
+    <div class="nt-cols nt-cols--3 problem">
+      <div>
+        <p class="nt-micro nt-micro-idx">Derivation is invisible</p>
+        <h3 class="nt-h3 problem__title">
+          Nobody can say where the number came from
+        </h3>
+        <p class="problem__body">
+          A figure is typed into a return from a workbook, which was built from
+          an export, which was filtered by someone who has since left. The
+          answer exists; the trail does not.
+        </p>
+      </div>
+      <div>
+        <p class="nt-micro nt-micro-idx">Work is repeated</p>
+        <h3 class="nt-h3 problem__title">
+          The same mapping, re-done every period
+        </h3>
+        <p class="problem__body">
+          Accounts get grouped by hand for the statements, then grouped again,
+          differently, for the tax computation. Two sets of judgement that are
+          supposed to agree and quietly stop agreeing.
+        </p>
+      </div>
+      <div>
+        <p class="nt-micro nt-micro-idx">Evidence arrives late</p>
+        <h3 class="nt-h3 problem__title">
+          Working papers assembled after the fact
+        </h3>
+        <p class="problem__body">
+          Support is gathered when the auditor or the FTA asks, which is the
+          most expensive possible moment to gather it — and the point at which
+          memory has already gone.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Platform ----------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="03"
+      eyebrow="Platform"
+      title="Three products. One model of your business."
+      lead="They share a single mapped ledger, so the statements, the tax computation and the client file cannot disagree with each other."
+    />
+
+    <ul class="nt-ruled products">
+      {
+        products.map((product) => (
+          <li class="product">
+            <div class="product__body">
+              <p class="nt-micro nt-micro-idx">{product.line}</p>
+              <h3 class="nt-h3 product__name">
+                <a href={product.href}>{product.name}</a>
+              </h3>
+              <p class="product__text">{product.body}</p>
+              <p class="product__more">
+                <a href={product.href} class="nt-arrow-link">
+                  {product.name}
+                  <Arrow />
+                </a>
+              </p>
+            </div>
+            <LineDiagram variant={product.variant} class="product__diagram" />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 04 · Method (inverted for contrast) ------------------------------- -->
+  <section class="nt-section nt-section--invert nt-reveal">
+    <div class="nt-wrap">
+      <SectionHead
+        index="04"
+        eyebrow="Method"
+        title="Derived, not assembled."
+        lead="The same four steps whether you are one company filing your first return or a firm running two hundred."
+        invert={true}
+      />
+
+      <ol class="nt-cols nt-cols--4 steps">
+        {
+          steps.map((step) => (
+            <li class="step">
+              <span class="nt-fig step__index">{step.index}</span>
+              <h3 class="nt-h3 step__title">{step.title}</h3>
+              <p class="step__body">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="method__cta">
+        <a href="/services/" class="nt-arrow-link">
+          How implementation works
+          <Arrow />
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 05 · Estimator teaser --------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <div class="teaser">
+      <div>
+        <SectionHead
+          index="05"
+          eyebrow="Try it"
+          title="Estimate your Corporate Tax position now."
+          lead="A working estimator, free and on this site. Enter accounting profit and your adjustments; it returns the computation as a schedule you can print."
+        />
+        <p class="teaser__cta">
+          <a href="/platform/corporate-tax/#estimator" class="nt-arrow-link">
+            Open the estimator
+            <Arrow />
+          </a>
+        </p>
+      </div>
+
+      <div class="teaser__panel">
+        <p class="nt-micro">Illustrative computation</p>
+        <table class="nt-table teaser__table">
+          <tbody>
+            <tr>
+              <td>Accounting profit</td>
+              <td class="nt-fig">1,250,000</td>
+            </tr>
+            <tr>
+              <td>Non-deductible adjustments</td>
+              <td class="nt-fig">75,000</td>
+            </tr>
+            <tr>
+              <td>Taxable income</td>
+              <td class="nt-fig">1,325,000</td>
+            </tr>
+            <tr>
+              <td>Less zero band</td>
+              <td class="nt-fig">(375,000)</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Corporate Tax at 9%</td>
+              <td class="nt-fig">85,500</td>
+            </tr>
+          </tfoot>
+        </table>
+        <p class="teaser__note nt-sm">
+          Illustration only, in {UAE_CT.currency}. Not a computation of your
+          liability and not tax advice.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Segments ------------------------------------------------------ -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="06"
+      eyebrow="Fit"
+      title="Who we build for."
+      lead="Four situations we know well enough to be useful in on the first call."
+    />
+
+    <div class="nt-cols nt-cols--2 segments">
+      {
+        segments.map((segment) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 segment__title">{segment.title}</h3>
+            <p class="segment__body">{segment.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 07 · Insights ------------------------------------------------------ -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <div class="insights__head">
+      <SectionHead
+        index="07"
+        eyebrow="Insights"
+        title="What we have learned doing the work."
+      />
+      <p class="insights__all">
+        <a href="/insights/" class="nt-arrow-link">
+          All insights
+          <Arrow />
+        </a>
+      </p>
+    </div>
+
+    <ul class="nt-ruled insights">
+      {
+        insights.map((insight) => (
+          <li class="insight">
+            <p class="nt-micro insight__meta">
+              <span>{insight.topic}</span>
+              <span aria-hidden="true">·</span>
+              <time datetime={insight.date}>
+                {formatInsightDate(insight.date)}
+              </time>
+              <span aria-hidden="true">·</span>
+              <span>{insight.readingMinutes} min read</span>
+            </p>
+            <h3 class="nt-h3 insight__title">
+              <a href={`/insights/${insight.slug}/`}>{insight.title}</a>
+            </h3>
+            <p class="insight__summary">{insight.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- The hero already spends this page's one solid navy element. -->
+  <CtaBand primary={false} />
+</Base>
+
+<style>
+  /* -- Hero -------------------------------------------------------------- */
+  .hero {
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .hero__inner {
+    padding-block: clamp(3.5rem, 10vw, 8.5rem);
+  }
+
+  .hero__title {
+    margin-top: var(--nt-5);
+  }
+
+  .hero__lead {
+    margin-top: var(--nt-6);
+    max-width: 56ch;
+  }
+
+  .hero__actions {
+    margin-top: var(--nt-7);
+  }
+
+  .hero__foot {
+    margin-top: var(--nt-6);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    max-width: 44ch;
+    color: var(--nt-text-muted);
+  }
+
+  .strip-note {
+    margin-top: var(--nt-5);
+    max-width: 62ch;
+    color: var(--nt-text-muted);
+  }
+
+  /* -- Problem ----------------------------------------------------------- */
+  .problem {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .problem__title {
+    margin-top: var(--nt-4);
+    max-width: 22ch;
+  }
+
+  .problem__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+  }
+
+  /* -- Products ---------------------------------------------------------- */
+  .products {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .product {
+    display: grid;
+    gap: var(--nt-5);
+    align-items: center;
+  }
+
+  .product__name {
+    margin-top: var(--nt-4);
+  }
+
+  .product__name a {
+    color: var(--nt-navy-900);
+    text-decoration: none;
+  }
+
+  .product__name a:hover {
+    color: var(--nt-teal-800);
+  }
+
+  .product__text {
+    margin-top: var(--nt-3);
+    max-width: 54ch;
+  }
+
+  .product__more {
+    margin-top: var(--nt-4);
+  }
+
+  .product__diagram {
+    justify-self: start;
+  }
+
+  @media (min-width: 60rem) {
+    .product {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: var(--nt-7);
+    }
+
+    .product__diagram {
+      justify-self: end;
+    }
+  }
+
+  /* -- Steps ------------------------------------------------------------- */
+  .steps {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    list-style: none;
+  }
+
+  .step__index {
+    display: block;
+    text-align: left;
+    color: var(--nt-teal-500);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: var(--nt-tr-micro);
+  }
+
+  .step__title {
+    margin-top: var(--nt-4);
+  }
+
+  .step__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+  }
+
+  .method__cta {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  /* -- Estimator teaser -------------------------------------------------- */
+  .teaser {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  .teaser__cta {
+    margin-top: var(--nt-5);
+  }
+
+  .teaser__panel {
+    border-top: var(--nt-hair) solid var(--nt-accent-rule);
+    padding-top: var(--nt-4);
+  }
+
+  .teaser__table {
+    min-width: 0;
+    margin-top: var(--nt-4);
+  }
+
+  .teaser__note {
+    margin-top: var(--nt-4);
+    color: var(--nt-text-muted);
+  }
+
+  @media (min-width: 60rem) {
+    .teaser {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+      gap: var(--nt-8);
+    }
+  }
+
+  /* -- Segments ---------------------------------------------------------- */
+  .segments {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .segment__title {
+    margin-top: var(--nt-4);
+  }
+
+  .segment__body {
+    margin-top: var(--nt-3);
+    max-width: 48ch;
+    font-size: var(--nt-fs-sm);
+  }
+
+  /* -- Insights ---------------------------------------------------------- */
+  .insights__head {
+    display: grid;
+    gap: var(--nt-5);
+    align-items: end;
+  }
+
+  .insights {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .insight__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nt-2);
+  }
+
+  .insight__title {
+    margin-top: var(--nt-3);
+    max-width: 34ch;
+  }
+
+  .insight__title a {
+    color: var(--nt-navy-900);
+    text-decoration: none;
+  }
+
+  .insight__title a:hover {
+    color: var(--nt-teal-800);
+  }
+
+  .insight__summary {
+    margin-top: var(--nt-3);
+    max-width: 68ch;
+    font-size: var(--nt-fs-sm);
+  }
+
+  @media (min-width: 60rem) {
+    .insights__head {
+      grid-template-columns: 1fr auto;
+      gap: var(--nt-6);
+    }
+
+    .insight {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--nt-6);
+      align-items: start;
+    }
+
+    .insight__meta {
+      grid-row: 1;
+    }
+
+    .insight__title {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: var(--nt-3);
+    }
+
+    .insight__summary {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin-top: 0;
+    }
+  }
+</style>

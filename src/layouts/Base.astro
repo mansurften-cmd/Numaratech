@@ -1,0 +1,124 @@
+---
+import '../styles/global.css';
+import { SITE } from '../consts';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Omit the " — NUMARATECH" suffix (used on the home page). */
+  bareTitle?: boolean;
+  /** Set on pages that should not be indexed. */
+  noindex?: boolean;
+}
+
+const { title, description, bareTitle = false, noindex = false } = Astro.props;
+
+const fullTitle = bareTitle ? title : `${title} — ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  legalName: SITE.legalName,
+  url: SITE.url,
+  description: SITE.description,
+  email: SITE.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.line1,
+    addressLocality: SITE.address.city,
+    addressCountry: 'AE',
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- A meta tag cannot read a custom property, so this is the one colour
+         literal outside global.css. Keep it equal to --nt-navy-900. The other
+         is public/favicon.svg, which is a standalone file. -->
+    <meta name="theme-color" content="#061a34" />
+
+    <!-- Self-hosted fonts: preload the two files the first paint needs. -->
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin-500-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organisation)}
+    />
+  </head>
+
+  <body>
+    <a class="nt-skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Reveal-on-scroll. Elements are only hidden when the browser reports a
+      // motion preference of "no-preference" (see global.css), so a reduced-
+      // motion or no-JS visitor always sees the content.
+      const items = document.querySelectorAll('.nt-reveal');
+
+      if (
+        items.length > 0 &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+
+        for (const item of items) observer.observe(item);
+      } else {
+        for (const item of items) item.classList.add('is-in');
+      }
+    </script>
+  </body>
+</html>

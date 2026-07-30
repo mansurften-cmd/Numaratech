@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="NUMARATECH">
+  <rect width="32" height="32" fill="#061a34"/>
+  <g stroke="#12a6a2" stroke-width="1.5">
+    <line x1="6" y1="16" x2="26" y2="16"/>
+    <line x1="16" y1="6" x2="16" y2="26"/>
+  </g>
+  <g stroke="#ffffff" stroke-width="1.5">
+    <line x1="10" y1="10" x2="10" y2="22"/>
+    <line x1="22" y1="10" x2="22" y2="22"/>
+  </g>
+</svg>

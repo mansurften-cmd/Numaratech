@@ -1,0 +1,106 @@
+---
+import Arrow from './Arrow.astro';
+
+interface Props {
+  /** Mono micro-label above the heading, e.g. "PLATFORM / 01". */
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  /** Optional pairs rendered as a technical annotation strip. */
+  meta?: { label: string; value: string }[];
+  cta?: { label: string; href: string };
+}
+
+const { eyebrow, title, lead, meta = [], cta } = Astro.props;
+---
+
+<section class="head nt-field">
+  <div class="nt-field__rules" aria-hidden="true"></div>
+  <div class="nt-wrap inner">
+    <p class="nt-micro nt-micro--accent nt-micro-idx">{eyebrow}</p>
+    <h1 class="nt-h1 title">{title}</h1>
+    {lead && <p class="nt-lead lead">{lead}</p>}
+
+    {
+      cta && (
+        <p class="cta">
+          <a href={cta.href} class="nt-arrow-link">
+            {cta.label}
+            <Arrow />
+          </a>
+        </p>
+      )
+    }
+
+    {
+      meta.length > 0 && (
+        <dl class="meta">
+          {meta.map((entry) => (
+            <div class="meta__item">
+              <dt class="nt-micro">{entry.label}</dt>
+              <dd class="meta__value">{entry.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .head {
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .inner {
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .title {
+    margin-top: var(--nt-5);
+    max-width: 24ch;
+  }
+
+  .lead {
+    margin-top: var(--nt-5);
+    max-width: 58ch;
+  }
+
+  .cta {
+    margin-top: var(--nt-5);
+  }
+
+  .meta {
+    display: grid;
+    gap: 0;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .meta__item {
+    padding-block: var(--nt-4);
+    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .meta__value {
+    margin: var(--nt-2) 0 0;
+    color: var(--nt-navy-900);
+    font-size: var(--nt-fs-sm);
+    font-weight: 500;
+  }
+
+  @media (min-width: 48rem) {
+    .meta {
+      grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    }
+
+    .meta__item {
+      padding-right: var(--nt-5);
+      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
+    }
+
+    .meta__item:last-child {
+      border-right: 0;
+    }
+  }
+</style>

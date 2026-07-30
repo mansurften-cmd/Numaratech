@@ -1,0 +1,31 @@
+---
+// A 1px arrow glyph. Used in buttons and standalone links.
+interface Props {
+  dir?: 'right' | 'down';
+  class?: string;
+}
+const { dir = 'right', class: className = '' } = Astro.props;
+const rotate = dir === 'down' ? 'rotate(90 8 8)' : undefined;
+---
+
+<svg
+  class:list={['arrow', className]}
+  width="16"
+  height="16"
+  viewBox="0 0 16 16"
+  fill="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g transform={rotate} stroke="currentColor" stroke-width="1.25">
+    <line x1="1" y1="8" x2="14" y2="8"></line>
+    <polyline points="9,3 14,8 9,13" fill="none"></polyline>
+  </g>
+</svg>
+
+<style>
+  .arrow {
+    display: block;
+    flex: none;
+  }
+</style>

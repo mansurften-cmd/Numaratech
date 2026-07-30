@@ -1,0 +1,692 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { UAE_CT } from '../../consts';
+
+const nf = new Intl.NumberFormat('en-AE');
+
+const capabilities = [
+  {
+    title: 'Adjustment library',
+    body:
+      'Define your add-backs and deductions once — entertainment, depreciation differences, provisions, interest limitation — and apply them consistently every period. Each is versioned, so a prior year keeps the rules that were in force when it was filed.',
+  },
+  {
+    title: 'Relief elections, made explicitly',
+    body:
+      'Small Business Relief, free zone qualifying income and group relief are positions you take deliberately. The engine records who elected what, on what date, and on what basis.',
+  },
+  {
+    title: 'Working papers attached',
+    body:
+      'Support hangs off the computation line it justifies rather than sitting in a folder named after the month. When a question arrives later, the answer is where the number is.',
+  },
+  {
+    title: 'Reconciliation to the ledger',
+    body:
+      'The computation starts from the trial balance and stays tied to it. If the ledger moves after you began, you are told — you do not discover it at filing.',
+  },
+  {
+    title: 'Instalments and deadlines',
+    body:
+      'Filing dates derive from your financial year end. The obligation calendar is generated, not maintained by hand in a shared spreadsheet.',
+  },
+  {
+    title: 'Printable computation',
+    body:
+      'A computation schedule laid out for filing and for the auditor, with source references intact. The printed form is designed, not an afterthought of the screen.',
+  },
+];
+---
+
+<Base
+  title="Corporate Tax Engine"
+  description="Compute UAE Corporate Tax from your trial balance, with adjustments, relief elections and working papers held against every line. Includes a free Corporate Tax estimator."
+>
+  <PageHeader
+    eyebrow="Platform / 01"
+    title="Corporate Tax, computed from the ledger up."
+    lead="Not a form to retype numbers into. The engine reads your trial balance, applies the adjustments you have defined, and produces a computation that still explains itself two years later."
+    cta={{ label: 'Jump to the free estimator', href: '#estimator' }}
+    meta={[
+      { label: 'Standard rate', value: `${UAE_CT.standardRate * 100}% above the zero band` },
+      { label: 'Zero band', value: `${UAE_CT.currency} ${nf.format(UAE_CT.zeroBandCeiling)}` },
+      { label: 'Regime in force', value: `FY beginning on or after ${UAE_CT.effectiveFrom}` },
+      { label: 'Starting point', value: 'Your trial balance' },
+    ]}
+  />
+
+  <!-- Estimator --------------------------------------------------------- -->
+  <section class="nt-section nt-wrap" id="estimator" data-print-region>
+    <div class="est__intro" data-print-hide>
+      <SectionHead
+        index="01"
+        eyebrow="Free estimator"
+        title="Estimate your position."
+        lead="A simplified computation using the statutory parameters. It runs entirely in your browser — nothing you type here is sent to us or stored anywhere."
+      />
+    </div>
+
+    <div class="est">
+      <!-- Inputs ------------------------------------------------------- -->
+      <form class="est__form nt-no-print" id="est-form" novalidate>
+        <p class="nt-micro nt-micro--accent nt-micro-idx">Inputs</p>
+
+        <div class="est__fields">
+          <div class="nt-field-group">
+            <label class="nt-label" for="est-revenue">
+              Revenue for the period
+            </label>
+            <div class="nt-affix">
+              <span class="nt-affix__unit">{UAE_CT.currency}</span>
+              <input
+                class="nt-input nt-input--fig"
+                id="est-revenue"
+                name="revenue"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                value="4,200,000"
+                aria-describedby="est-revenue-hint"
+              />
+            </div>
+            <p class="nt-hint" id="est-revenue-hint">
+              Determines whether Small Business Relief is available.
+            </p>
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="est-profit">
+              Accounting profit before tax
+            </label>
+            <div class="nt-affix">
+              <span class="nt-affix__unit">{UAE_CT.currency}</span>
+              <input
+                class="nt-input nt-input--fig"
+                id="est-profit"
+                name="profit"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                value="1,250,000"
+                aria-describedby="est-profit-hint"
+              />
+            </div>
+            <p class="nt-hint" id="est-profit-hint">
+              Per your financial statements. A loss may be entered as a
+              negative.
+            </p>
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="est-addbacks">
+              Net non-deductible adjustments
+            </label>
+            <div class="nt-affix">
+              <span class="nt-affix__unit">{UAE_CT.currency}</span>
+              <input
+                class="nt-input nt-input--fig"
+                id="est-addbacks"
+                name="addbacks"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                value="75,000"
+                aria-describedby="est-addbacks-hint"
+              />
+            </div>
+            <p class="nt-hint" id="est-addbacks-hint">
+              Add-backs less deductible items. Negative if deductions exceed
+              add-backs.
+            </p>
+          </div>
+
+          <div class="nt-field-group est__check-group">
+            <label class="est__check" for="est-sbr">
+              <input type="checkbox" id="est-sbr" name="sbr" />
+              <span>Elect Small Business Relief</span>
+            </label>
+            <p class="nt-hint" id="est-sbr-hint">
+              Available where revenue does not exceed {UAE_CT.currency}
+              {nf.format(UAE_CT.smallBusinessReliefRevenueCap)} for the period.
+            </p>
+          </div>
+        </div>
+
+        <p class="est__reset">
+          <button type="reset" class="nt-arrow-link est__reset-btn">
+            Reset to the example figures
+          </button>
+        </p>
+      </form>
+
+      <!-- Output ------------------------------------------------------- -->
+      <div class="est__out">
+        <!-- Printed output carries the wordmark and a timestamp; the screen
+             version does not need either. -->
+        <div class="nt-print-only est__masthead">
+          <p class="est__masthead-name">NUMARATECH</p>
+          <p class="est__masthead-line">
+            Illustrative UAE Corporate Tax computation
+            <span data-printed-on></span>
+          </p>
+        </div>
+
+        <p class="nt-micro nt-micro--accent nt-micro-idx est__out-label">
+          Computation
+        </p>
+
+        <div class="nt-table-scroll">
+          <table class="nt-table est__table">
+            <caption>
+              All amounts in {UAE_CT.currency}
+            </caption>
+            <tbody>
+              <tr class="nt-calc__line">
+                <th scope="row">Accounting profit before tax</th>
+                <td class="nt-fig" data-out="profit">1,250,000</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">Net non-deductible adjustments</th>
+                <td class="nt-fig" data-out="addbacks">75,000</td>
+              </tr>
+              <tr class="nt-calc__line est__subtotal">
+                <th scope="row">Taxable income</th>
+                <td class="nt-fig" data-out="taxable">1,325,000</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">
+                  Less zero band
+                  <span class="est__row-note">
+                    first {nf.format(UAE_CT.zeroBandCeiling)} at 0%
+                  </span>
+                </th>
+                <td class="nt-fig" data-out="band">(375,000)</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">Income subject to tax</th>
+                <td class="nt-fig" data-out="chargeable">950,000</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="nt-calc__line">
+                <th scope="row">
+                  Corporate Tax at {UAE_CT.standardRate * 100}%
+                </th>
+                <td class="nt-fig" data-out="tax">85,500</td>
+              </tr>
+              <tr class="nt-calc__line est__effective">
+                <th scope="row">Effective rate on taxable income</th>
+                <td class="nt-fig" data-out="effective">6.45%</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <p class="est__flag" data-out="flag" hidden></p>
+
+        <div class="est__actions nt-no-print">
+          <button type="button" class="nt-btn nt-btn--ghost" data-print>
+            Print this computation
+            <Arrow class="nt-btn__arrow" />
+          </button>
+        </div>
+
+        <p class="est__disclaimer nt-sm">
+          <strong>This is an estimate, not advice.</strong> It applies the
+          headline rate and the zero band to the figures you entered. It does
+          not consider free zone qualifying income, tax groups, interest
+          limitation, losses carried forward, foreign tax credits, transfer
+          pricing adjustments or any relief beyond Small Business Relief. Your
+          actual liability is determined under the Corporate Tax law and current
+          Federal Tax Authority guidance. Speak to a qualified adviser before
+          filing.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities ------------------------------------------------------ -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="02"
+      eyebrow="What the engine does"
+      title="Beyond the arithmetic."
+      lead="The rate is the easy part. Everything that makes a return defensible sits around it."
+    />
+
+    <div class="nt-cols nt-cols--3 caps">
+      {
+        capabilities.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 cap__title">{item.title}</h3>
+            <p class="cap__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Sequence ---------------------------------------------------------- -->
+  <section class="nt-section nt-section--inset nt-reveal">
+    <div class="nt-wrap">
+      <div class="nt-split">
+        <SectionHead
+          index="03"
+          eyebrow="In practice"
+          title="A period, end to end."
+        />
+
+        <ol class="nt-ruled seq">
+          <li>
+            <p class="nt-micro nt-micro-idx">Day 1</p>
+            <h3 class="nt-h3 seq__title">Trial balance lands</h3>
+            <p class="seq__body">
+              Pulled from your accounting system on the schedule you set. The
+              engine flags accounts that are new since last period and have no
+              tax classification yet.
+            </p>
+          </li>
+          <li>
+            <p class="nt-micro nt-micro-idx">Day 2</p>
+            <h3 class="nt-h3 seq__title">Adjustments apply themselves</h3>
+            <p class="seq__body">
+              Your library runs against the balances. What needs judgement is
+              queued for a person; what does not, is already done.
+            </p>
+          </li>
+          <li>
+            <p class="nt-micro nt-micro-idx">Day 3</p>
+            <h3 class="nt-h3 seq__title">Review and elect</h3>
+            <p class="seq__body">
+              Reviewers see the computation with every line traceable to source.
+              Relief elections are recorded with the reasoning behind them.
+            </p>
+          </li>
+          <li>
+            <p class="nt-micro nt-micro-idx">Day 4</p>
+            <h3 class="nt-h3 seq__title">File, then freeze</h3>
+            <p class="seq__body">
+              The return goes out with working papers assembled. The period
+              locks; later changes become explicit prior-period adjustments.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Run a period with us before you commit."
+    body="Bring one entity and one closed period. We will build the computation alongside your existing workpapers and you can compare the two."
+  />
+</Base>
+
+<style>
+  /* -- Estimator layout -------------------------------------------------- */
+  .est__intro {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .est {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  .est__fields {
+    display: grid;
+    gap: var(--nt-5);
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-5);
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .est__check-group {
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .est__check {
+    display: flex;
+    align-items: center;
+    gap: var(--nt-3);
+    color: var(--nt-navy-900);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* Square checkbox — no rounding, teal when checked. */
+  .est__check input[type='checkbox'] {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    margin: 0;
+    border: var(--nt-hair) solid var(--nt-hairline);
+    background: var(--nt-white);
+    cursor: pointer;
+    position: relative;
+  }
+
+  .est__check input[type='checkbox']:checked {
+    border-color: var(--nt-teal-700);
+  }
+
+  /* Tick drawn from two rules. */
+  .est__check input[type='checkbox']:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 6px;
+    width: 12px;
+    height: 5px;
+    border-left: 2px solid var(--nt-teal-700);
+    border-bottom: 2px solid var(--nt-teal-700);
+    transform: rotate(-45deg);
+  }
+
+  .est__reset {
+    margin-top: var(--nt-5);
+  }
+
+  .est__reset-btn {
+    background: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-inline: 0;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  /* -- Output ----------------------------------------------------------- */
+  .est__out {
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+    padding-top: var(--nt-5);
+  }
+
+  .est__out-label {
+    margin-bottom: var(--nt-4);
+  }
+
+  .est__table {
+    min-width: 0;
+  }
+
+  .est__table th[scope='row'] {
+    font-weight: 400;
+    color: var(--nt-ink-600);
+  }
+
+  .est__row-note {
+    display: block;
+    color: var(--nt-text-muted);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: 0.06em;
+  }
+
+  .est__subtotal th,
+  .est__subtotal td {
+    border-bottom-color: var(--nt-navy-500);
+    color: var(--nt-navy-900);
+    font-weight: 600;
+  }
+
+  .est__subtotal th[scope='row'] {
+    font-weight: 600;
+    color: var(--nt-navy-900);
+  }
+
+  .est__effective th,
+  .est__effective td {
+    border-top: 0;
+    color: var(--nt-ink-600);
+    font-weight: 400;
+    font-size: var(--nt-fs-sm);
+  }
+
+  .est__flag {
+    margin-top: var(--nt-4);
+    padding: var(--nt-3) 0 var(--nt-3) var(--nt-4);
+    border-left: 2px solid var(--nt-accent-rule);
+    color: var(--nt-navy-900);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .est__flag[hidden] {
+    display: none;
+  }
+
+  .est__actions {
+    margin-top: var(--nt-6);
+  }
+
+  .est__disclaimer {
+    margin-top: var(--nt-6);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    max-width: 62ch;
+  }
+
+  /* -- Print masthead --------------------------------------------------- */
+  .est__masthead-name {
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-size: 12pt;
+  }
+
+  .est__masthead-line {
+    font-family: var(--nt-font-mono);
+    font-size: 8.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .est__masthead {
+    margin-bottom: var(--nt-4);
+    padding-bottom: var(--nt-2);
+    border-bottom: 1px solid #000;
+  }
+
+  @media (min-width: 62rem) {
+    .est {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--nt-8);
+    }
+  }
+
+  /* -- Capabilities and sequence ---------------------------------------- */
+  .caps {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .cap__title {
+    margin-top: var(--nt-4);
+  }
+
+  .cap__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 44ch;
+  }
+
+  .seq__title {
+    margin-top: var(--nt-3);
+  }
+
+  .seq__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 62ch;
+  }
+
+  @media print {
+    .est {
+      display: block;
+    }
+
+    .est__out {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .est__disclaimer {
+      color: #000;
+    }
+  }
+</style>
+
+<script>
+  // UAE Corporate Tax estimator.
+  //
+  // Runs entirely client-side: no figure the visitor types leaves the browser.
+  // Parameters are duplicated here from src/consts.ts because this script is
+  // bundled separately from the page module; keep the two in step.
+  const STANDARD_RATE = 0.09;
+  const ZERO_BAND_CEILING = 375_000;
+  const SBR_REVENUE_CAP = 3_000_000;
+
+  const form = document.getElementById('est-form') as HTMLFormElement | null;
+
+  if (form) {
+    const money = new Intl.NumberFormat('en-AE', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    const percent = new Intl.NumberFormat('en-AE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    const out = (key: string) =>
+      document.querySelector<HTMLElement>(`[data-out="${key}"]`);
+
+    const fields = {
+      revenue: document.getElementById('est-revenue') as HTMLInputElement,
+      profit: document.getElementById('est-profit') as HTMLInputElement,
+      addbacks: document.getElementById('est-addbacks') as HTMLInputElement,
+      sbr: document.getElementById('est-sbr') as HTMLInputElement,
+    };
+
+    /** Reads a thousands-separated string as a number; blank counts as zero. */
+    const parseAmount = (raw: string): number => {
+      const cleaned = raw.replace(/[^0-9.-]/g, '');
+      if (cleaned === '' || cleaned === '-') return 0;
+      const value = Number(cleaned);
+      return Number.isFinite(value) ? value : 0;
+    };
+
+    /** Renders a negative amount in accounting parentheses. */
+    const bracket = (value: number) =>
+      value === 0 ? '—' : `(${money.format(Math.abs(value))})`;
+
+    const compute = () => {
+      const revenue = parseAmount(fields.revenue.value);
+      const profit = parseAmount(fields.profit.value);
+      const addbacks = parseAmount(fields.addbacks.value);
+
+      const sbrEligible = revenue <= SBR_REVENUE_CAP;
+      const sbrElected = fields.sbr.checked;
+      const sbrApplies = sbrElected && sbrEligible;
+
+      // A tax loss carries no liability in the period and is not carried
+      // forward by this simplified estimate.
+      const taxableIncome = Math.max(0, profit + addbacks);
+      const bandUsed = Math.min(taxableIncome, ZERO_BAND_CEILING);
+      const chargeable = sbrApplies ? 0 : Math.max(0, taxableIncome - bandUsed);
+      const tax = chargeable * STANDARD_RATE;
+      const effective = taxableIncome > 0 ? (tax / taxableIncome) * 100 : 0;
+
+      const set = (key: string, text: string) => {
+        const node = out(key);
+        if (node) node.textContent = text;
+      };
+
+      set('profit', money.format(profit));
+      set('addbacks', money.format(addbacks));
+      set('taxable', money.format(taxableIncome));
+      set('band', sbrApplies ? '—' : bracket(bandUsed));
+      set('chargeable', money.format(chargeable));
+      set('tax', money.format(Math.round(tax)));
+      set('effective', `${percent.format(effective)}%`);
+
+      // One flag at a time, most material first.
+      const flag = out('flag');
+      if (flag) {
+        let message = '';
+
+        if (sbrElected && !sbrEligible) {
+          message = `Small Business Relief is not available: revenue of ${money.format(
+            revenue
+          )} exceeds the ${money.format(SBR_REVENUE_CAP)} cap. The election has been ignored.`;
+        } else if (sbrApplies) {
+          message =
+            'Small Business Relief elected. Taxable income is treated as nil for the period, subject to meeting the conditions in the law.';
+        } else if (profit + addbacks < 0) {
+          message = `A tax loss of ${money.format(
+            Math.abs(profit + addbacks)
+          )} arises. No liability is due for the period; loss relief in later periods is not modelled here.`;
+        } else if (taxableIncome > 0 && taxableIncome <= ZERO_BAND_CEILING) {
+          message = `Taxable income is within the ${money.format(
+            ZERO_BAND_CEILING
+          )} zero band, so no Corporate Tax is due on this computation.`;
+        } else if (revenue > 0 && profit + addbacks > revenue) {
+          message =
+            'Taxable income exceeds revenue. Check the figures entered — this is possible but unusual.';
+        }
+
+        flag.textContent = message;
+        flag.hidden = message === '';
+      }
+    };
+
+    for (const field of Object.values(fields)) {
+      field.addEventListener('input', compute);
+      field.addEventListener('change', compute);
+    }
+
+    // The browser restores default values after a reset; recompute afterwards.
+    form.addEventListener('reset', () => {
+      window.setTimeout(compute, 0);
+    });
+
+    // Printing the computation should produce the computation, not the whole
+    // marketing page. The scope attribute is set for the duration of the print
+    // job and removed afterwards, so the on-screen page is never affected.
+    const printButton = document.querySelector<HTMLButtonElement>('[data-print]');
+
+    if (printButton) {
+      const stamp = document.querySelector<HTMLElement>('[data-printed-on]');
+
+      printButton.addEventListener('click', () => {
+        if (stamp) {
+          stamp.textContent = ` · prepared ${new Date().toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}`;
+        }
+
+        document.body.setAttribute('data-print-scope', 'estimator');
+        window.print();
+      });
+
+      // afterprint is not fired by every browser; clear on focus as a backstop
+      // so the attribute can never be left behind.
+      const clearScope = () => document.body.removeAttribute('data-print-scope');
+      window.addEventListener('afterprint', clearScope);
+      window.addEventListener('focus', clearScope);
+    }
+
+    compute();
+  }
+</script>

@@ -1,0 +1,135 @@
+---
+// Thin line diagrams. Every stroke is hairline weight; the only fill is the
+// page ground. Decorative — each is aria-hidden and captioned in prose nearby.
+interface Props {
+  variant: 'tax' | 'statements' | 'portal';
+  class?: string;
+}
+const { variant, class: className = '' } = Astro.props;
+---
+
+<div class:list={['diagram', className]} aria-hidden="true">
+  {
+    variant === 'tax' && (
+      <svg viewBox="0 0 240 120" fill="none" role="presentation">
+        {/* Three ledger sources funnelling into one computed figure. */}
+        <g class="d-line">
+          <rect x="1" y="8" width="52" height="20" />
+          <rect x="1" y="40" width="52" height="20" />
+          <rect x="1" y="72" width="52" height="20" />
+        </g>
+        <g class="d-rule">
+          <path d="M53 18 H92 L112 50" />
+          <path d="M53 50 H112" />
+          <path d="M53 82 H92 L112 50" />
+        </g>
+        <g class="d-line">
+          <rect x="112" y="34" width="46" height="32" />
+        </g>
+        <g class="d-rule">
+          <path d="M158 50 H186" />
+        </g>
+        <g class="d-line">
+          <path d="M186 34 H239" />
+          <path d="M186 66 H239" />
+        </g>
+        <g class="d-accent">
+          <path d="M198 44 h16 M206 36 v16" />
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    variant === 'statements' && (
+      <svg viewBox="0 0 240 120" fill="none" role="presentation">
+        {/* A statement page: ruled lines with a totalled final row. */}
+        <g class="d-line">
+          <rect x="1" y="4" width="150" height="112" />
+        </g>
+        <g class="d-rule">
+          <path d="M16 26 H100" />
+          <path d="M16 42 H136" />
+          <path d="M16 58 H118" />
+          <path d="M16 74 H136" />
+        </g>
+        <g class="d-accent">
+          <path d="M16 90 H136" />
+          <path d="M100 98 H136" />
+        </g>
+        <g class="d-rule">
+          <path d="M151 60 H176" />
+        </g>
+        <g class="d-line">
+          <rect x="176" y="34" width="62" height="52" />
+        </g>
+        <g class="d-rule">
+          <path d="M188 50 H226 M188 62 H212 M188 74 H226" />
+        </g>
+      </svg>
+    )
+  }
+
+  {
+    variant === 'portal' && (
+      <svg viewBox="0 0 240 120" fill="none" role="presentation">
+        {/* A hub with client nodes on hairline spokes. */}
+        <g class="d-line">
+          <rect x="94" y="42" width="52" height="36" />
+        </g>
+        <g class="d-rule">
+          <path d="M94 60 H40 V22 H8" />
+          <path d="M94 60 H40 V98 H8" />
+          <path d="M146 60 H200 V22 H232" />
+          <path d="M146 60 H200 V98 H232" />
+        </g>
+        <g class="d-line">
+          <rect x="1" y="12" width="20" height="20" />
+          <rect x="1" y="88" width="20" height="20" />
+          <rect x="219" y="12" width="20" height="20" />
+          <rect x="219" y="88" width="20" height="20" />
+        </g>
+        <g class="d-accent">
+          <path d="M112 60 h16 M120 52 v16" />
+        </g>
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .diagram {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  .d-line {
+    stroke: var(--nt-navy-500);
+    stroke-width: 1;
+  }
+
+  .d-rule {
+    stroke: var(--nt-line-300);
+    stroke-width: 1;
+  }
+
+  .d-accent {
+    stroke: var(--nt-accent-rule);
+    stroke-width: 1;
+  }
+
+  @media print {
+    .d-line,
+    .d-rule,
+    .d-accent {
+      stroke: #000;
+    }
+  }
+</style>

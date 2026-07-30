@@ -1,0 +1,284 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+
+const capabilities = [
+  {
+    title: 'Request lists, not reminder emails',
+    body:
+      'Every outstanding item is a row with an owner and a state. Both sides see the same list, so "I sent that already" becomes a question with an answer.',
+  },
+  {
+    title: 'Documents land where they belong',
+    body:
+      'An upload attaches to the request that asked for it, and therefore to the working paper that will cite it. Nothing arrives as an unlabelled attachment.',
+  },
+  {
+    title: 'Queries stay with their figure',
+    body:
+      'A question about a balance lives against that balance. When it is answered, the answer is part of the file rather than part of somebody’s inbox.',
+  },
+  {
+    title: 'Approvals with an identity',
+    body:
+      'Sign-off is captured with a person, a timestamp and the exact version approved. Later changes require a fresh approval instead of inheriting the old one.',
+  },
+  {
+    title: 'Deadlines that derive themselves',
+    body:
+      'Obligations are generated from each entity’s financial year end. Nobody maintains a master deadline spreadsheet, because there is not one.',
+  },
+  {
+    title: 'The file assembles as you work',
+    body:
+      'By the time the period closes, the year-end file already exists. It was never a separate task — it was a by-product of doing the work in one place.',
+  },
+];
+
+const forWhom = [
+  {
+    label: 'For the firm',
+    title: 'One method across the portfolio',
+    points: [
+      'See every entity’s state on one screen, not in twelve folders',
+      'Standard request templates per engagement type',
+      'Reviewer queues that show what is actually waiting on you',
+      'Handover between staff without a briefing call',
+    ],
+  },
+  {
+    label: 'For the client',
+    title: 'A short, clear list',
+    points: [
+      'What is outstanding, in plain language, with the reason',
+      'Upload once — no resending the same statement twice',
+      'Approve from a phone without printing anything',
+      'A permanent copy of everything filed on your behalf',
+    ],
+  },
+];
+---
+
+<Base
+  title="Client Portal"
+  description="The NUMARATECH Client Portal keeps documents, queries and approvals in one place, so the year-end file assembles itself as the work happens."
+>
+  <PageHeader
+    eyebrow="Platform / 03"
+    title="Stop running year-end over email."
+    lead="Most of the cost of a compliance engagement is not the computation. It is the chasing — for a bank statement, for a confirmation, for an approval that was given verbally and never written down."
+    meta={[
+      { label: 'Built for', value: 'Firms and their clients' },
+      { label: 'Records', value: 'Documents · queries · approvals' },
+      { label: 'Audit trail', value: 'Identity and timestamp on every action' },
+      { label: 'Access', value: 'Per-entity, role-based' },
+    ]}
+  />
+
+  <!-- Argument --------------------------------------------------------- -->
+  <section class="nt-section nt-wrap">
+    <div class="nt-split">
+      <SectionHead
+        index="01"
+        eyebrow="The problem"
+        title="Email is a queue, not a record."
+      />
+
+      <div class="argument">
+        <p class="nt-lead">
+          An engagement run over email has no state. There is no single place
+          that answers "what is outstanding" — only a thread that two people
+          read differently.
+        </p>
+        <p>
+          The consequences are predictable. Documents are requested twice.
+          Approvals exist as a sentence in a reply. When the file is finally
+          assembled, someone spends a day reconstructing from an inbox what
+          should have been recorded as it happened.
+        </p>
+        <p>
+          The portal makes the state explicit. Every request has an owner and a
+          status; every document has a reason it exists; every approval has a
+          name against it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities ----------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="02"
+      eyebrow="Capabilities"
+      title="What it does."
+    />
+
+    <div class="nt-cols nt-cols--3 caps">
+      {
+        capabilities.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 cap__title">{item.title}</h3>
+            <p class="cap__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Two audiences ---------------------------------------------------- -->
+  <section class="nt-section nt-section--invert nt-reveal">
+    <div class="nt-wrap">
+      <SectionHead
+        index="03"
+        eyebrow="Two sides"
+        title="The same record, two views."
+        lead="A portal that only serves the firm gets ignored by clients. One that only serves clients cannot be run at scale. Both views read the same underlying record."
+        invert={true}
+      />
+
+      <div class="nt-cols nt-cols--2 sides">
+        {
+          forWhom.map((side) => (
+            <div>
+              <p class="nt-micro nt-micro--invert nt-micro-idx">{side.label}</p>
+              <h3 class="nt-h3 side__title">{side.title}</h3>
+              <ul class="nt-checks side__points">
+                {side.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Illustrative request list ---------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <div class="nt-split">
+      <SectionHead
+        index="04"
+        eyebrow="Output"
+        title="What the list looks like."
+        lead="Plain rows, hairline rules, and a state you cannot misread. No badges, no colour-coding to memorise."
+      />
+
+      <div>
+        <div class="nt-table-scroll">
+          <table class="nt-table">
+            <caption>Illustrative request list — FY 2026 close</caption>
+            <thead>
+              <tr>
+                <th scope="col">Request</th>
+                <th scope="col">Owner</th>
+                <th scope="col">State</th>
+                <th scope="col" class="nt-fig">Due</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Bank confirmations, all accounts</th>
+                <td>Client</td>
+                <td>Outstanding</td>
+                <td class="nt-fig">12 Feb</td>
+              </tr>
+              <tr>
+                <th scope="row">Fixed asset additions schedule</th>
+                <td>Client</td>
+                <td>Received</td>
+                <td class="nt-fig">08 Feb</td>
+              </tr>
+              <tr>
+                <th scope="row">Related party balances confirmation</th>
+                <td>Firm</td>
+                <td>In review</td>
+                <td class="nt-fig">15 Feb</td>
+              </tr>
+              <tr>
+                <th scope="row">Inventory count sheets</th>
+                <td>Client</td>
+                <td>Query raised</td>
+                <td class="nt-fig">18 Feb</td>
+              </tr>
+              <tr>
+                <th scope="row">Statements approval</th>
+                <td>Director</td>
+                <td>Awaiting sign-off</td>
+                <td class="nt-fig">28 Feb</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table__note nt-sm">
+          Illustrative content. Request templates are configured per engagement
+          type.
+        </p>
+        <p class="table__cta">
+          <a href="/services/" class="nt-arrow-link">
+            How we set this up for a portfolio
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Run one engagement through it."
+    body="Pick a single client and a single close. If the portal does not measurably reduce the chasing, it is not worth rolling out — and we would rather find that out on one file."
+  />
+</Base>
+
+<style>
+  .argument {
+    max-width: 62ch;
+  }
+
+  .argument > * + * {
+    margin-top: var(--nt-4);
+  }
+
+  .caps {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .cap__title {
+    margin-top: var(--nt-4);
+  }
+
+  .cap__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 46ch;
+  }
+
+  .sides {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .side__title {
+    margin-top: var(--nt-4);
+  }
+
+  .side__points {
+    margin-top: var(--nt-5);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+    max-width: 44ch;
+  }
+
+  .table__note {
+    margin-top: var(--nt-4);
+    color: var(--nt-text-muted);
+  }
+
+  .table__cta {
+    margin-top: var(--nt-5);
+  }
+</style>

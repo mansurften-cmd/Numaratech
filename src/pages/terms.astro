@@ -1,0 +1,186 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { SITE, UAE_CT } from '../consts';
+
+const updated = '30 July 2026';
+const nf = new Intl.NumberFormat('en-AE');
+---
+
+<Base
+  title="Terms of use"
+  description="Terms governing use of the NUMARATECH website, including the limits of the Corporate Tax estimator and the absence of any advisory relationship."
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Terms of use"
+    lead="The terms on which you may use this website, and what it does and does not commit us to."
+    meta={[
+      { label: 'Last updated', value: updated },
+      { label: 'Applies to', value: 'This website' },
+      { label: 'Contact', value: SITE.email },
+    ]}
+  />
+
+  <section class="nt-section nt-wrap">
+    <div class="nt-prose">
+      <p class="nt-lead">
+        By using this website you accept these terms. They govern the website
+        only — use of any {SITE.legalName} product or service is governed by the
+        separate agreement we sign with you, which prevails over this page.
+      </p>
+
+      <h2>No advice, and no advisory relationship</h2>
+
+      <p>
+        Everything on this site is general information about finance and
+        compliance practice in the United Arab Emirates.
+        <strong>
+          It is not tax, accounting, legal or financial advice, and reading it
+          does not create a professional or advisory relationship between you
+          and us.
+        </strong>
+      </p>
+
+      <p>
+        {SITE.legalName} is a software and implementation business. We are not a
+        licensed tax agent, an audit firm or a legal practice. Decisions about
+        your tax positions, your financial statements and your filings are
+        yours, taken on the advice of your own qualified advisers.
+      </p>
+
+      <h2>The Corporate Tax estimator</h2>
+
+      <p>
+        The estimator on this site is an illustration. It applies the headline
+        rate of {UAE_CT.standardRate * 100}% and the {UAE_CT.currency}
+        {' '}{nf.format(UAE_CT.zeroBandCeiling)} zero band to figures you type
+        in, and optionally models a Small Business Relief election.
+      </p>
+
+      <p>Specifically, it does <strong>not</strong> take account of:</p>
+
+      <ul>
+        <li>free zone status or qualifying income tests;</li>
+        <li>tax groups, consolidation or group relief;</li>
+        <li>interest deduction limitation rules;</li>
+        <li>tax losses carried forward or back;</li>
+        <li>foreign tax credits or double tax treaty relief;</li>
+        <li>transfer pricing adjustments;</li>
+        <li>
+          any relief, exemption or adjustment other than the zero band and Small
+          Business Relief;
+        </li>
+        <li>
+          whether the conditions for any relief it does model are actually met in
+          your case.
+        </li>
+      </ul>
+
+      <p>
+        Its output is not a computation of your liability and must not be used
+        as one, relied on for filing, or presented to any authority. Statutory
+        parameters change; while we intend to keep them current, you must verify
+        them against the Federal Tax Authority's published guidance. Your actual
+        liability is determined under the applicable law.
+      </p>
+
+      <h2>Accuracy</h2>
+
+      <p>
+        We take care over what we publish, but we do not warrant that this site
+        is accurate, complete or current. Content describing our products
+        reflects our intentions at the time of writing and may change without
+        notice. Nothing here is an offer capable of acceptance, and nothing here
+        forms part of any contract unless we have written it into a signed
+        agreement.
+      </p>
+
+      <h2>Acceptable use</h2>
+
+      <p>You agree not to:</p>
+
+      <ul>
+        <li>
+          use this site unlawfully, or in a way that damages it or degrades it
+          for others;
+        </li>
+        <li>
+          attempt to gain unauthorised access to any part of the site, its
+          hosting or any connected system;
+        </li>
+        <li>
+          scrape, mirror or systematically extract content except as a
+          conventional search engine does;
+        </li>
+        <li>
+          use the contact form to send unsolicited marketing, or to send content
+          that is unlawful or abusive.
+        </li>
+      </ul>
+
+      <p>
+        Found a security issue? Please tell us at
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> before disclosing it
+        elsewhere. We will acknowledge you and work with you in good faith.
+      </p>
+
+      <h2>Intellectual property</h2>
+
+      <p>
+        The content, design, wordmark and code of this site belong to
+        {' '}{SITE.legalName} or our licensors. You may read, print and share
+        pages for your own reference or within your organisation. You may not
+        republish our content commercially, or present it as your own, without
+        our written permission.
+      </p>
+
+      <h2>Links out</h2>
+
+      <p>
+        Where we link to another site, we do so because we think it is useful. We
+        do not control it and are not responsible for its content or its
+        handling of your data.
+      </p>
+
+      <h2>Liability</h2>
+
+      <p>
+        To the fullest extent permitted by law, we exclude liability for any
+        loss arising from use of, or reliance on, this website or anything on it
+        — including any use of the estimator. Nothing in these terms limits
+        liability that cannot lawfully be limited, including liability for fraud
+        or fraudulent misrepresentation.
+      </p>
+
+      <h2>Availability</h2>
+
+      <p>
+        We may change, suspend or withdraw this site or any part of it at any
+        time, without notice. We do not guarantee uninterrupted availability.
+      </p>
+
+      <h2>Governing law</h2>
+
+      <p>
+        These terms are governed by the laws of the United Arab Emirates as
+        applied in the Emirate of Dubai, and the courts of Dubai have exclusive
+        jurisdiction over any dispute arising from them.
+      </p>
+
+      <h2>Changes to these terms</h2>
+
+      <p>
+        We may revise these terms. The version published here is the one that
+        applies to your use of the site, so please check the date above.
+      </p>
+
+      <h2>Contact</h2>
+
+      <p>
+        Questions about these terms:
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </div>
+  </section>
+</Base>

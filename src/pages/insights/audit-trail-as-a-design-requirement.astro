@@ -1,0 +1,130 @@
+---
+import Article from '../../layouts/Article.astro';
+import { findInsight } from '../../insights';
+
+const insight = findInsight('audit-trail-as-a-design-requirement')!;
+---
+
+<Article
+  insight={insight}
+  standfirst="If you can only reconstruct how a figure was derived by asking the person who made it, you do not have an audit trail. You have a dependency."
+>
+  <p>
+    "Audit trail" usually appears in a feature list, somewhere near the bottom,
+    described as a report you can run. That framing is the problem. A trail you
+    have to reconstruct on request is not a trail — it is an investigation.
+  </p>
+
+  <p>
+    Lineage is either a property of how figures are produced, or it does not
+    really exist. It cannot be added afterwards, because the information needed
+    to establish it was discarded at the moment the figure was created.
+  </p>
+
+  <h2>The test</h2>
+
+  <p>
+    There is a simple test for whether a finance system has real lineage. Pick a
+    figure in a filed return or a signed statement. Then, without speaking to
+    anyone, answer three questions:
+  </p>
+
+  <ul>
+    <li>Which ledger entries make up this figure?</li>
+    <li>What adjustments were applied to it, and on what basis?</li>
+    <li>Who approved it, when, and what exact version did they approve?</li>
+  </ul>
+
+  <p>
+    Most finance functions cannot answer all three for an arbitrary figure from
+    two years ago. Many cannot answer the first one for last quarter. The
+    knowledge exists, but it exists in a person, a workbook and an email thread —
+    three places, none of which is the accounts.
+  </p>
+
+  <h2>Why "we can rebuild it if asked" is not good enough</h2>
+
+  <p>
+    The usual objection is that the information can be reassembled if somebody
+    genuinely needs it. Technically true, and it misses three costs.
+  </p>
+
+  <p>
+    <strong>It arrives at the worst moment.</strong> The request comes from an
+    auditor under time pressure, or from a tax authority with a deadline
+    attached. Reconstruction happens when it is most expensive and least
+    convenient.
+  </p>
+
+  <p>
+    <strong>It decays.</strong> Reconstruction depends on memory and on files
+    still being where somebody left them. Both degrade. At eighteen months the
+    reconstruction is plausible; at three years it is often no longer possible at
+    all.
+  </p>
+
+  <p>
+    <strong>It is a single point of failure with legs.</strong> If one person can
+    reconstruct the reasoning and nobody else can, that person's departure is a
+    control failure. This is the risk finance teams most consistently
+    under-price, because the person is usually excellent and has never let anyone
+    down.
+  </p>
+
+  <h2>What it means to design for it</h2>
+
+  <p>
+    Treating lineage as a design requirement changes specific decisions. Four
+    that matter:
+  </p>
+
+  <p>
+    <strong>Figures are derived, not entered.</strong> If a number is typed into
+    a return, its derivation is gone. If it is computed from a mapped ledger, the
+    derivation is inherent — the system knows what it summed because it did the
+    summing.
+  </p>
+
+  <p>
+    <strong>Adjustments are objects, not amounts.</strong> An add-back should
+    carry its reason, its basis of measurement, and a link to the evidence. Stored
+    as a bare number in a cell, it is an assertion. Stored as a record, it is
+    support.
+  </p>
+
+  <p>
+    <strong>Periods lock.</strong> Once something is filed, the underlying data
+    must be frozen. Without a lock, a later edit silently changes what was
+    reported and the trail now describes something that never happened. With one,
+    corrections become explicit prior-period adjustments — visible, dated,
+    attributable.
+  </p>
+
+  <p>
+    <strong>Approval captures a version.</strong> "Approved by the director"
+    means little if the document changed afterwards. Sign-off should reference the
+    exact state approved, so a subsequent change requires a new approval instead
+    of inheriting the old one.
+  </p>
+
+  <h2>The unexpected benefit</h2>
+
+  <p>
+    Teams adopt this expecting it to help with audit and enquiry. It does. But
+    the benefit that shows up first is internal: reviews get faster.
+  </p>
+
+  <p>
+    A reviewer's real job is deciding whether a figure is reasonable. When
+    lineage is available on the figure itself, that decision can be made
+    directly. When it is not, the reviewer spends most of their time
+    reconstructing what was done before they can form a view — which is why
+    review is so often the longest step in a close and the one that scales worst.
+  </p>
+
+  <p>
+    Build the trail into how figures are made, and you get the defensibility as
+    an eventual insurance policy and the review speed as an immediate dividend.
+    The insurance is what gets budgeted; the dividend is what people notice.
+  </p>
+</Article>

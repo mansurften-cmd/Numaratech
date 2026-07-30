@@ -1,0 +1,178 @@
+---
+import Base from './Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Arrow from '../components/Arrow.astro';
+import { formatInsightDate, insightsNewestFirst, type Insight } from '../insights';
+
+interface Props {
+  insight: Insight;
+  /** One-line standfirst shown under the title. */
+  standfirst: string;
+}
+
+const { insight, standfirst } = Astro.props;
+
+const others = insightsNewestFirst()
+  .filter((entry) => entry.slug !== insight.slug)
+  .slice(0, 2);
+---
+
+<Base title={insight.title} description={insight.summary}>
+  <article>
+    <header class="head nt-field">
+      <div class="nt-field__rules" aria-hidden="true"></div>
+      <div class="nt-wrap head__inner">
+        <p class="nt-micro nt-micro--accent nt-micro-idx">
+          <span>{insight.topic}</span>
+          <span aria-hidden="true">/</span>
+          <time datetime={insight.date}>{formatInsightDate(insight.date)}</time>
+          <span aria-hidden="true">/</span>
+          <span>{insight.readingMinutes} min read</span>
+        </p>
+
+        <h1 class="nt-h1 title">{insight.title}</h1>
+        <p class="nt-lead standfirst">{standfirst}</p>
+      </div>
+    </header>
+
+    <div class="nt-section nt-wrap body">
+      <div class="nt-prose">
+        <slot />
+      </div>
+
+      <aside class="aside" aria-label="Article information">
+        <p class="nt-micro">Note</p>
+        <p class="aside__text nt-sm">
+          Written by the NUMARATECH team. General information about UAE finance
+          and compliance practice — not tax or accounting advice, and not a
+          substitute for guidance on your own position.
+        </p>
+        <p class="aside__link">
+          <a href="/insights/" class="nt-arrow-link">
+            All insights
+            <Arrow />
+          </a>
+        </p>
+      </aside>
+    </div>
+
+    <section class="nt-section nt-section--tight nt-wrap nt-divide">
+      <p class="nt-micro nt-micro--accent nt-micro-idx">Read next</p>
+      <ul class="nt-ruled next">
+        {
+          others.map((entry) => (
+            <li>
+              <p class="nt-micro">
+                {entry.topic} · {formatInsightDate(entry.date)}
+              </p>
+              <h2 class="nt-h3 next__title">
+                <a href={`/insights/${entry.slug}/`}>{entry.title}</a>
+              </h2>
+              <p class="next__summary nt-sm">{entry.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .head {
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .head__inner {
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .nt-micro-idx {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nt-2);
+    align-items: center;
+  }
+
+  .title {
+    margin-top: var(--nt-5);
+    max-width: 30ch;
+  }
+
+  .standfirst {
+    margin-top: var(--nt-5);
+    max-width: 58ch;
+  }
+
+  .body {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  .aside {
+    border-top: var(--nt-hair) solid var(--nt-accent-rule);
+    padding-top: var(--nt-4);
+  }
+
+  .aside__text {
+    margin-top: var(--nt-3);
+    color: var(--nt-text-muted);
+    max-width: 38ch;
+  }
+
+  .aside__link {
+    margin-top: var(--nt-5);
+  }
+
+  .next {
+    margin-top: var(--nt-5);
+  }
+
+  .next__title {
+    margin-top: var(--nt-3);
+    max-width: 34ch;
+  }
+
+  .next__title a {
+    color: var(--nt-navy-900);
+    text-decoration: none;
+  }
+
+  .next__title a:hover {
+    color: var(--nt-teal-800);
+  }
+
+  .next__summary {
+    margin-top: var(--nt-3);
+    max-width: 62ch;
+  }
+
+  @media (min-width: 62rem) {
+    .body {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+      gap: var(--nt-8);
+    }
+
+    .aside {
+      position: sticky;
+      top: calc(var(--nt-header-h) + var(--nt-6));
+    }
+
+    .next {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .next > li:first-child {
+      padding-right: var(--nt-6);
+      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
+    }
+
+    .next > li:last-child {
+      padding-left: var(--nt-6);
+    }
+  }
+</style>

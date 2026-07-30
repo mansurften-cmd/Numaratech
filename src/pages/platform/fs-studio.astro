@@ -1,0 +1,290 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+
+const capabilities = [
+  {
+    title: 'Mapping, once',
+    body:
+      'Each ledger account is mapped to a statement line and a note reference. Do it in the first period and the following periods inherit it, with new accounts flagged rather than silently dropped into "other".',
+  },
+  {
+    title: 'Notes that recompute',
+    body:
+      'A note is a view of the mapped ledger, not a paragraph someone remembered to update. Change a mapping and the note, the primary statement and the totals move together.',
+  },
+  {
+    title: 'Comparatives that stay honest',
+    body:
+      'Prior-year columns are locked to what was filed. If a reclassification changes the comparative, the restatement is disclosed because the system knows it happened.',
+  },
+  {
+    title: 'Two presentation sets',
+    body:
+      'Full IFRS and IFRS for SMEs, chosen per entity. The same ledger produces either, so a change of framework is not a rebuild.',
+  },
+  {
+    title: 'Cast and cross-cast',
+    body:
+      'Every statement is checked to add up down the column and across the note before you are allowed to call it final. Casting errors are caught by arithmetic, not by a reviewer.',
+  },
+  {
+    title: 'Designed for paper',
+    body:
+      'Statements are typeset for the printed page: figures in tabular columns, notes that do not orphan headings, and page breaks that fall where an accountant expects them.',
+  },
+];
+
+const checks = [
+  'Primary statements cast and cross-cast to the notes',
+  'Ledger reconciles to the trial balance the period opened with',
+  'Every account mapped, with new accounts explicitly assigned',
+  'Comparatives agree to the prior filed statements or disclose a restatement',
+  'Rounding differences resolved to one place, not spread quietly',
+  'Statement of cash flows reconciles to the movement in cash',
+];
+---
+
+<Base
+  title="FS Studio"
+  description="FS Studio generates IFRS and IFRS for SMEs financial statements from your mapped ledger, with notes that recompute and comparatives locked to the prior filed position."
+>
+  <PageHeader
+    eyebrow="Platform / 02"
+    title="Financial statements, derived from the ledger."
+    lead="Statements assembled by retyping a trial balance into last year's template are wrong in small ways that compound. FS Studio derives them, so a change in one place propagates everywhere it should."
+    meta={[
+      { label: 'Frameworks', value: 'IFRS · IFRS for SMEs' },
+      { label: 'Source', value: 'Mapped trial balance' },
+      { label: 'Notes', value: 'Recomputed, not retyped' },
+      { label: 'Output', value: 'Screen and print' },
+    ]}
+  />
+
+  <!-- Argument --------------------------------------------------------- -->
+  <section class="nt-section nt-wrap">
+    <div class="nt-split">
+      <SectionHead
+        index="01"
+        eyebrow="The problem"
+        title="A template is not a model."
+      />
+
+      <div class="argument">
+        <p class="nt-lead">
+          The usual method is a workbook: last year's statements, this year's
+          numbers pasted over the top, notes edited by hand where someone
+          remembers they need editing.
+        </p>
+        <p>
+          It works until something moves. A reclassification between two
+          expense lines has to be reflected in the primary statement, in the
+          expense note, in the comparative, and in the cash flow. Four edits,
+          done by memory, under deadline. Miss one and the statements no longer
+          cast — and the person who finds it is usually the auditor.
+        </p>
+        <p>
+          FS Studio treats the statements as a computed view over a mapped
+          ledger. There is one place to make the change, and everything
+          downstream is derived from it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities ----------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="02"
+      eyebrow="Capabilities"
+      title="What it handles."
+    />
+
+    <div class="nt-cols nt-cols--3 caps">
+      {
+        capabilities.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 cap__title">{item.title}</h3>
+            <p class="cap__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Illustrative statement extract ----------------------------------- -->
+  <section class="nt-section nt-section--inset nt-reveal">
+    <div class="nt-wrap">
+      <div class="nt-split">
+        <SectionHead
+          index="03"
+          eyebrow="Output"
+          title="What comes out."
+          lead="An extract in the house style: tabular figures, hairline rules, totals that carry a double rule above them."
+        />
+
+        <div class="extract">
+          <div class="nt-table-scroll">
+            <table class="nt-table">
+              <caption>
+                Illustrative extract — statement of profit or loss, AED '000
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">&nbsp;</th>
+                  <th scope="col" class="nt-fig">Note</th>
+                  <th scope="col" class="nt-fig">2026</th>
+                  <th scope="col" class="nt-fig">2025</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Revenue</th>
+                  <td class="nt-fig">5</td>
+                  <td class="nt-fig">42,180</td>
+                  <td class="nt-fig">36,905</td>
+                </tr>
+                <tr>
+                  <th scope="row">Cost of sales</th>
+                  <td class="nt-fig">6</td>
+                  <td class="nt-fig">(27,412)</td>
+                  <td class="nt-fig">(24,338)</td>
+                </tr>
+                <tr class="sub">
+                  <th scope="row">Gross profit</th>
+                  <td class="nt-fig">&nbsp;</td>
+                  <td class="nt-fig">14,768</td>
+                  <td class="nt-fig">12,567</td>
+                </tr>
+                <tr>
+                  <th scope="row">Administrative expenses</th>
+                  <td class="nt-fig">7</td>
+                  <td class="nt-fig">(8,904)</td>
+                  <td class="nt-fig">(8,120)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Finance costs</th>
+                  <td class="nt-fig">8</td>
+                  <td class="nt-fig">(1,215)</td>
+                  <td class="nt-fig">(1,402)</td>
+                </tr>
+                <tr class="sub">
+                  <th scope="row">Profit before tax</th>
+                  <td class="nt-fig">&nbsp;</td>
+                  <td class="nt-fig">4,649</td>
+                  <td class="nt-fig">3,045</td>
+                </tr>
+                <tr>
+                  <th scope="row">Corporate Tax expense</th>
+                  <td class="nt-fig">9</td>
+                  <td class="nt-fig">(385)</td>
+                  <td class="nt-fig">(240)</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Profit for the year</th>
+                  <td class="nt-fig">&nbsp;</td>
+                  <td class="nt-fig">4,264</td>
+                  <td class="nt-fig">2,805</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="extract__note nt-sm">
+            Figures are illustrative and do not describe any actual entity.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Close checklist -------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <div class="nt-split">
+      <SectionHead
+        index="04"
+        eyebrow="Before you sign"
+        title="The checks it will not let you skip."
+        lead="A statement set is not finished because someone says it is. These run automatically and block the final state until they pass."
+      />
+
+      <div>
+        <ul class="nt-checks checklist">
+          {checks.map((check) => <li>{check}</li>)}
+        </ul>
+        <p class="checklist__cta">
+          <a href="/platform/corporate-tax/" class="nt-arrow-link">
+            How this feeds the tax computation
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Send us last year's statements."
+    body="We will rebuild one period in FS Studio and show you the two side by side, including anything the casting checks pick up."
+  />
+</Base>
+
+<style>
+  .argument > * + * {
+    margin-top: var(--nt-4);
+  }
+
+  .argument {
+    max-width: 62ch;
+  }
+
+  .caps {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .cap__title {
+    margin-top: var(--nt-4);
+  }
+
+  .cap__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 46ch;
+  }
+
+  .extract .sub th,
+  .extract .sub td {
+    border-bottom-color: var(--nt-navy-500);
+    color: var(--nt-navy-900);
+    font-weight: 600;
+  }
+
+  .extract th[scope='row'] {
+    font-weight: 400;
+    color: var(--nt-ink-600);
+  }
+
+  .extract .sub th[scope='row'] {
+    font-weight: 600;
+    color: var(--nt-navy-900);
+  }
+
+  .extract__note {
+    margin-top: var(--nt-4);
+    color: var(--nt-text-muted);
+  }
+
+  .checklist {
+    font-size: var(--nt-fs-body);
+    max-width: 54ch;
+  }
+
+  .checklist__cta {
+    margin-top: var(--nt-6);
+  }
+</style>

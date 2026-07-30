@@ -1,0 +1,371 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Arrow from '../components/Arrow.astro';
+import { SITE } from '../consts';
+
+const interests = [
+  'Corporate Tax Engine',
+  'FS Studio',
+  'Client Portal',
+  'Implementation or data remediation',
+  'Something else',
+];
+---
+
+<Base
+  title="Contact"
+  description="Book a 30-minute walkthrough with NUMARATECH, or write to us directly. Based in Dubai, working with UAE businesses and accounting firms."
+>
+  <PageHeader
+    eyebrow="Contact"
+    title="Thirty minutes, your numbers, no deck."
+    lead="Tell us what you are running and where it hurts. We will come back with a direct answer on whether we can help — including when the answer is no."
+    meta={[
+      { label: 'Email', value: SITE.email },
+      { label: 'Telephone', value: SITE.phoneDisplay },
+      { label: 'Based in', value: `${SITE.address.city}, ${SITE.address.country}` },
+      { label: 'Response', value: 'One working day' },
+    ]}
+  />
+
+  <section class="nt-section nt-wrap">
+    <div class="contact">
+      <!-- Form ------------------------------------------------------- -->
+      <div>
+        <SectionHead
+          index="01"
+          eyebrow="Enquiry"
+          title="Send us the shape of the problem."
+        />
+
+        <form class="form" id="contact-form" method="post" action="/api/contact" novalidate>
+          <div class="form__fields">
+            <div class="nt-field-group">
+              <label class="nt-label" for="c-name">Your name</label>
+              <input
+                class="nt-input"
+                id="c-name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                maxlength="120"
+                required
+              />
+            </div>
+
+            <div class="nt-field-group">
+              <label class="nt-label" for="c-email">Work email</label>
+              <input
+                class="nt-input"
+                id="c-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="nt-field-group">
+              <label class="nt-label" for="c-company">Company</label>
+              <input
+                class="nt-input"
+                id="c-company"
+                name="company"
+                type="text"
+                autocomplete="organization"
+                maxlength="160"
+              />
+            </div>
+
+            <div class="nt-field-group">
+              <label class="nt-label" for="c-interest">What is this about?</label>
+              <select class="nt-select" id="c-interest" name="interest">
+                {interests.map((interest) => <option value={interest}>{interest}</option>)}
+              </select>
+            </div>
+
+            <div class="nt-field-group form__wide">
+              <label class="nt-label" for="c-message">
+                What are you trying to solve?
+              </label>
+              <textarea
+                class="nt-textarea"
+                id="c-message"
+                name="message"
+                maxlength="4000"
+                required
+                aria-describedby="c-message-hint"></textarea>
+              <p class="nt-hint" id="c-message-hint">
+                How many entities, what accounting system, and what currently
+                takes the longest. Detail helps us give you a useful answer
+                first time.
+              </p>
+            </div>
+
+            <!-- Honeypot: hidden from people, tempting to bots. -->
+            <div class="form__trap" aria-hidden="true">
+              <label for="c-website">Website</label>
+              <input
+                id="c-website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <p class="form__consent">
+            By sending this you agree we may contact you about your enquiry. We
+            do not add you to a mailing list. See our
+            <a href="/privacy/">privacy notice</a>.
+          </p>
+
+          <div class="form__actions">
+            <!-- The single solid navy element on this page. -->
+            <button type="submit" class="nt-btn nt-btn--primary" data-submit>
+              Send enquiry
+              <Arrow class="nt-btn__arrow" />
+            </button>
+          </div>
+
+          <p class="nt-error form__status" data-status role="status" hidden></p>
+
+          <noscript>
+            <p class="nt-error form__status">
+              This form needs JavaScript to send. Please email
+              <a href={`mailto:${SITE.email}`}>{SITE.email}</a> instead — we
+              read it directly.
+            </p>
+          </noscript>
+        </form>
+      </div>
+
+      <!-- Direct routes ---------------------------------------------- -->
+      <aside class="side">
+        <div class="side__block">
+          <p class="nt-micro nt-micro--accent nt-micro-idx">Direct</p>
+          <ul class="side__list">
+            <li>
+              <span class="nt-micro">Email</span>
+              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            </li>
+            <li>
+              <span class="nt-micro">Telephone</span>
+              <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+            </li>
+            <li>
+              <span class="nt-micro">Office</span>
+              <span>
+                {SITE.address.line1}<br />
+                {SITE.address.city}, {SITE.address.country}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="side__block">
+          <p class="nt-micro nt-micro--accent nt-micro-idx">
+            Before you write
+          </p>
+          <ul class="nt-checks side__checks">
+            <li>
+              Want to see the arithmetic first? The
+              <a href="/platform/corporate-tax/#estimator">estimator</a> runs in
+              your browser and stores nothing.
+            </li>
+            <li>
+              Looking for tax advice? We do not provide it — we build the
+              systems. Your adviser takes the positions.
+            </li>
+            <li>
+              Recruiters and vendors: please use email rather than this form.
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  .form {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .form__fields {
+    display: grid;
+    gap: var(--nt-5);
+    padding-top: var(--nt-5);
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .form__trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The 16px input floor holds without exception, honeypot included, so the
+     rule can be asserted for every input on the page. */
+  .form__trap input {
+    font-size: 1rem;
+  }
+
+  .form__consent {
+    margin-top: var(--nt-5);
+    color: var(--nt-text-muted);
+    font-size: var(--nt-fs-sm);
+    max-width: 54ch;
+  }
+
+  .form__actions {
+    margin-top: var(--nt-5);
+  }
+
+  .form__status {
+    margin-top: var(--nt-5);
+    max-width: 56ch;
+  }
+
+  .form__status[hidden] {
+    display: none;
+  }
+
+  /* -- Side --------------------------------------------------------- */
+  .side {
+    display: grid;
+    gap: var(--nt-6);
+    border-top: var(--nt-hair) solid var(--nt-accent-rule);
+    padding-top: var(--nt-4);
+  }
+
+  .side__list {
+    list-style: none;
+    display: grid;
+    gap: var(--nt-4);
+    margin-top: var(--nt-4);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .side__list > li {
+    display: grid;
+    gap: var(--nt-1);
+  }
+
+  .side__list a {
+    color: var(--nt-navy-700);
+    text-decoration: none;
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+    justify-self: start;
+  }
+
+  .side__list a:hover {
+    color: var(--nt-accent);
+    border-color: var(--nt-accent-rule);
+  }
+
+  .side__block:not(:first-child) {
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    padding-top: var(--nt-5);
+  }
+
+  .side__checks {
+    margin-top: var(--nt-4);
+    font-size: var(--nt-fs-sm);
+  }
+
+  @media (min-width: 48rem) {
+    .form__fields {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: var(--nt-5);
+    }
+
+    .form__wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .contact {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: var(--nt-8);
+    }
+  }
+</style>
+
+<script>
+  // Progressive enhancement: the form posts as JSON so we can report a result
+  // without a page transition. Without JavaScript the <noscript> block points
+  // at the mailbox instead.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]');
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]');
+
+    const say = (message: string) => {
+      if (!status) return;
+      status.textContent = message;
+      status.hidden = message === '';
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Use the browser's own validation messages before going near the network.
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+
+      if (submit) submit.disabled = true;
+      say('Sending…');
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const result = (await response.json().catch(() => ({}))) as {
+          message?: string;
+        };
+
+        if (response.ok) {
+          form.reset();
+          say(
+            result.message ??
+              'Thank you — your enquiry is with us. We reply within one working day.'
+          );
+        } else {
+          say(
+            result.message ??
+              'We could not send that. Please email hello@numaratech.com and we will pick it up directly.'
+          );
+        }
+      } catch {
+        say(
+          'Network error — nothing was sent. Please email hello@numaratech.com instead.'
+        );
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+  }
+</script>

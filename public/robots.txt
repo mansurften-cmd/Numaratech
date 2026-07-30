@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# The contact endpoint is not content.
+Disallow: /api/
+
+Sitemap: https://numaratech.com/sitemap.xml

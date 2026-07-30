@@ -1,0 +1,304 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Arrow from '../components/Arrow.astro';
+
+const services = [
+  {
+    index: '01',
+    name: 'Implementation',
+    line: 'Four to eight weeks, one period proven',
+    body:
+      'We map your chart of accounts, connect your ledger, build your adjustment library, and run one closed period end to end alongside your existing process. You compare the two before anything is switched over.',
+    points: [
+      'Chart of accounts mapped for statutory and tax presentation',
+      'Read-only connections established and validated',
+      'Adjustment library built from your actual prior computations',
+      'One historical period reproduced and reconciled',
+    ],
+  },
+  {
+    index: '02',
+    name: 'Data remediation',
+    line: 'Before the system, the data',
+    body:
+      'Most implementations stall on the ledger, not the software. Where the underlying data will not support a defensible computation, we fix that first — and tell you plainly if it is the larger part of the job.',
+    points: [
+      'Chart of accounts rationalised, not just renamed',
+      'Historic bank activity classified and reconciled',
+      'Opening balances agreed to the last filed position',
+      'Gaps documented where evidence genuinely no longer exists',
+    ],
+  },
+  {
+    index: '03',
+    name: 'Process automation',
+    line: 'The work that should not need a person',
+    body:
+      'Recurring finance work built into something repeatable: bank classification, intercompany matching, schedule preparation, management reporting packs. Judgement stays with your people; the mechanical parts do not.',
+    points: [
+      'Bank transaction classification with a rule set you own',
+      'Intercompany matching and elimination workflows',
+      'Recurring management reporting on a schedule',
+      'Exception queues instead of full manual review',
+    ],
+  },
+  {
+    index: '04',
+    name: 'Ongoing support',
+    line: 'Someone who knows your file',
+    body:
+      'Named support from people who have seen your ledger, not a queue. Regime changes are applied to your configuration by us, with a note explaining what changed and what it did to your numbers.',
+    points: [
+      'Named contact familiar with your entities',
+      'Regulatory changes applied and explained',
+      'Quarterly review of mappings and adjustments',
+      'Support during audit and any FTA correspondence',
+    ],
+  },
+];
+
+const principles = [
+  {
+    title: 'We will tell you if it is not worth doing',
+    body:
+      'Some finance functions do not need us. If a spreadsheet genuinely serves you and the risk is low, we will say so on the first call rather than sell you a programme.',
+  },
+  {
+    title: 'Scope is fixed, or it is not scope',
+    body:
+      'Implementation is quoted as a fixed piece of work against a written definition of done. If the ledger turns out to be worse than it looked, we re-quote before doing the extra work, not after.',
+  },
+  {
+    title: 'You keep your data',
+    body:
+      'Export is a first-class feature, not a retention lever. Everything you put in comes back out in open formats, on request, at any point — including after you leave.',
+  },
+  {
+    title: 'Your team does the judgement',
+    body:
+      'We automate the mechanical and leave the judgement where it belongs. A system that makes tax positions on your behalf is a liability, not a product.',
+  },
+];
+---
+
+<Base
+  title="Services"
+  description="Implementation, data remediation, process automation and ongoing support from NUMARATECH — fixed scope, one period proven before you switch over."
+>
+  <PageHeader
+    eyebrow="Services"
+    title="Software is half of it."
+    lead="A platform is worth nothing sitting on top of a ledger that cannot support it. Most of what we do is the work that makes the software able to tell the truth."
+    meta={[
+      { label: 'Implementation', value: 'Typically 4–8 weeks' },
+      { label: 'Commercials', value: 'Fixed scope, quoted in writing' },
+      { label: 'Proof', value: 'One historical period reproduced' },
+      { label: 'Exit', value: 'Full export, open formats' },
+    ]}
+  />
+
+  <!-- Services --------------------------------------------------------- -->
+  <section class="nt-section nt-wrap">
+    <SectionHead
+      index="01"
+      eyebrow="Engagements"
+      title="Four ways we work."
+      lead="Most clients start with implementation. A meaningful minority need remediation first, and we will say so before quoting anything else."
+    />
+
+    <ul class="nt-ruled services">
+      {
+        services.map((service) => (
+          <li class="service nt-reveal">
+            <div>
+              <p class="nt-micro nt-micro-idx">
+                <span class="nt-fig idx">{service.index}</span>
+                {service.line}
+              </p>
+              <h3 class="nt-h2 service__name">{service.name}</h3>
+            </div>
+
+            <div class="service__detail">
+              <p class="nt-lead">{service.body}</p>
+              <ul class="nt-checks service__points">
+                {service.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- How an engagement runs -------------------------------------------- -->
+  <section class="nt-section nt-section--invert nt-reveal">
+    <div class="nt-wrap">
+      <SectionHead
+        index="02"
+        eyebrow="Sequence"
+        title="How an implementation actually runs."
+        lead="No discovery phase that produces a document nobody reads. We start on your real ledger in the first week."
+        invert={true}
+      />
+
+      <ol class="nt-cols nt-cols--4 phases">
+        <li>
+          <span class="nt-fig phase__index">Week 1</span>
+          <h3 class="nt-h3 phase__title">Look at the ledger</h3>
+          <p class="phase__body">
+            We take a read-only copy and assess whether it can support a
+            computation. You get a written view of what needs fixing before any
+            configuration starts.
+          </p>
+        </li>
+        <li>
+          <span class="nt-fig phase__index">Weeks 2–3</span>
+          <h3 class="nt-h3 phase__title">Map and connect</h3>
+          <p class="phase__body">
+            Chart of accounts mapped for both statutory and tax presentation.
+            Connections established. Your adjustment library built from what you
+            actually did last year.
+          </p>
+        </li>
+        <li>
+          <span class="nt-fig phase__index">Weeks 4–6</span>
+          <h3 class="nt-h3 phase__title">Reproduce a period</h3>
+          <p class="phase__body">
+            We rebuild a period you have already closed and reconcile to it line
+            by line. Differences are explained, not smoothed. This is the part
+            that tells you whether it works.
+          </p>
+        </li>
+        <li>
+          <span class="nt-fig phase__index">Weeks 7–8</span>
+          <h3 class="nt-h3 phase__title">Hand over</h3>
+          <p class="phase__body">
+            Your team runs the next close, with us alongside rather than doing
+            it. Training is the close itself; there is no separate course.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Principles -------------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <SectionHead
+      index="03"
+      eyebrow="How we engage"
+      title="Four commitments."
+      lead="These constrain us more than they constrain you. That is the point of writing them down."
+    />
+
+    <div class="nt-cols nt-cols--2 principles">
+      {
+        principles.map((principle) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 principle__title">{principle.title}</h3>
+            <p class="principle__body">{principle.body}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="principles__cta">
+      <a href="/about/" class="nt-arrow-link">
+        Why we work this way
+        <Arrow />
+      </a>
+    </p>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Start with the ledger review."
+    body="Before any quote, we look at your actual data and tell you what state it is in. That conversation is useful even if you never become a client."
+  />
+</Base>
+
+<style>
+  .services {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .service {
+    display: grid;
+    gap: var(--nt-5);
+    align-items: start;
+    padding-block: var(--nt-7);
+  }
+
+  .idx {
+    color: var(--nt-teal-800);
+  }
+
+  .service__name {
+    margin-top: var(--nt-4);
+  }
+
+  .service__detail {
+    max-width: 60ch;
+  }
+
+  .service__points {
+    margin-top: var(--nt-5);
+    font-size: var(--nt-fs-sm);
+  }
+
+  @media (min-width: 60rem) {
+    .service {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--nt-7);
+    }
+  }
+
+  .phases {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    list-style: none;
+  }
+
+  .phase__index {
+    display: block;
+    text-align: left;
+    color: var(--nt-teal-500);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: var(--nt-tr-micro);
+    text-transform: uppercase;
+  }
+
+  .phase__title {
+    margin-top: var(--nt-4);
+  }
+
+  .phase__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+  }
+
+  .principles {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .principle__title {
+    margin-top: var(--nt-4);
+    max-width: 26ch;
+  }
+
+  .principle__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 50ch;
+  }
+
+  .principles__cta {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+</style>

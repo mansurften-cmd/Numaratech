@@ -1,0 +1,40 @@
+---
+interface Props {
+  /** Two-digit section index, e.g. "03". */
+  index?: string;
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  invert?: boolean;
+}
+
+const { index, eyebrow, title, lead, invert = false } = Astro.props;
+---
+
+<div class="head">
+  <p class:list={['nt-micro', 'nt-micro-idx', invert ? 'nt-micro--invert' : 'nt-micro--accent']}>
+    {index && <span class="idx">{index}</span>}
+    {eyebrow}
+  </p>
+  <h2 class="nt-h2 title">{title}</h2>
+  {lead && <p class="nt-lead lead">{lead}</p>}
+</div>
+
+<style>
+  .head {
+    max-width: 62ch;
+  }
+
+  .idx {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
+  }
+
+  .title {
+    margin-top: var(--nt-4);
+  }
+
+  .lead {
+    margin-top: var(--nt-4);
+  }
+</style>

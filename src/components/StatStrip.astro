@@ -1,0 +1,96 @@
+---
+interface Props {
+  caption?: string;
+  items: { figure: string; label: string; note?: string }[];
+}
+
+const { caption, items } = Astro.props;
+---
+
+<div class="strip">
+  {caption && <p class="nt-micro caption">{caption}</p>}
+  <dl class="grid">
+    {
+      items.map((item) => (
+        <div class="nt-stat item">
+          <dt class="nt-micro label">{item.label}</dt>
+          <dd class="value">
+            <span class="nt-fig nt-fig--display">{item.figure}</span>
+            {item.note && <span class="note">{item.note}</span>}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</div>
+
+<style>
+  .caption {
+    margin-bottom: var(--nt-4);
+  }
+
+  .grid {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--nt-3);
+    padding-block: var(--nt-5);
+    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .value {
+    margin: 0;
+    /* Figures are right-aligned by .nt-fig; the label sits above so the
+       column edge reads as an accounting column. */
+    display: flex;
+    flex-direction: column;
+    gap: var(--nt-2);
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .note {
+    color: var(--nt-text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    max-width: 26ch;
+  }
+
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item {
+      padding-right: var(--nt-5);
+      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
+    }
+
+    .item:nth-child(2n) {
+      border-right: 0;
+      padding-right: 0;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .item:nth-child(2n) {
+      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
+      padding-right: var(--nt-5);
+    }
+
+    .item:nth-child(4n) {
+      border-right: 0;
+      padding-right: 0;
+    }
+  }
+</style>

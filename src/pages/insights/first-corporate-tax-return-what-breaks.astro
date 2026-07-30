@@ -1,0 +1,149 @@
+---
+import Article from '../../layouts/Article.astro';
+import { findInsight } from '../../insights';
+
+const insight = findInsight('first-corporate-tax-return-what-breaks')!;
+---
+
+<Article
+  insight={insight}
+  standfirst="Registration is the easy part. The failures we see are upstream — a chart of accounts that cannot support a tax computation, and adjustments nobody can evidence twelve months later."
+>
+  <p>
+    Every first Corporate Tax cycle we have been near has followed the same
+    shape. The registration goes fine. The deadline is known. Somebody has read
+    the guidance. And then the actual computation takes four times longer than
+    anyone budgeted, for reasons that have nothing to do with tax technical
+    knowledge.
+  </p>
+
+  <p>
+    The problems are structural, and they were already there before the regime
+    arrived. Corporate Tax simply made them visible.
+  </p>
+
+  <h2>The chart of accounts was built for management reporting</h2>
+
+  <p>
+    Most owner-managed businesses have a chart of accounts that grew
+    organically. Accounts were added when somebody needed to see a number
+    separately, and never rationalised. There is a general expense account
+    holding several unrelated categories, three accounts that mean roughly the
+    same thing, and a suspense account with a balance nobody will claim.
+  </p>
+
+  <p>
+    This is survivable for management reporting, where you mostly care about
+    trends. It is not survivable for a tax computation, where you need to say
+    with confidence which balances contain items that are not deductible. If
+    entertainment sits inside a general overhead account alongside genuinely
+    deductible costs, the honest answer to "how much of this is disallowed" is a
+    guess — and a guess is exactly what you cannot defend.
+  </p>
+
+  <p>
+    <strong>What to do about it:</strong> rationalise before you compute, not
+    after. Split the accounts that will need splitting, and do it at a level that
+    survives a question. This is unglamorous work and it is almost always the
+    critical path.
+  </p>
+
+  <h2>The adjustments exist, but the reasoning does not</h2>
+
+  <p>
+    The second failure is subtler. A competent person works through the trial
+    balance, decides what needs adding back, and produces a computation that is
+    very likely correct. Twelve months later, nobody can reconstruct why a
+    particular figure was chosen.
+  </p>
+
+  <p>
+    We have seen a computation with a single line reading "adjustment — per
+    review" against a material amount. It was almost certainly right. It was also
+    completely undefendable, because the reasoning lived in a conversation.
+  </p>
+
+  <p>
+    An adjustment needs three things recorded alongside it: what it relates to,
+    why it was made, and what evidence supports the amount. If any of the three
+    only exists in someone's head, you have a liability that matures the moment
+    that person leaves or the question gets asked.
+  </p>
+
+  <h2>The zero band creates a false sense of comfort</h2>
+
+  <p>
+    Taxable income up to AED 375,000 is taxed at 0%, and Small Business Relief
+    is available where revenue does not exceed AED 3,000,000 for the period.
+    Both are genuine reliefs and plenty of businesses fall within them.
+  </p>
+
+  <p>
+    The trap is treating "we will not owe anything" as equivalent to "we do not
+    need to do the work". The computation still has to be produced. The position
+    still has to be supportable. And a business sitting just under a threshold
+    this year is a business that may cross it next year, at which point the
+    absence of a working method is discovered under deadline rather than at
+    leisure.
+  </p>
+
+  <p>
+    The cheapest year to build the process is the year the answer is zero.
+  </p>
+
+  <h2>Nobody owns the timetable</h2>
+
+  <p>
+    Filing dates derive from the financial year end, which means they are
+    knowable years in advance. In practice they are held in one person's calendar
+    or in a shared spreadsheet that is accurate for the entity somebody last
+    looked at.
+  </p>
+
+  <p>
+    For a single company this is merely risky. For a firm with a portfolio it is
+    the dominant operational problem: a hundred entities with different year
+    ends, each generating its own obligations, tracked by hand. Deadlines should
+    be generated from the year end, not maintained.
+  </p>
+
+  <h2>What good looks like</h2>
+
+  <p>
+    A first cycle that goes well tends to have four things in place:
+  </p>
+
+  <ul>
+    <li>
+      A chart of accounts mapped once to both statutory presentation and tax
+      classification, so the statements and the computation come from the same
+      source and cannot disagree.
+    </li>
+    <li>
+      An adjustment library — your own list, with the reasoning and evidence
+      attached to each item, versioned so a prior year keeps the rules that
+      applied when it was filed.
+    </li>
+    <li>
+      A computation that reconciles back to the trial balance it started from,
+      and tells you if that trial balance has since moved.
+    </li>
+    <li>
+      A period lock, so once something is filed it is frozen and later
+      corrections become explicit prior-period adjustments rather than silent
+      edits to history.
+    </li>
+  </ul>
+
+  <p>
+    None of that is exotic. It is the difference between a computation you can
+    produce and a computation you can defend, and the gap between the two is
+    usually about three weeks of unglamorous preparation done at the right time.
+  </p>
+
+  <p>
+    If you want to see the arithmetic on your own figures first, the
+    <a href="/platform/corporate-tax/#estimator">estimator</a> on our Corporate
+    Tax page runs in your browser and sends nothing anywhere.
+  </p>
+</Article>

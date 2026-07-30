@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+import { NAV } from '../consts';
+
+const destinations = [
+  ...NAV.map((item) => ({ label: item.label, href: item.href })),
+  { label: 'Contact', href: '/contact/' },
+];
+---
+
+<Base
+  title="Page not found"
+  description="That page does not exist on the NUMARATECH website."
+  noindex={true}
+>
+  <section class="nf nt-field">
+    <div class="nt-field__rules" aria-hidden="true"></div>
+    <div class="nt-wrap inner">
+      <p class="nt-micro nt-micro--accent nt-micro-idx">
+        Error <span class="nt-fig">404</span>
+      </p>
+
+      <h1 class="nt-display title">This page<br />does not reconcile.</h1>
+
+      <p class="nt-lead lead">
+        The address you followed does not exist here. It may have moved, or the
+        link may have been mistyped.
+      </p>
+
+      <div class="nt-btn-row actions">
+        <!-- The single solid navy element on this page. -->
+        <a href="/" class="nt-btn nt-btn--primary">
+          Back to the home page
+          <Arrow class="nt-btn__arrow" />
+        </a>
+      </div>
+
+      <div class="also">
+        <p class="nt-micro">Or try</p>
+        <ul class="also__list">
+          {
+            destinations.map((destination) => (
+              <li>
+                <a href={destination.href}>{destination.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .inner {
+    padding-block: clamp(3.5rem, 10vw, 8rem);
+  }
+
+  .title {
+    margin-top: var(--nt-5);
+  }
+
+  .lead {
+    margin-top: var(--nt-6);
+    max-width: 48ch;
+  }
+
+  .actions {
+    margin-top: var(--nt-7);
+  }
+
+  .also {
+    margin-top: var(--nt-8);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .also__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nt-5);
+    margin-top: var(--nt-4);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .also__list a {
+    color: var(--nt-navy-700);
+    text-decoration: none;
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .also__list a:hover {
+    color: var(--nt-accent);
+    border-color: var(--nt-accent-rule);
+  }
+</style>

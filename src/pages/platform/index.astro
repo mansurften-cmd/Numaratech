@@ -1,0 +1,330 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import LineDiagram from '../../components/LineDiagram.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+
+const products = [
+  {
+    variant: 'tax' as const,
+    index: '01',
+    name: 'Corporate Tax Engine',
+    href: '/platform/corporate-tax/',
+    line: 'Trial balance to filed return',
+    body:
+      'Reads the trial balance, applies your defined adjustments, computes the liability, and holds the working papers against each line. Small Business Relief, free zone qualifying income and group relief are positions you take explicitly — with the reasoning recorded.',
+    points: [
+      'Adjustment library you control, versioned by period',
+      'Zero band, relief elections and instalments handled in one computation',
+      'Printable computation schedule with references to source entries',
+    ],
+  },
+  {
+    variant: 'statements' as const,
+    index: '02',
+    name: 'FS Studio',
+    href: '/platform/fs-studio/',
+    line: 'IFRS statements, generated',
+    body:
+      'Statements derived from the mapped ledger instead of retyped into a template. Change a mapping once and the balance sheet, the notes and the comparatives move together.',
+    points: [
+      'IFRS and IFRS for SMEs presentation sets',
+      'Notes that recompute when the underlying mapping changes',
+      'Comparatives locked to the prior filed position',
+    ],
+  },
+  {
+    variant: 'portal' as const,
+    index: '03',
+    name: 'Client Portal',
+    href: '/platform/client-portal/',
+    line: 'One thread per obligation',
+    body:
+      'A shared surface for documents, open queries and approvals. Built for firms that would rather not run their year-end over email attachments.',
+    points: [
+      'Request lists that show what is outstanding and who holds it',
+      'Approvals captured with a timestamp and an identity',
+      'The year-end file assembles as the work happens',
+    ],
+  },
+];
+
+const foundations = [
+  {
+    title: 'One mapped ledger',
+    body:
+      'Your chart of accounts is mapped once into a structure that carries statutory presentation and tax classification at the same time. Two answers from one source, so they cannot diverge.',
+  },
+  {
+    title: 'Lineage on every figure',
+    body:
+      'Each number holds a reference to the entries and adjustments that produced it. Drill from a filed figure to a journal without leaving the screen.',
+  },
+  {
+    title: 'Period locking',
+    body:
+      'Once a period is filed it is frozen. Later corrections become explicit prior-period adjustments rather than silent restatements of history.',
+  },
+  {
+    title: 'Print as an output',
+    body:
+      'Every computation and statement has a considered printed form, because the version that gets filed and defended is usually the paper one.',
+  },
+  {
+    title: 'Read-only by default',
+    body:
+      'Connections into your accounting system are read-only unless you deliberately grant write access. We would rather compute than mutate.',
+  },
+  {
+    title: 'Data stays where you put it',
+    body:
+      'UAE-region hosting, per-entity separation, and an export path that gives you everything back in open formats whenever you ask.',
+  },
+];
+---
+
+<Base
+  title="Platform"
+  description="Three products on one mapped ledger: the NUMARATECH Corporate Tax Engine, FS Studio for IFRS financial statements, and the Client Portal."
+>
+  <PageHeader
+    eyebrow="Platform"
+    title="One model of your business. Three ways to use it."
+    lead="Most compliance tooling treats the statements and the tax computation as separate exercises. We map your ledger once and derive both from it, which is why they agree."
+    meta={[
+      { label: 'Products', value: 'Corporate Tax Engine · FS Studio · Client Portal' },
+      { label: 'Jurisdiction', value: 'United Arab Emirates' },
+      { label: 'Ledger access', value: 'Read-only by default' },
+      { label: 'Deployment', value: 'Hosted, UAE region' },
+    ]}
+  />
+
+  <!-- Products --------------------------------------------------------- -->
+  <section class="nt-section nt-wrap">
+    <SectionHead
+      index="01"
+      eyebrow="Products"
+      title="What each one does."
+    />
+
+    <ul class="nt-ruled products">
+      {
+        products.map((product) => (
+          <li class="product nt-reveal">
+            <div class="product__main">
+              <p class="nt-micro nt-micro-idx">
+                <span class="nt-fig idx">{product.index}</span>
+                {product.line}
+              </p>
+              <h3 class="nt-h2 product__name">
+                <a href={product.href}>{product.name}</a>
+              </h3>
+              <p class="product__text nt-lead">{product.body}</p>
+
+              <ul class="nt-checks product__points">
+                {product.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+
+              <p class="product__more">
+                <a href={product.href} class="nt-arrow-link">
+                  Read more about {product.name}
+                  <Arrow />
+                </a>
+              </p>
+            </div>
+
+            <LineDiagram variant={product.variant} class="product__diagram" />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Foundations ------------------------------------------------------ -->
+  <section class="nt-section nt-section--invert nt-reveal">
+    <div class="nt-wrap">
+      <SectionHead
+        index="02"
+        eyebrow="Foundations"
+        title="Decisions that hold across all three."
+        lead="These are not features so much as constraints we accepted early and have not traded away."
+        invert={true}
+      />
+
+      <div class="nt-cols nt-cols--3 foundations">
+        {
+          foundations.map((item) => (
+            <div>
+              <span class="nt-mark" aria-hidden="true"></span>
+              <h3 class="nt-h3 foundation__title">{item.title}</h3>
+              <p class="foundation__body">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations ----------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <div class="nt-split">
+      <div>
+        <SectionHead
+          index="03"
+          eyebrow="Connections"
+          title="It has to work with what you already run."
+        />
+      </div>
+      <div>
+        <p class="nt-lead">
+          We connect to mainstream accounting systems and UAE banking exports
+          rather than asking you to migrate. Where an API exists we use it;
+          where it does not, we take a structured file and validate it on the
+          way in.
+        </p>
+
+        <div class="nt-table-scroll connections">
+          <table class="nt-table">
+            <caption>Connection types</caption>
+            <thead>
+              <tr>
+                <th scope="col">Source</th>
+                <th scope="col">Method</th>
+                <th scope="col">Direction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cloud accounting systems</td>
+                <td>Vendor API</td>
+                <td>Read</td>
+              </tr>
+              <tr>
+                <td>On-premise ledgers</td>
+                <td>Scheduled structured export</td>
+                <td>Read</td>
+              </tr>
+              <tr>
+                <td>Bank statements</td>
+                <td>Statement file or feed</td>
+                <td>Read</td>
+              </tr>
+              <tr>
+                <td>Working papers and support</td>
+                <td>Client Portal upload</td>
+                <td>Read / write</td>
+              </tr>
+              <tr>
+                <td>Your own reporting stack</td>
+                <td>Export API, open formats</td>
+                <td>Read</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="connections__note nt-sm">
+          Using something not listed here? Tell us what it is —
+          <a href="/contact/">we will say honestly</a> whether we can read it
+          well or not at all.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="See it against your own trial balance."
+    body="Walkthroughs are done with your numbers, not a demo dataset. Thirty minutes is usually enough to know whether this fits."
+  />
+</Base>
+
+<style>
+  .products {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .product {
+    display: grid;
+    gap: var(--nt-6);
+    align-items: start;
+    padding-block: var(--nt-7);
+  }
+
+  .idx {
+    color: var(--nt-teal-800);
+  }
+
+  .product__name {
+    margin-top: var(--nt-4);
+  }
+
+  .product__name a {
+    color: var(--nt-navy-900);
+    text-decoration: none;
+  }
+
+  .product__name a:hover {
+    color: var(--nt-teal-800);
+  }
+
+  .product__text {
+    margin-top: var(--nt-4);
+    max-width: 56ch;
+  }
+
+  .product__points {
+    margin-top: var(--nt-5);
+    font-size: var(--nt-fs-sm);
+    max-width: 52ch;
+  }
+
+  .product__more {
+    margin-top: var(--nt-5);
+  }
+
+  .product__diagram {
+    justify-self: start;
+  }
+
+  @media (min-width: 60rem) {
+    .product {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: var(--nt-7);
+    }
+
+    .product__diagram {
+      justify-self: end;
+      margin-top: var(--nt-6);
+    }
+  }
+
+  .foundations {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .foundation__title {
+    margin-top: var(--nt-4);
+  }
+
+  .foundation__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+    max-width: 44ch;
+  }
+
+  .connections {
+    margin-top: var(--nt-6);
+  }
+
+  .connections__note {
+    margin-top: var(--nt-5);
+    color: var(--nt-text-muted);
+    max-width: 56ch;
+  }
+</style>
