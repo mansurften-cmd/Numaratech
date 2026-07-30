@@ -93,32 +93,8 @@ const organisation = {
     </main>
     <Footer />
 
-    <script>
-      // Reveal-on-scroll. Elements are only hidden when the browser reports a
-      // motion preference of "no-preference" (see global.css), so a reduced-
-      // motion or no-JS visitor always sees the content.
-      const items = document.querySelectorAll('.nt-reveal');
-
-      if (
-        items.length > 0 &&
-        !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      ) {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-in');
-                observer.unobserve(entry.target);
-              }
-            }
-          },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
-        );
-
-        for (const item of items) observer.observe(item);
-      } else {
-        for (const item of items) item.classList.add('is-in');
-      }
-    </script>
+    <!-- The scroll reveal is pure CSS (see .nt-reveal in global.css). There is
+         deliberately no script here: content visibility must not depend on
+         JavaScript running. -->
   </body>
 </html>

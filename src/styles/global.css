@@ -939,18 +939,34 @@ hr {
   background: var(--nt-accent-rule);
 }
 
-/* -- Scroll reveal — opt-in, motion-safe ------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  .nt-reveal {
+/* -- Scroll reveal — CSS only, and fail-safe --------------------------------
+   Content must never be invisible because a script did not run. An earlier
+   version set opacity: 0 here and relied on JavaScript to add a class; when the
+   Content-Security-Policy refused the inlined script, seven sections of the
+   home page stayed blank in production.
+
+   This version uses a scroll-driven animation with no script at all, wrapped in
+   @supports. A browser that does not implement scroll-driven animations — or a
+   visitor who prefers reduced motion — simply gets the content, visible, with
+   no animation. There is no code path that leaves it hidden.               */
+@keyframes nt-reveal-in {
+  from {
     opacity: 0;
     transform: translateY(10px);
-    transition: opacity var(--nt-dur-slow) var(--nt-ease),
-      transform var(--nt-dur-slow) var(--nt-ease);
   }
-
-  .nt-reveal.is-in {
+  to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .nt-reveal {
+      animation: nt-reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 45%;
+    }
   }
 }
 
