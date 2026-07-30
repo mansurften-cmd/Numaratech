@@ -77,19 +77,48 @@ or the resource will be blocked.
 
 ## Pages
 
+The site presents **two offerings, kept deliberately separate**: the licensed
+advisory practice and the software platform. That separation is load-bearing —
+see "Positioning" below before editing copy.
+
 | Route | Purpose |
 | --- | --- |
 | `/` | Landing page |
+| `/advisory/` | The licensed practice: Corporate Tax, accounting and reporting, AML/compliance |
 | `/platform/` | Platform overview |
 | `/platform/corporate-tax/` | Corporate Tax Engine + free browser-side estimator |
 | `/platform/fs-studio/` | FS Studio (IFRS financial statements) |
 | `/platform/client-portal/` | Client Portal |
-| `/services/` | Implementation, remediation, automation, support |
+| `/services/` | Platform implementation, remediation, automation, support |
 | `/about/` | Positioning, beliefs, boundaries |
 | `/insights/` | Index + three articles |
 | `/contact/` | Enquiry form → `/api/contact` |
 | `/privacy/`, `/terms/` | Legal |
 | `/404.html` | Not found |
+
+The `/advisory/` page carries `#corporate-tax`, `#accounting` and `#compliance`
+anchors, linked from the nav flyout and the footer. If you rename or remove a
+practice area, update `NAV` and `FOOTER_NAV` in `src/consts.ts` to match.
+
+### Positioning — read before editing copy
+
+NUMARATECH is a **licensed accounting and tax consultancy** (registered as
+NUMARATECH FOR ACCOUNTING AND TAX CONSULTANTS) **and** the builder of the
+platform. The site never says we don't advise — we do, under a signed
+engagement letter. What it says instead is that *nothing on the website* is
+advice and that reading it creates no advisory relationship.
+
+Getting this distinction wrong in either direction is a real problem, so if you
+touch this copy, keep all four of these true:
+
+- `/advisory/` presents a practice that takes engagements and forms judgements.
+- `/terms/` disclaims advice **through the website**, not advice as such, and
+  states that an advisory relationship begins only on a signed engagement letter.
+- `/about/` "Boundaries" says what we genuinely are not — your auditor, a law
+  firm, an advice channel on this website, a replacement for your ledger — and
+  does *not* claim we give no advice.
+- `/services/` is platform implementation, distinct from advisory, and
+  cross-links to `/advisory/` so neither audience lands in the wrong place.
 
 ---
 
@@ -147,9 +176,41 @@ preloaded. No external font requests, which is what lets the CSP stay strict.
 
 ## The Corporate Tax estimator
 
+There are **two** calculators, and they are intentionally different things.
+
+### 1. The free on-site estimator
+
 `/platform/corporate-tax/#estimator` runs entirely in the browser. Nothing the
 visitor types is transmitted or stored — worth preserving, since it is stated as
-a privacy claim on that page, in `/privacy/` and in `/terms/`.
+a privacy claim on that page, in `/privacy/` and in `/terms/`. It is ungated:
+no email required, which is what makes it useful as a credibility demo and for
+search.
+
+### 2. The full, gated calculator — configurable
+
+The full tool is hosted outside this site. Its URL is a **single config value**
+so you can point it at whichever deployment is current (the Base44 build, your
+Cloudflare build, or anything later) without touching page markup.
+
+In `src/consts.ts`:
+
+```ts
+export const CALCULATOR = {
+  url: 'https://numaratech.base44.app', // ← swap to your Cloudflare URL
+  label: 'Open the full Corporate Tax calculator',
+  note: 'Handles free zone qualifying income, groups, loss relief …',
+  gated: true,   // appends a line warning it asks for contact details
+} as const;
+```
+
+- Change `url` to move every link to the full calculator site-wide.
+- Set `url` to `''` to **hide every link to it** — the block disappears
+  entirely and the free estimator carries on working. Useful if the external
+  tool is down or being migrated.
+- `gated: false` drops the "Asks for your details before showing results" line.
+
+Links render through `hasCalculator()`, so an empty URL never produces a dead
+link.
 
 Statutory parameters live in `UAE_CT` in `src/consts.ts`:
 
@@ -184,9 +245,18 @@ Content placeholders that must be replaced with real values:
 - [ ] `SITE.address` — currently "Business Bay, Dubai"
 - [ ] `SITE.email` — confirm `hello@numaratech.com` exists and is monitored
 - [ ] `site` in `astro.config.mjs` and the `Sitemap:` line in `robots.txt`
-- [ ] Legal review of `/privacy/` and `/terms/`, and the `updated` date in each.
-      Both are drafted to be accurate about how this site actually behaves, but
-      they have not been reviewed by a lawyer.
+- [ ] `CALCULATOR.url` in `src/consts.ts` — currently the Base44 build; switch to
+      the Cloudflare one when it is live
+- [ ] **Legal review of `/privacy/` and `/terms/`**, and the `updated` date in
+      each. These now describe a *licensed practice*, which raises the stakes:
+      the advice disclaimer, the engagement-letter language and the statement
+      that we are not your statutory auditor all need a professional read. They
+      are drafted to be accurate about how the site behaves, but no lawyer has
+      seen them.
+- [ ] Confirm the `/advisory/` practice-area lists match what you are actually
+      licensed and staffed to deliver — particularly the AML/goAML and Economic
+      Substance/UBO items, which I inferred from your DNFBP registration work
+      rather than from a service list you gave me
 - [ ] Confirm the illustrative figures on `/platform/fs-studio/` and
       `/platform/client-portal/` read acceptably as illustrations — they are
       labelled as such and describe no real entity.
@@ -196,8 +266,23 @@ Content placeholders that must be replaced with real values:
 ## Note on the brand source
 
 `BRAND.md` was not present in the `numaratech-brand` skill folder when this site
-was built — only `SKILL.md` synced. The rules summarised there were applied in
-full, but the exact hex values, type stack and spacing scale in
-`src/styles/global.css` were derived rather than taken from the brand document.
-Reconcile the token block against `BRAND.md` and adjust; because every colour
-literal is confined to that one block, changing them is a single edit.
+was built — only `SKILL.md` synced, and a filesystem-wide search found no copy.
+The Notion "Numaratech brand guide" page and the "Numaratech Stamp / Sign" page
+are both blank, and Drive has nothing either.
+
+So the rules from `SKILL.md` were applied in full — spelling, no
+rounding/shadows/gradients/cards, the 16px input floor, `tabular-nums` figures,
+one solid navy element per view, print as a first-class output — but these were
+**derived rather than taken from the brand document**:
+
+- the navy and teal hex values
+- the type stack (Inter + JetBrains Mono)
+- the spacing and type scales
+- the specific print measurements that `SKILL.md` §7 refers to but does not
+  reproduce
+
+Reconcile the token block in `src/styles/global.css` against `BRAND.md` when it
+exists. Because every colour literal is confined to that one block, swapping the
+palette is a single edit. The two unavoidable exceptions are the `theme-color`
+meta tag in `src/layouts/Base.astro` (a meta tag cannot read a custom property)
+and `public/favicon.svg` (a standalone file) — both are commented as such.

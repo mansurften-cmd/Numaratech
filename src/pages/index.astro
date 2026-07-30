@@ -132,16 +132,15 @@ const insights = insightsNewestFirst().slice(0, 3);
       </h1>
 
       <p class="nt-lead hero__lead">
-        {SITE.name} builds the layer between your ledger and your filing — the
-        one most UAE businesses are still holding together with spreadsheets.
-        Close the books, compute Corporate Tax, and keep the evidence attached
-        to every figure.
+        {SITE.name} is a UAE accounting and tax consultancy — and the team behind
+        the platform it works on. Advisory when a position needs judgement;
+        software when the work needs to be repeatable. Either alone, or both.
       </p>
 
       <div class="nt-btn-row hero__actions">
         <!-- The single solid navy element on this page. -->
-        <a href="/contact/" class="nt-btn nt-btn--primary">
-          Book a walkthrough
+        <a href="/advisory/" class="nt-btn nt-btn--primary">
+          Talk to the practice
           <Arrow class="nt-btn__arrow" />
         </a>
         <a href="/platform/" class="nt-btn nt-btn--ghost">
@@ -217,10 +216,71 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 03 · Platform ----------------------------------------------------- -->
+  <!-- 03 · Two halves ---------------------------------------------------- -->
   <section class="nt-section nt-wrap nt-divide nt-reveal">
     <SectionHead
       index="03"
+      eyebrow="How we work"
+      title="Two halves, kept separate."
+      lead="It matters that you know which one you are buying. Plenty of clients take one and never touch the other — they are deliberately not bundled."
+    />
+
+    <div class="nt-cols nt-cols--2 halves">
+      <div>
+        <p class="nt-micro nt-micro-idx">Regulated practice</p>
+        <h3 class="nt-h3 half__title">Advisory</h3>
+        <p class="half__body">
+          A licensed accounting and tax consultancy. Engaged under an engagement
+          letter, forming professional judgements, accountable for the positions
+          we recommend — Corporate Tax, accounting and IFRS reporting, AML and
+          DNFBP compliance.
+        </p>
+        <ul class="nt-checks half__points">
+          <li>We take the position and stand behind it</li>
+          <li>Working papers built as the work happens</li>
+          <li>Support if the FTA asks a question later</li>
+        </ul>
+        <p class="half__cta">
+          <a href="/advisory/" class="nt-arrow-link">
+            The advisory practice
+            <Arrow />
+          </a>
+        </p>
+      </div>
+
+      <div>
+        <p class="nt-micro nt-micro-idx">Software</p>
+        <h3 class="nt-h3 half__title">Platform</h3>
+        <p class="half__body">
+          The tooling our own team files with, licensed to other firms and
+          finance functions. It computes and it evidences; it does not decide.
+          Judgement stays with your people.
+        </p>
+        <ul class="nt-checks half__points">
+          <li>One mapped ledger behind every output</li>
+          <li>Lineage from a filed figure back to the journal</li>
+          <li>Yours to run, with your own team in control</li>
+        </ul>
+        <p class="half__cta">
+          <a href="/platform/" class="nt-arrow-link">
+            The platform
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <p class="halves__note nt-sm">
+      Each half makes the other honest: the software is shaped by people who have
+      to file with it, and the advice is faster because the tooling underneath it
+      was built for exactly this.
+    </p>
+  </section>
+
+  <!-- 04 · Platform ----------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="04"
       eyebrow="Platform"
       title="Three products. One model of your business."
       lead="They share a single mapped ledger, so the statements, the tax computation and the client file cannot disagree with each other."
@@ -250,11 +310,11 @@ const insights = insightsNewestFirst().slice(0, 3);
     </ul>
   </section>
 
-  <!-- 04 · Method (inverted for contrast) ------------------------------- -->
+  <!-- 05 · Method (inverted for contrast) ------------------------------- -->
   <section class="nt-section nt-section--invert nt-reveal">
     <div class="nt-wrap">
       <SectionHead
-        index="04"
+        index="05"
         eyebrow="Method"
         title="Derived, not assembled."
         lead="The same four steps whether you are one company filing your first return or a firm running two hundred."
@@ -282,12 +342,12 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 05 · Estimator teaser --------------------------------------------- -->
+  <!-- 06 · Estimator teaser --------------------------------------------- -->
   <section class="nt-section nt-wrap nt-reveal">
     <div class="teaser">
       <div>
         <SectionHead
-          index="05"
+          index="06"
           eyebrow="Try it"
           title="Estimate your Corporate Tax position now."
           lead="A working estimator, free and on this site. Enter accounting profit and your adjustments; it returns the computation as a schedule you can print."
@@ -336,10 +396,10 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 06 · Segments ------------------------------------------------------ -->
+  <!-- 07 · Segments ------------------------------------------------------ -->
   <section class="nt-section nt-wrap nt-divide nt-reveal">
     <SectionHead
-      index="06"
+      index="07"
       eyebrow="Fit"
       title="Who we build for."
       lead="Four situations we know well enough to be useful in on the first call."
@@ -358,11 +418,11 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 07 · Insights ------------------------------------------------------ -->
+  <!-- 08 · Insights ------------------------------------------------------ -->
   <section class="nt-section nt-wrap nt-divide nt-reveal">
     <div class="insights__head">
       <SectionHead
-        index="07"
+        index="08"
         eyebrow="Insights"
         title="What we have learned doing the work."
       />
@@ -451,6 +511,36 @@ const insights = insightsNewestFirst().slice(0, 3);
   .problem__body {
     margin-top: var(--nt-3);
     font-size: var(--nt-fs-sm);
+  }
+
+  /* -- Two halves -------------------------------------------------------- */
+  .halves {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .half__title {
+    margin-top: var(--nt-4);
+  }
+
+  .half__body {
+    margin-top: var(--nt-3);
+    max-width: 48ch;
+  }
+
+  .half__points {
+    margin-top: var(--nt-5);
+    font-size: var(--nt-fs-sm);
+    max-width: 44ch;
+  }
+
+  .half__cta {
+    margin-top: var(--nt-5);
+  }
+
+  .halves__note {
+    margin-top: var(--nt-6);
+    color: var(--nt-text-muted);
+    max-width: 68ch;
   }
 
   /* -- Products ---------------------------------------------------------- */

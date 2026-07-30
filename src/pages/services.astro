@@ -85,13 +85,13 @@ const principles = [
 ---
 
 <Base
-  title="Services"
-  description="Implementation, data remediation, process automation and ongoing support from NUMARATECH — fixed scope, one period proven before you switch over."
+  title="Implementation and support"
+  description="Getting the NUMARATECH platform running on your ledger: implementation, data remediation, process automation and ongoing support. Fixed scope, one period proven before you switch over."
 >
   <PageHeader
-    eyebrow="Services"
-    title="Software is half of it."
-    lead="A platform is worth nothing sitting on top of a ledger that cannot support it. Most of what we do is the work that makes the software able to tell the truth."
+    eyebrow="Platform / Implementation"
+    title="Licensing the software is the easy part."
+    lead="A platform is worth nothing sitting on top of a ledger that cannot support it. This page is the work that makes the software able to tell the truth — separate from our advisory practice, and available whether or not you use it."
     meta={[
       { label: 'Implementation', value: 'Typically 4–8 weeks' },
       { label: 'Commercials', value: 'Fixed scope, quoted in writing' },
@@ -106,8 +106,15 @@ const principles = [
       index="01"
       eyebrow="Engagements"
       title="Four ways we work."
-      lead="Most clients start with implementation. A meaningful minority need remediation first, and we will say so before quoting anything else."
+      lead="Most clients start with implementation. A meaningful minority need remediation first, and we will say so before quoting anything else. These are platform engagements — if what you actually want is someone to take the position and file, that is the advisory practice."
     />
+
+    <p class="cross-ref nt-sm">
+      <a href="/advisory/" class="nt-arrow-link">
+        Looking for the advisory practice instead?
+        <Arrow />
+      </a>
+    </p>
 
     <ul class="nt-ruled services">
       {
@@ -223,6 +230,10 @@ const principles = [
 </Base>
 
 <style>
+  .cross-ref {
+    margin-top: var(--nt-5);
+  }
+
   .services {
     margin-top: clamp(2rem, 4vw, 3rem);
   }

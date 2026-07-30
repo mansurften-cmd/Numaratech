@@ -131,14 +131,19 @@ const year = new Date().getFullYear();
 
   @media (min-width: 40rem) {
     .columns {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--nt-6) var(--nt-5);
     }
   }
 
   @media (min-width: 60rem) {
+    .columns {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
     .top {
-      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-      gap: var(--nt-8);
+      grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
+      gap: var(--nt-7);
     }
 
     .base {

@@ -1,0 +1,379 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Arrow from '../components/Arrow.astro';
+import { SITE, UAE_CT } from '../consts';
+
+const nf = new Intl.NumberFormat('en-AE');
+
+const practices = [
+  {
+    id: 'corporate-tax',
+    index: '01',
+    name: 'Corporate Tax',
+    line: 'Registration through to enquiry',
+    body:
+      'We take a position and stand behind it. That means understanding the business well enough to know which reliefs genuinely apply, documenting the basis at the time rather than reconstructing it later, and being there if the Federal Tax Authority asks a question.',
+    points: [
+      'Registration and clarification of your obligations',
+      'Taxable income computation with adjustments evidenced',
+      'Free zone qualifying income and de minimis assessment',
+      'Small Business Relief and group structuring reviews',
+      'Return preparation, review and filing',
+      'Support during FTA correspondence and enquiry',
+    ],
+  },
+  {
+    id: 'accounting',
+    index: '02',
+    name: 'Accounting and reporting',
+    line: 'Books that can carry a filing',
+    body:
+      'Bookkeeping and month-end close, up to IFRS financial statements. The point is not tidy books for their own sake — it is a ledger that can support a tax computation and survive an auditor without a fortnight of preparation.',
+    points: [
+      'Bookkeeping, on a monthly or quarterly cycle',
+      'Month-end and year-end close, run to a timetable',
+      'IFRS and IFRS for SMEs financial statements',
+      'Chart of accounts design and remediation',
+      'Management reporting packs',
+      'Audit liaison and preparation of the year-end file',
+    ],
+  },
+  {
+    id: 'compliance',
+    index: '03',
+    name: 'AML and compliance',
+    line: 'DNFBP obligations, handled properly',
+    body:
+      'Designated non-financial businesses and professions carry real anti-money-laundering obligations, and the penalties for treating them as paperwork are not small. We set up the framework and keep it current.',
+    points: [
+      'goAML registration and ongoing reporting',
+      'AML/CFT policy, risk assessment and procedures',
+      'Customer due diligence frameworks and record-keeping',
+      'Staff training and periodic compliance review',
+      'Suspicious transaction reporting support',
+      'Economic Substance and UBO filing where applicable',
+    ],
+  },
+];
+
+const why = [
+  {
+    title: 'The people advising you built the tooling',
+    body:
+      'Our advisory team uses the same platform we sell. When something is awkward to compute or hard to evidence, the people who feel it are the people who can change it — which is why the software is shaped the way it is.',
+  },
+  {
+    title: 'Positions are documented as they are taken',
+    body:
+      'Every judgement gets its reasoning and its evidence recorded at the moment it is made, not when somebody asks. The file you would need in an enquiry is the file we were already keeping.',
+  },
+  {
+    title: 'You can see the derivation',
+    body:
+      'Ask how any figure in your return was arrived at and you get an answer from the record, not from memory. That holds after staff change and after the engagement ends.',
+  },
+  {
+    title: 'We say when you do not need us',
+    body:
+      'If your position is straightforward and your books are in order, we will tell you that instead of finding work. A small engagement that goes well is worth more to us than a large one that should not have happened.',
+  },
+];
+---
+
+<Base
+  title="Advisory"
+  description="NUMARATECH is a UAE accounting and tax consultancy: Corporate Tax, accounting and IFRS reporting, and AML compliance for businesses and their advisers."
+>
+  <PageHeader
+    eyebrow="Advisory"
+    title="A licensed practice, not a help centre."
+    lead="NUMARATECH is an accounting and tax consultancy. We take engagements, form judgements, and put our name to the positions we recommend — with the working papers to support them."
+    meta={[
+      { label: 'Practice', value: 'Accounting and tax consultants' },
+      { label: 'Jurisdiction', value: 'United Arab Emirates' },
+      { label: 'Engagements', value: 'Under a signed engagement letter' },
+      { label: 'Also', value: 'We build the platform we use' },
+    ]}
+  />
+
+  <!-- Framing ---------------------------------------------------------- -->
+  <section class="nt-section nt-wrap">
+    <div class="nt-split">
+      <SectionHead
+        index="01"
+        eyebrow="Two halves"
+        title="Advice and software, kept separate."
+      />
+
+      <div class="prose">
+        <p class="nt-lead">
+          NUMARATECH does two things, and it matters that you know which one you
+          are buying.
+        </p>
+        <p>
+          <strong>The advisory practice</strong> is a licensed accounting and tax
+          consultancy. We are engaged under an engagement letter, we form
+          professional judgements, and we are accountable for the advice we give.
+          That is this page.
+        </p>
+        <p>
+          <strong>The platform</strong> is software — a Corporate Tax engine,
+          financial statement tooling and a client portal — used by our own team
+          and licensed to other firms and finance functions. It computes and
+          evidences; it does not decide.
+        </p>
+        <p>
+          You can take either without the other. Plenty of clients use the
+          advisory practice and never touch the software; other firms license the
+          platform and would not want us near their clients. The two are
+          deliberately not bundled.
+        </p>
+        <p>
+          <a href="/platform/" class="nt-arrow-link">
+            The platform side
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practice areas --------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <SectionHead
+      index="02"
+      eyebrow="Practice areas"
+      title="What we are engaged to do."
+    />
+
+    <ul class="nt-ruled practices">
+      {
+        practices.map((practice) => (
+          <li class="practice" id={practice.id}>
+            <div>
+              <p class="nt-micro nt-micro-idx">
+                <span class="nt-fig idx">{practice.index}</span>
+                {practice.line}
+              </p>
+              <h3 class="nt-h2 practice__name">{practice.name}</h3>
+            </div>
+
+            <div class="practice__detail">
+              <p class="nt-lead">{practice.body}</p>
+              <ul class="nt-checks practice__points">
+                {practice.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Statutory reference ---------------------------------------------- -->
+  <section class="nt-section nt-section--inset nt-reveal">
+    <div class="nt-wrap">
+      <div class="nt-split">
+        <SectionHead
+          index="03"
+          eyebrow="For reference"
+          title="The parameters we work to."
+          lead="Published statutory figures, not our interpretation. Whether they apply to you is exactly the judgement an engagement covers."
+        />
+
+        <div>
+          <div class="nt-table-scroll">
+            <table class="nt-table">
+              <caption>UAE Corporate Tax — statutory parameters</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Parameter</th>
+                  <th scope="col" class="nt-fig">Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Standard rate above the zero band</th>
+                  <td class="nt-fig">{UAE_CT.standardRate * 100}%</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Zero band ceiling ({UAE_CT.currency})
+                  </th>
+                  <td class="nt-fig">{nf.format(UAE_CT.zeroBandCeiling)}</td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Small Business Relief revenue cap ({UAE_CT.currency})
+                  </th>
+                  <td class="nt-fig">
+                    {nf.format(UAE_CT.smallBusinessReliefRevenueCap)}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Regime applies to years beginning</th>
+                  <td class="nt-fig">on/after {UAE_CT.effectiveFrom}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="ref__note nt-sm">
+            Verify against current Federal Tax Authority guidance. Want the
+            arithmetic on your own figures before you call?
+            <a href="/platform/corporate-tax/#estimator">
+              Use the free estimator
+            </a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us ----------------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <SectionHead
+      index="04"
+      eyebrow="Why us"
+      title="What makes this practice different."
+      lead="Not size, and not price. The difference is that we own the tooling underneath the advice."
+    />
+
+    <div class="nt-cols nt-cols--2 why">
+      {
+        why.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true"></span>
+            <h3 class="nt-h3 why__title">{item.title}</h3>
+            <p class="why__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Engagement basis ------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <div class="nt-split">
+      <SectionHead
+        index="05"
+        eyebrow="How engagements work"
+        title="Before anything begins."
+      />
+
+      <div class="prose">
+        <p>
+          Advisory work starts with a signed engagement letter setting out the
+          scope, who does what, the fee basis and the limits of our
+          responsibility. Nothing on this website constitutes advice, and no
+          advisory relationship exists until that letter is signed by both sides
+          — see our <a href="/terms/">terms of use</a>.
+        </p>
+        <p>
+          Fees are quoted against defined scope. Recurring work is quoted
+          annually with a monthly fee; one-off work is quoted as a fixed piece
+          against a written definition of what is included. If the underlying
+          records turn out to be materially worse than presented, we re-quote
+          before doing the additional work rather than after.
+        </p>
+        <p>
+          We are accounting and tax consultants. We are not your statutory
+          auditor — a firm that prepares the records cannot independently audit
+          them — and we are not a law firm. Where you need either, we will say so
+          and can usually point you somewhere sensible.
+        </p>
+        <p class="prose__contact">
+          Questions about scope or fees:
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Tell us about your position."
+    body="A first call is thirty minutes and costs nothing. Bring your last filed return or your current trial balance and we will tell you plainly what we think — including if the answer is that you are fine as you are."
+  />
+</Base>
+
+<style>
+  .prose {
+    max-width: 64ch;
+  }
+
+  .prose > * + * {
+    margin-top: var(--nt-4);
+  }
+
+  .prose__contact {
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .practices {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .practice {
+    display: grid;
+    gap: var(--nt-5);
+    align-items: start;
+    padding-block: var(--nt-7);
+    /* Anchored from the nav flyout, so keep the heading clear of the header. */
+    scroll-margin-top: calc(var(--nt-header-h) + var(--nt-5));
+  }
+
+  .idx {
+    color: var(--nt-teal-800);
+  }
+
+  .practice__name {
+    margin-top: var(--nt-4);
+  }
+
+  .practice__detail {
+    max-width: 60ch;
+  }
+
+  .practice__points {
+    margin-top: var(--nt-5);
+    font-size: var(--nt-fs-sm);
+  }
+
+  @media (min-width: 60rem) {
+    .practice {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--nt-7);
+    }
+  }
+
+  .ref__note {
+    margin-top: var(--nt-5);
+    color: var(--nt-text-muted);
+    max-width: 54ch;
+  }
+
+  .why {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .why__title {
+    margin-top: var(--nt-4);
+    max-width: 28ch;
+  }
+
+  .why__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 52ch;
+  }
+</style>
