@@ -10,6 +10,19 @@
 name = "numaratech-website"
 compatibility_date = "2026-07-30"
 
+# Custom build, run by wrangler immediately before deploying.
+#
+# This makes `npx wrangler deploy` self-sufficient from a bare clone: it
+# installs dependencies and builds the site itself, so the deploy works even
+# when no build command is configured in the Cloudflare dashboard. Without it,
+# a deploy-only pipeline fails with "Could not detect a directory containing
+# static files" because ./dist was never produced.
+#
+# Setting the dashboard build command to `npm run build` as well is harmless —
+# the second build is a no-op rebuild, not a conflict.
+[build]
+command = "npm install --no-audit --no-fund && npm run build"
+
 [assets]
 # Astro's static output (see astro.config.mjs → output: 'static').
 # `wrangler deploy` fails with "Could not detect a directory containing static

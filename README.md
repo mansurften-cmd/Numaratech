@@ -24,36 +24,45 @@ The site is entirely static. There is no Worker script, no `main` entry and no
 server secret, because the contact form posts straight to Web3Forms from the
 browser.
 
-### 1. Build must run before deploy
+### 1. Deploy from `main`, and let wrangler do the build
 
-This is the one setting that actually breaks deploys. A deploy command of bare
-`npx wrangler deploy` fails with:
+Two things caused
+`✘ [ERROR] Could not detect a directory containing static files`:
 
+1. **Cloudflare was building `main`, which held only `README.md`.** No
+   `wrangler.toml`, no `package.json`, nothing to build. Note the wording: that
+   message is what wrangler emits when it finds *no assets configuration at
+   all*. When the config is present but `dist/` is missing you get a different
+   error naming `assets.directory` — a useful way to tell the two apart.
+2. **No build step ran before `wrangler deploy`,** so `dist/` never existed.
+
+The site now lives on `main`, and `wrangler.toml` carries a `[build]` block:
+
+```toml
+[build]
+command = "npm install --no-audit --no-fund && npm run build"
 ```
-✘ [ERROR] Could not detect a directory containing static files
-```
 
-That is not a config error — it means `dist/` does not exist because nothing
-built it. Set **both** commands in the dashboard (Workers &amp; Pages → your
-project → Settings → Build):
+That makes `npx wrangler deploy` self-sufficient from a bare clone — it installs
+and builds before uploading. A deploy-only pipeline with **no dashboard build
+command** now works.
 
 | Setting | Value |
 | --- | --- |
-| Build command | `npm run build` |
+| Branch | `main` |
+| Build command | optional — `npm run build` if you want it explicit |
 | Deploy command | `npx wrangler deploy` |
 | Node version | 20 or later (set `NODE_VERSION=20` if the default is older) |
 
-If the dashboard only offers a single command field, use `npm run deploy`,
-which is defined in `package.json` as `astro build && wrangler deploy`.
-
-Check the whole path locally before pushing — this builds and runs every deploy
-step except the upload:
+Check the whole path locally before pushing. Delete `dist/` first, so you are
+testing the build hook rather than a stale directory:
 
 ```
-npm run deploy:dry
+rm -rf dist && npx wrangler deploy --dry-run
 ```
 
-Expect `✨ Read 41 files from the assets directory …/dist`.
+Expect `[custom build]` output followed by
+`✨ Read 41 files from the assets directory …/dist`.
 
 ### 2. What wrangler.toml declares
 
