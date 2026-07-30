@@ -58,6 +58,17 @@ const updated = '30 July 2026';
         gone when you close the tab.
       </p>
 
+      <h3>How the contact form reaches us</h3>
+      <p>
+        The enquiry form does not post to our own server. It submits directly
+        from your browser to <strong>Web3Forms</strong>, a form-delivery service,
+        which forwards the message to our mailbox. That means Web3Forms processes
+        the name, email, company and message you enter, under their own privacy
+        policy, before we receive it. If you would rather not involve a third
+        party, email us instead at
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
       <h2>Why we are allowed to hold it</h2>
 
       <p>
@@ -80,8 +91,13 @@ const updated = '30 July 2026';
           processes request logs.
         </li>
         <li>
-          <strong>Email delivery and mailbox.</strong> Carries and stores
-          messages you send us.
+          <strong>Web3Forms.</strong> Receives contact form submissions from your
+          browser and forwards them to our mailbox. It sees whatever you typed
+          into the form.
+        </li>
+        <li>
+          <strong>Email mailbox.</strong> Carries and stores messages you send
+          us, whether through the form or directly.
         </li>
       </ul>
 

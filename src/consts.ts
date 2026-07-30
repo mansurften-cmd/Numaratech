@@ -47,6 +47,32 @@ export const CALCULATOR = {
 /** Whether a link to the external calculator should be rendered at all. */
 export const hasCalculator = () => CALCULATOR.url.trim() !== '';
 
+/**
+ * Contact form delivery, via Web3Forms (https://web3forms.com).
+ *
+ * The form posts straight from the visitor's browser to Web3Forms, which
+ * forwards the message to your mailbox. There is no server-side code and no
+ * server secret — which is why this site deploys as pure static assets.
+ *
+ * `accessKey` is a PUBLIC key. Web3Forms is designed for it to sit in
+ * client-side markup, so committing it here is expected and not a leak. It is
+ * not a credential for anything other than delivering to your own address.
+ *
+ * To activate the form: enter your email at https://web3forms.com, paste the
+ * access key they send you below, and redeploy. While it is blank the contact
+ * page hides the form and shows the direct email details instead — a visible
+ * gap rather than a form that silently discards enquiries.
+ */
+export const WEB3FORMS = {
+  accessKey: '',
+  endpoint: 'https://api.web3forms.com/submit',
+  /** Subject line on the email that reaches you. */
+  subject: 'Website enquiry — NUMARATECH',
+} as const;
+
+/** True once an access key is present, so the form can be rendered. */
+export const hasContactForm = () => WEB3FORMS.accessKey.trim() !== '';
+
 export type NavItem = {
   label: string;
   href: string;

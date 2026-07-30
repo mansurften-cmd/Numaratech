@@ -1,28 +1,29 @@
-# Cloudflare Pages configuration for the NUMARATECH website.
+# Cloudflare Workers configuration for the NUMARATECH website.
 #
-# Without this file Cloudflare logs "No Wrangler configuration detected" and
-# guesses the project settings. Everything here is deliberate, so the build is
-# reproducible rather than inferred.
+# This is a Workers project with static assets (the build runs `wrangler deploy`,
+# which is the Workers command — Pages would be `wrangler pages deploy`).
 #
-# This is a *Pages* project, not a Worker with static assets. That distinction
-# matters: `functions/api/contact.js` is auto-discovered as a Pages Function,
-# and `public/_routes.json` (which keeps the Function off static requests) is a
-# Pages-only convention. See the README if you need the Workers variant.
+# The site is entirely static: there is no `main` entry point because there is no
+# server-side code left. The contact form posts directly to Web3Forms from the
+# browser, so no Worker, no Function and no server secret are involved.
 
 name = "numaratech-website"
-
-# Astro writes the static site here (see astro.config.mjs → output: 'static').
-pages_build_output_dir = "./dist"
-
-# Pins the Workers runtime APIs available to functions/api/contact.js. Raise it
-# deliberately, not incidentally — a newer date can change runtime behaviour.
 compatibility_date = "2026-07-30"
 
-# NOTE — do not add a [vars] block for the contact form.
-#
-# Values in this file are committed to the repository in plain text. The contact
-# endpoint needs RESEND_API_KEY, CONTACT_TO and CONTACT_FROM; set those as
-# encrypted secrets in the Cloudflare dashboard (Settings → Environment
-# variables → Encrypt), for both Production and Preview. `functions/api/contact.js`
-# returns a clear 503 until all three are present, so a missing secret surfaces
-# as a visible fallback rather than a silently dropped enquiry.
+[assets]
+# Astro's static output (see astro.config.mjs → output: 'static').
+# `wrangler deploy` fails with "Could not detect a directory containing static
+# files" if this directory does not exist, so the build command must run before
+# the deploy command. See the README.
+directory = "./dist"
+
+# Astro is configured with trailingSlash: 'always' and build.format: 'directory',
+# so every route is a directory containing index.html.
+html_handling = "auto-trailing-slash"
+
+# Serve the built 404 page for unknown paths instead of a bare Workers error.
+not_found_handling = "404-page"
+
+# NOTE — this file is committed in plain text, so it must never hold a secret.
+# The site currently needs none: the Web3Forms access key is a public,
+# client-side key by design and lives in src/consts.ts.

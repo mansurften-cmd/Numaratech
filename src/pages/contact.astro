@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Arrow from '../components/Arrow.astro';
-import { SITE } from '../consts';
+import { SITE, WEB3FORMS, hasContactForm } from '../consts';
 
 // Advisory options first — the practice is the regulated business, and most
 // first enquiries are about it rather than about licensing software.
@@ -45,7 +45,30 @@ const interests = [
           title="Send us the shape of the problem."
         />
 
-        <form class="form" id="contact-form" method="post" action="/api/contact" novalidate>
+        {
+          !hasContactForm() && (
+            <p class="nt-error form__unconfigured">
+              The enquiry form is not live yet. Please email
+              <a href={`mailto:${SITE.email}`}>{SITE.email}</a> — it reaches the
+              same place and we read it directly.
+            </p>
+          )
+        }
+
+        {/* Posts directly to Web3Forms. `action` is a real endpoint, so the
+            form still works with JavaScript disabled; the script below
+            intercepts submission only to report the result in place. */}
+        {hasContactForm() && (
+        <form
+          class="form"
+          id="contact-form"
+          method="post"
+          action={WEB3FORMS.endpoint}
+          novalidate
+        >
+          <input type="hidden" name="access_key" value={WEB3FORMS.accessKey} />
+          <input type="hidden" name="subject" value={WEB3FORMS.subject} />
+          <input type="hidden" name="from_name" value={SITE.name} />
           <div class="form__fields">
             <div class="nt-field-group">
               <label class="nt-label" for="c-name">Your name</label>
@@ -110,13 +133,14 @@ const interests = [
               </p>
             </div>
 
-            <!-- Honeypot: hidden from people, tempting to bots. -->
+            {/* Honeypot. Web3Forms rejects any submission where its reserved
+                `botcheck` field is filled, so this needs no logic of our own. */}
             <div class="form__trap" aria-hidden="true">
-              <label for="c-website">Website</label>
+              <label for="c-botcheck">Website</label>
               <input
-                id="c-website"
-                name="website"
-                type="text"
+                id="c-botcheck"
+                name="botcheck"
+                type="checkbox"
                 tabindex="-1"
                 autocomplete="off"
               />
@@ -139,14 +163,12 @@ const interests = [
 
           <p class="nt-error form__status" data-status role="status" hidden></p>
 
-          <noscript>
-            <p class="nt-error form__status">
-              This form needs JavaScript to send. Please email
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a> instead — we
-              read it directly.
-            </p>
-          </noscript>
+          <p class="form__processor nt-sm">
+            Sending this passes your details to Web3Forms, which forwards them to
+            our mailbox. See our <a href="/privacy/">privacy notice</a>.
+          </p>
         </form>
+        )}
       </div>
 
       <!-- Direct routes ---------------------------------------------- -->
@@ -250,6 +272,19 @@ const interests = [
     display: none;
   }
 
+  .form__unconfigured {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    max-width: 56ch;
+  }
+
+  .form__processor {
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    max-width: 56ch;
+  }
+
   /* -- Side --------------------------------------------------------- */
   .side {
     display: grid;
@@ -313,9 +348,11 @@ const interests = [
 </style>
 
 <script>
-  // Progressive enhancement: the form posts as JSON so we can report a result
-  // without a page transition. Without JavaScript the <noscript> block points
-  // at the mailbox instead.
+  // Progressive enhancement over a form that already works on its own.
+  //
+  // The form's `action` is the real Web3Forms endpoint, so with JavaScript
+  // disabled it submits natively and Web3Forms renders its own confirmation.
+  // This script intercepts submission purely to report the outcome in place.
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
 
   if (form) {
@@ -345,24 +382,30 @@ const interests = [
       try {
         const response = await fetch(form.action, {
           method: 'POST',
-          headers: { 'content-type': 'application/json' },
+          headers: {
+            'content-type': 'application/json',
+            accept: 'application/json',
+          },
           body: JSON.stringify(payload),
         });
 
+        // Web3Forms answers with { success: boolean, message: string } and uses
+        // a non-2xx status on failure, so check both rather than trusting one.
         const result = (await response.json().catch(() => ({}))) as {
+          success?: boolean;
           message?: string;
         };
 
-        if (response.ok) {
+        if (response.ok && result.success !== false) {
           form.reset();
           say(
-            result.message ??
-              'Thank you — your enquiry is with us. We reply within one working day.'
+            'Thank you — your enquiry is with us. We reply within one working day.'
           );
         } else {
           say(
-            result.message ??
-              'We could not send that. Please email hello@numaratech.com and we will pick it up directly.'
+            `${
+              result.message ?? 'We could not send that.'
+            } Please email hello@numaratech.com and we will pick it up directly.`
           );
         }
       } catch {

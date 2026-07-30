@@ -2,10 +2,12 @@
 # https://developers.cloudflare.com/pages/configuration/headers/
 
 /*
-  # No third-party origin is used: fonts, styles and scripts are all first
-  # party, so the policy can be strict. 'unsafe-inline' is required for style
+  # Fonts, styles, scripts and images are all first party, so the policy stays
+  # tight. The one external origin is api.web3forms.com, which the contact form
+  # posts to — allowed in connect-src for the fetch path and in form-action for
+  # the no-JavaScript native submit. 'unsafe-inline' is required for style
   # because Astro inlines small stylesheets and components emit scoped styles.
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -24,7 +26,3 @@
 # HTML should always be revalidated so a deploy is visible immediately.
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
-
-# Enquiries must never be cached anywhere.
-/api/*
-  Cache-Control: no-store

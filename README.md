@@ -1,8 +1,8 @@
 # NUMARATECH — website
 
-Corporate website for NUMARATECH: finance and compliance infrastructure for UAE
-business. Built with [Astro](https://astro.build) as a fully static site and
-deployed to Cloudflare Pages.
+Corporate website for NUMARATECH: a UAE accounting and tax consultancy that also
+builds its own platform. Built with [Astro](https://astro.build) as a fully
+static site and deployed to Cloudflare Workers static assets.
 
 ```
 npm install
@@ -14,61 +14,61 @@ npm run check    # astro check — type and template diagnostics
 
 ---
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare Workers
 
-### 1. Connect the repository
+This is a **Workers** project with static assets — the build runs
+`wrangler deploy`. (Pages would be `wrangler pages deploy`; the two take
+different `wrangler.toml` keys, so do not mix them up.)
 
-Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect
-to Git**, then pick this repository and branch.
+The site is entirely static. There is no Worker script, no `main` entry and no
+server secret, because the contact form posts straight to Web3Forms from the
+browser.
 
-### 2. Build settings
+### 1. Build must run before deploy
 
-`wrangler.toml` in the repository root declares the project, so Cloudflare no
-longer logs *"No Wrangler configuration detected"* and no longer has to guess:
+This is the one setting that actually breaks deploys. A deploy command of bare
+`npx wrangler deploy` fails with:
 
-```toml
-name = "numaratech-website"
-pages_build_output_dir = "./dist"
-compatibility_date = "2026-07-30"
+```
+✘ [ERROR] Could not detect a directory containing static files
 ```
 
-You still set the build command in the dashboard:
+That is not a config error — it means `dist/` does not exist because nothing
+built it. Set **both** commands in the dashboard (Workers &amp; Pages → your
+project → Settings → Build):
 
 | Setting | Value |
 | --- | --- |
-| Framework preset | Astro |
 | Build command | `npm run build` |
-| Build output directory | `dist` (also pinned in `wrangler.toml`) |
+| Deploy command | `npx wrangler deploy` |
 | Node version | 20 or later (set `NODE_VERSION=20` if the default is older) |
 
-No adapter is needed. `output: 'static'` produces plain files, and the contact
-endpoint is a Pages Function rather than a server-rendered route.
+If the dashboard only offers a single command field, use `npm run deploy`,
+which is defined in `package.json` as `astro build && wrangler deploy`.
 
-**Never add a `[vars]` block to `wrangler.toml`** — its contents are committed in
-plain text. The contact form's secrets belong in the dashboard (see below).
-
-Verify the Function compiles before pushing a change to it:
+Check the whole path locally before pushing — this builds and runs every deploy
+step except the upload:
 
 ```
-npx wrangler pages functions build --outfile=/tmp/check.js   # ✨ Compiled Worker successfully
+npm run deploy:dry
 ```
 
-### 2a. If you are on Workers rather than Pages
+Expect `✨ Read 41 files from the assets directory …/dist`.
 
-This project targets **Cloudflare Pages**. If you connected it through the
-Workers path instead, `wrangler.toml` needs different keys and two Pages-only
-pieces stop working:
+### 2. What wrangler.toml declares
 
-| Pages (as built) | Workers with static assets |
-| --- | --- |
-| `pages_build_output_dir = "./dist"` | `[assets] directory = "./dist"` |
-| `functions/api/contact.js` auto-discovered | needs a Worker entry (`main`) that routes `/api/contact` itself |
-| `public/_routes.json` limits Function invocation | not supported; use `[assets] run_worker_first` |
-| `public/_headers` | supported |
+```toml
+name = "numaratech-website"
+compatibility_date = "2026-07-30"
 
-Migrating means porting `functions/api/contact.js` into a `fetch` handler and
-deleting `_routes.json`. Unless you have a specific reason to be on Workers,
-staying on Pages is less work.
+[assets]
+directory = "./dist"
+html_handling = "auto-trailing-slash"   # matches Astro's trailingSlash: 'always'
+not_found_handling = "404-page"         # serves the built /404.html
+```
+
+**Never add a `[vars]` block** — this file is committed in plain text. Nothing
+here needs a secret.
 
 ### 3. Set the production hostname
 
@@ -77,38 +77,57 @@ URLs, Open Graph tags and `sitemap.xml`. **Change it before the first deploy** �
 a wrong value silently publishes canonical tags pointing at a domain you do not
 control. Then update the `Sitemap:` line in `public/robots.txt` to match.
 
-### 4. Environment variables for the contact form
+### 4. Activate the contact form (Web3Forms)
 
-`functions/api/contact.js` sends enquiries through [Resend](https://resend.com).
-Add these in **Settings → Environment variables**, as **secrets**, for both the
-production and preview environments:
+The form has **no backend**. It posts from the visitor's browser directly to
+[Web3Forms](https://web3forms.com), which forwards the message to your mailbox.
 
-| Variable | Example | Notes |
-| --- | --- | --- |
-| `RESEND_API_KEY` | `re_…` | Store as a secret, never in the repo |
-| `CONTACT_TO` | `hello@numaratech.com` | Mailbox receiving enquiries |
-| `CONTACT_FROM` | `NUMARATECH <site@numaratech.com>` | Must be a verified sender domain in Resend |
+To turn it on:
 
-Until all three are set the endpoint returns `503` and the form tells the
-visitor to email directly. That is deliberate — better a clear fallback than
-silently dropping enquiries.
+1. Enter your email at [web3forms.com](https://web3forms.com); they send you an
+   access key.
+2. Paste it into `WEB3FORMS.accessKey` in `src/consts.ts`.
+3. Redeploy.
 
-Using a different provider? Replace the single `fetch` call to
-`api.resend.com` in `functions/api/contact.js`. Everything around it —
-validation, honeypot, length caps, error handling — is provider-agnostic.
+```ts
+export const WEB3FORMS = {
+  accessKey: '',                              // ← paste the key here
+  endpoint: 'https://api.web3forms.com/submit',
+  subject: 'Website enquiry — NUMARATECH',
+};
+```
+
+While `accessKey` is blank the contact page **hides the form** and shows the
+direct email details instead — a visible gap rather than a form that silently
+discards enquiries.
+
+Notes:
+
+- The access key is **public by design**. Web3Forms expects it in client-side
+  markup, so committing it is not a leak; it only permits delivery to your own
+  address.
+- Spam is handled by Web3Forms' reserved `botcheck` honeypot field, already
+  wired into the form.
+- The form works **without JavaScript**: `action` is the real endpoint, so a
+  native submit reaches Web3Forms and it renders its own confirmation. The
+  script only intercepts submission to report the result in place.
+- Changing provider means editing `WEB3FORMS` and the `connect-src` /
+  `form-action` entries in `public/_headers`.
 
 ### 5. What the deployment config files do
 
 | File | Purpose |
 | --- | --- |
+| `wrangler.toml` | Declares the Worker and its static asset directory |
 | `public/_headers` | CSP and security headers; immutable caching for fonts and hashed assets |
-| `public/_routes.json` | Restricts Functions to `/api/*` so static pages are served from the edge without invoking a worker |
 | `public/robots.txt` | Crawl policy and sitemap pointer |
 | `src/pages/sitemap.xml.ts` | Generates `sitemap.xml` at build time |
 
-The CSP in `_headers` allows **no third-party origins**. If you later add
-analytics, an embedded map or any external script, that policy must be widened
-or the resource will be blocked.
+The CSP in `_headers` allows exactly **one** external origin,
+`https://api.web3forms.com`, in `connect-src` and `form-action`. Everything else
+— fonts, styles, scripts, images — is first party. If you add analytics, an
+embedded map or any external script, widen the policy or the browser will block
+it silently.
 
 ---
 
@@ -129,7 +148,7 @@ see "Positioning" below before editing copy.
 | `/services/` | Platform implementation, remediation, automation, support |
 | `/about/` | Positioning, beliefs, boundaries |
 | `/insights/` | Index + three articles |
-| `/contact/` | Enquiry form → `/api/contact` |
+| `/contact/` | Enquiry form → Web3Forms (no backend) |
 | `/privacy/`, `/terms/` | Legal |
 | `/404.html` | Not found |
 
@@ -282,6 +301,11 @@ Content placeholders that must be replaced with real values:
 - [ ] `SITE.address` — currently "Business Bay, Dubai"
 - [ ] `SITE.email` — confirm `hello@numaratech.com` exists and is monitored
 - [ ] `site` in `astro.config.mjs` and the `Sitemap:` line in `robots.txt`
+- [ ] **`WEB3FORMS.accessKey` in `src/consts.ts` is blank** — the contact form is
+      hidden until you paste your Web3Forms key. See "Activate the contact form"
+      above.
+- [ ] Cloudflare **build command** set to `npm run build` — without it the deploy
+      fails with "Could not detect a directory containing static files"
 - [ ] `CALCULATOR.url` in `src/consts.ts` — currently the Base44 build; switch to
       the Cloudflare one when it is live
 - [ ] **Legal review of `/privacy/` and `/terms/`**, and the `updated` date in
