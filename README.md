@@ -23,15 +23,52 @@ to Git**, then pick this repository and branch.
 
 ### 2. Build settings
 
+`wrangler.toml` in the repository root declares the project, so Cloudflare no
+longer logs *"No Wrangler configuration detected"* and no longer has to guess:
+
+```toml
+name = "numaratech-website"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-07-30"
+```
+
+You still set the build command in the dashboard:
+
 | Setting | Value |
 | --- | --- |
 | Framework preset | Astro |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
+| Build output directory | `dist` (also pinned in `wrangler.toml`) |
 | Node version | 20 or later (set `NODE_VERSION=20` if the default is older) |
 
 No adapter is needed. `output: 'static'` produces plain files, and the contact
 endpoint is a Pages Function rather than a server-rendered route.
+
+**Never add a `[vars]` block to `wrangler.toml`** — its contents are committed in
+plain text. The contact form's secrets belong in the dashboard (see below).
+
+Verify the Function compiles before pushing a change to it:
+
+```
+npx wrangler pages functions build --outfile=/tmp/check.js   # ✨ Compiled Worker successfully
+```
+
+### 2a. If you are on Workers rather than Pages
+
+This project targets **Cloudflare Pages**. If you connected it through the
+Workers path instead, `wrangler.toml` needs different keys and two Pages-only
+pieces stop working:
+
+| Pages (as built) | Workers with static assets |
+| --- | --- |
+| `pages_build_output_dir = "./dist"` | `[assets] directory = "./dist"` |
+| `functions/api/contact.js` auto-discovered | needs a Worker entry (`main`) that routes `/api/contact` itself |
+| `public/_routes.json` limits Function invocation | not supported; use `[assets] run_worker_first` |
+| `public/_headers` | supported |
+
+Migrating means porting `functions/api/contact.js` into a `fetch` handler and
+deleting `_routes.json`. Unless you have a specific reason to be on Workers,
+staying on Pages is less work.
 
 ### 3. Set the production hostname
 

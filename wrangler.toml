@@ -1,0 +1,28 @@
+# Cloudflare Pages configuration for the NUMARATECH website.
+#
+# Without this file Cloudflare logs "No Wrangler configuration detected" and
+# guesses the project settings. Everything here is deliberate, so the build is
+# reproducible rather than inferred.
+#
+# This is a *Pages* project, not a Worker with static assets. That distinction
+# matters: `functions/api/contact.js` is auto-discovered as a Pages Function,
+# and `public/_routes.json` (which keeps the Function off static requests) is a
+# Pages-only convention. See the README if you need the Workers variant.
+
+name = "numaratech-website"
+
+# Astro writes the static site here (see astro.config.mjs → output: 'static').
+pages_build_output_dir = "./dist"
+
+# Pins the Workers runtime APIs available to functions/api/contact.js. Raise it
+# deliberately, not incidentally — a newer date can change runtime behaviour.
+compatibility_date = "2026-07-30"
+
+# NOTE — do not add a [vars] block for the contact form.
+#
+# Values in this file are committed to the repository in plain text. The contact
+# endpoint needs RESEND_API_KEY, CONTACT_TO and CONTACT_FROM; set those as
+# encrypted secrets in the Cloudflare dashboard (Settings → Environment
+# variables → Encrypt), for both Production and Preview. `functions/api/contact.js`
+# returns a clear 503 until all three are present, so a missing secret surfaces
+# as a visible fallback rather than a silently dropped enquiry.
