@@ -1,0 +1,623 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Arrow from '../components/Arrow.astro';
+import { UAE_CT } from '../consts';
+
+const levers = [
+  {
+    index: '01',
+    title: 'Waiting stops being the constraint',
+    body:
+      'Most of a long close is not work, it is waiting — for a statement, a schedule, an approval. Making the outstanding list visible to both sides removes an entire category of delay before any automation happens.',
+  },
+  {
+    index: '02',
+    title: 'Reconciliation leaves the critical path',
+    body:
+      'Classify and match continuously instead of at period end, and only exceptions remain between you and the close. The total work is similar; almost none of it is blocking.',
+  },
+  {
+    index: '03',
+    title: 'One mapping, not three',
+    body:
+      'Map the chart of accounts once for statutory and tax presentation together. The parallel workbook disappears, and with it the reconciliation between two sets of books that were supposed to agree.',
+  },
+  {
+    index: '04',
+    title: 'Review stops being archaeology',
+    body:
+      'When every figure carries its derivation, a reviewer decides whether it is reasonable instead of first reconstructing how it was made. This is the step that scales worst by hand.',
+  },
+];
+---
+
+<Base
+  title="The business case"
+  description="Work out what your close actually costs, on your own numbers, and where the time goes back. A browser-side calculator from NUMARATECH — nothing you enter is sent anywhere."
+>
+  <PageHeader
+    eyebrow="Growth"
+    title="Compliance is a fixed cost. It should not scale with you."
+    lead="Every entity you add multiplies a manual close. The question is not whether the work is worth doing — it is how much of it should still need a person."
+    cta={{ label: 'Work it out on your numbers', href: '#calculator' }}
+    meta={[
+      { label: 'Method', value: 'Your inputs, your arithmetic' },
+      { label: 'Privacy', value: 'Runs in your browser only' },
+      { label: 'Output', value: 'Printable schedule' },
+      { label: 'Claims', value: 'None — we supply no figures' },
+    ]}
+  />
+
+  <!-- Calculator -------------------------------------------------------- -->
+  <section
+    class="nt-section nt-wrap"
+    id="calculator"
+    data-print-region
+  >
+    <div class="calc__intro" data-print-hide>
+      <SectionHead
+        index="01"
+        eyebrow="Calculator"
+        title="What does your close cost?"
+        lead="We publish no savings percentages and no client averages, because yours would be different and you would be right not to believe ours. Put in your own figures and decide what the number means."
+      />
+    </div>
+
+    <div class="calc">
+      <form class="calc__form nt-no-print" id="bc-form" novalidate>
+        <p class="nt-micro nt-micro--accent nt-micro-idx">Your figures</p>
+
+        <div class="calc__fields">
+          <div class="nt-field-group">
+            <label class="nt-label" for="bc-entities">Entities you close</label>
+            <input
+              class="nt-input nt-input--fig"
+              id="bc-entities"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              value="6"
+            />
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="bc-closes">Closes per entity, per year</label>
+            <input
+              class="nt-input nt-input--fig"
+              id="bc-closes"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              value="12"
+            />
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="bc-hours">Hours per close</label>
+            <input
+              class="nt-input nt-input--fig"
+              id="bc-hours"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              value="14"
+            />
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="bc-rate">Blended hourly cost</label>
+            <div class="nt-affix">
+              <span class="nt-affix__unit">{UAE_CT.currency}</span>
+              <input
+                class="nt-input nt-input--fig"
+                id="bc-rate"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                value="150"
+              />
+            </div>
+          </div>
+
+          <div class="nt-field-group calc__wide">
+            <label class="nt-label" for="bc-reduction">
+              Reduction you think is achievable
+            </label>
+            <input
+              class="calc__range"
+              id="bc-reduction"
+              type="range"
+              min="0"
+              max="80"
+              step="5"
+              value="35"
+              aria-describedby="bc-reduction-out"
+            />
+            <p class="calc__range-out" id="bc-reduction-out">
+              <span class="nt-fig" data-bc="reductionLabel">35</span>% of close
+              hours removed
+            </p>
+            <p class="nt-hint">
+              Your estimate, not ours. Set it to zero and the case has to stand
+              on something other than time.
+            </p>
+          </div>
+        </div>
+      </form>
+
+      <div class="calc__out">
+        <div class="nt-print-only calc__masthead">
+          <p class="calc__masthead-name">NUMARATECH</p>
+          <p class="calc__masthead-line">
+            Close cost — illustrative working
+            <span data-bc="printedOn"></span>
+          </p>
+        </div>
+
+        <p class="nt-micro nt-micro--accent nt-micro-idx calc__out-label">
+          Working
+        </p>
+
+        <div class="nt-table-scroll">
+          <table class="nt-table">
+            <caption>Per year, in {UAE_CT.currency} unless stated</caption>
+            <tbody>
+              <tr class="nt-calc__line">
+                <th scope="row">Closes performed</th>
+                <td class="nt-fig" data-bc="closes">72</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">Hours spent closing</th>
+                <td class="nt-fig" data-bc="hours">1,008</td>
+              </tr>
+              <tr class="nt-calc__line calc__sub">
+                <th scope="row">Cost of closing</th>
+                <td class="nt-fig" data-bc="cost">151,200</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">
+                  Hours returned
+                  <span class="calc__row-note" data-bc="atLabel">at 35%</span>
+                </th>
+                <td class="nt-fig" data-bc="hoursBack">353</td>
+              </tr>
+              <tr class="nt-calc__line">
+                <th scope="row">Working weeks returned</th>
+                <td class="nt-fig" data-bc="weeks">8.8</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="nt-calc__line">
+                <th scope="row">Cost returned per year</th>
+                <td class="nt-fig" data-bc="costBack">52,920</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <p class="calc__flag" data-bc="flag" hidden></p>
+
+        <div class="calc__actions nt-no-print">
+          <button type="button" class="nt-btn nt-btn--ghost" data-bc-print>
+            Print this working
+            <Arrow class="nt-btn__arrow" />
+          </button>
+        </div>
+
+        <p class="calc__disclaimer nt-sm">
+          <strong>Every figure here is derived from what you typed.</strong>
+          NUMARATECH supplies no benchmark, no industry average and no savings
+          claim. This is arithmetic on your own assumptions, intended to make
+          them explicit — not a forecast, a quotation, or a promise of any
+          outcome. It runs entirely in your browser and is not sent to us.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where the time goes ----------------------------------------------- -->
+  <section class="nt-section nt-section--invert nt-reveal">
+    <div class="nt-wrap">
+      <SectionHead
+        index="02"
+        eyebrow="Levers"
+        title="Where the hours actually come from."
+        lead="In the order that compounds. Doing these out of sequence is the usual reason a tooling project produces a nicer process that takes the same time."
+        invert={true}
+      />
+
+      <ol class="nt-cols nt-cols--4 levers">
+        {
+          levers.map((lever) => (
+            <li>
+              <span class="nt-fig lever__index">{lever.index}</span>
+              <h3 class="nt-h3 lever__title">{lever.title}</h3>
+              <p class="lever__body">{lever.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Scaling ------------------------------------------------------------ -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <div class="nt-split">
+      <SectionHead
+        index="03"
+        eyebrow="Why it compounds"
+        title="The cost of the tenth entity."
+      />
+
+      <div class="prose">
+        <p class="nt-lead">
+          A manual close scales linearly. Two entities cost roughly twice one;
+          twenty cost roughly twenty times one. There is no point at which the
+          process gets cheaper because you have done it before.
+        </p>
+        <p>
+          A mapped ledger does not behave that way. The expensive part —
+          deciding how accounts map to statutory presentation and tax
+          classification — is paid once per entity and then reused every period.
+          The second year of an entity costs a fraction of the first, and the
+          tenth entity costs less than the first because the method already
+          exists.
+        </p>
+        <p>
+          That is the whole growth argument, and it is worth being precise about
+          what it is not. It is not that software is cheaper than people. It is
+          that manual compliance cost grows with the business while mapped
+          compliance cost grows with the number of <em>new</em> decisions — and
+          those are far fewer.
+        </p>
+        <p>
+          <a href="/platform/" class="nt-arrow-link">
+            How the mapping works
+            <Arrow />
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Test the case on one closed period."
+    body="Bring an entity you have already closed and we will rebuild it alongside your existing workpapers. You get a real comparison instead of an estimate — including if it shows the gain is small."
+  />
+</Base>
+
+<style>
+  .calc__intro {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .calc {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  .calc__fields {
+    display: grid;
+    gap: var(--nt-5);
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-5);
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  /* Square slider, hairline track, teal thumb — no rounding anywhere. */
+  .calc__range {
+    width: 100%;
+    height: 2.5rem;
+    margin: 0;
+    background: transparent;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .calc__range::-webkit-slider-runnable-track {
+    height: var(--nt-hair);
+    background: var(--nt-hairline);
+  }
+
+  .calc__range::-moz-range-track {
+    height: var(--nt-hair);
+    background: var(--nt-hairline);
+  }
+
+  .calc__range::-webkit-slider-thumb {
+    appearance: none;
+    width: 10px;
+    height: 22px;
+    margin-top: -11px;
+    background: var(--nt-navy-700);
+    border: 0;
+  }
+
+  .calc__range::-moz-range-thumb {
+    width: 10px;
+    height: 22px;
+    background: var(--nt-navy-700);
+    border: 0;
+    border-radius: 0;
+  }
+
+  .calc__range:focus-visible {
+    outline: 2px solid var(--nt-focus);
+    outline-offset: 4px;
+  }
+
+  .calc__range-out {
+    margin-top: var(--nt-2);
+    color: var(--nt-navy-900);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: var(--nt-tr-micro);
+    text-transform: uppercase;
+  }
+
+  .calc__out {
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+    padding-top: var(--nt-5);
+  }
+
+  .calc__out-label {
+    margin-bottom: var(--nt-4);
+  }
+
+  .calc__out .nt-table {
+    min-width: 0;
+  }
+
+  .calc__out th[scope='row'] {
+    font-weight: 400;
+    color: var(--nt-ink-600);
+  }
+
+  .calc__sub th,
+  .calc__sub td {
+    border-bottom-color: var(--nt-navy-500);
+    color: var(--nt-navy-900);
+    font-weight: 600;
+  }
+
+  .calc__sub th[scope='row'] {
+    font-weight: 600;
+    color: var(--nt-navy-900);
+  }
+
+  .calc__row-note {
+    display: block;
+    color: var(--nt-text-muted);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: 0.06em;
+  }
+
+  .calc__flag {
+    margin-top: var(--nt-4);
+    padding: var(--nt-3) 0 var(--nt-3) var(--nt-4);
+    border-left: 2px solid var(--nt-accent-rule);
+    color: var(--nt-navy-900);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .calc__flag[hidden] {
+    display: none;
+  }
+
+  .calc__actions {
+    margin-top: var(--nt-6);
+  }
+
+  .calc__disclaimer {
+    margin-top: var(--nt-6);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    max-width: 62ch;
+  }
+
+  .calc__masthead {
+    margin-bottom: var(--nt-4);
+    padding-bottom: var(--nt-2);
+    border-bottom: 1px solid #000;
+  }
+
+  .calc__masthead-name {
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-size: 12pt;
+  }
+
+  .calc__masthead-line {
+    font-family: var(--nt-font-mono);
+    font-size: 8.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 48rem) {
+    .calc__fields {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: var(--nt-5);
+    }
+
+    .calc__wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .calc {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--nt-8);
+    }
+  }
+
+  .levers {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    list-style: none;
+  }
+
+  .lever__index {
+    display: block;
+    text-align: left;
+    color: var(--nt-teal-500);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: var(--nt-tr-micro);
+  }
+
+  .lever__title {
+    margin-top: var(--nt-4);
+  }
+
+  .lever__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+  }
+
+  .prose {
+    max-width: 64ch;
+  }
+
+  .prose > * + * {
+    margin-top: var(--nt-4);
+  }
+
+  @media print {
+    .calc {
+      display: block;
+    }
+
+    .calc__out {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .calc__disclaimer {
+      color: #000;
+    }
+  }
+</style>
+
+<script>
+  // Close-cost working. Every output is derived from the visitor's own inputs;
+  // this file contains no benchmark and no assumed saving. Runs entirely in the
+  // browser — nothing is transmitted.
+  const form = document.getElementById('bc-form') as HTMLFormElement | null;
+
+  if (form) {
+    const int = new Intl.NumberFormat('en-AE', { maximumFractionDigits: 0 });
+    const one = new Intl.NumberFormat('en-AE', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+
+    const out = (key: string) =>
+      document.querySelector<HTMLElement>(`[data-bc="${key}"]`);
+
+    const field = (id: string) =>
+      document.getElementById(id) as HTMLInputElement;
+
+    const fields = {
+      entities: field('bc-entities'),
+      closes: field('bc-closes'),
+      hours: field('bc-hours'),
+      rate: field('bc-rate'),
+      reduction: field('bc-reduction'),
+    };
+
+    const num = (raw: string): number => {
+      const cleaned = raw.replace(/[^0-9.]/g, '');
+      const value = Number(cleaned);
+      return Number.isFinite(value) && value > 0 ? value : 0;
+    };
+
+    const set = (key: string, text: string) => {
+      const node = out(key);
+      if (node) node.textContent = text;
+    };
+
+    const compute = () => {
+      const entities = num(fields.entities.value);
+      const closes = num(fields.closes.value);
+      const hoursEach = num(fields.hours.value);
+      const rate = num(fields.rate.value);
+      const reduction = Number(fields.reduction.value) / 100;
+
+      const totalCloses = entities * closes;
+      const totalHours = totalCloses * hoursEach;
+      const totalCost = totalHours * rate;
+      const hoursBack = totalHours * reduction;
+      const costBack = hoursBack * rate;
+      // A working week taken as 40 hours; stated on the row label.
+      const weeksBack = hoursBack / 40;
+
+      set('closes', int.format(totalCloses));
+      set('hours', int.format(totalHours));
+      set('cost', int.format(totalCost));
+      set('hoursBack', int.format(hoursBack));
+      set('weeks', one.format(weeksBack));
+      set('costBack', int.format(costBack));
+      set('reductionLabel', String(Math.round(reduction * 100)));
+      set('atLabel', `at ${Math.round(reduction * 100)}%`);
+
+      const flag = out('flag');
+      if (flag) {
+        let message = '';
+
+        if (totalCloses === 0 || hoursEach === 0) {
+          message =
+            'Enter entities, closes and hours to see a working. Any field left at zero removes the calculation entirely.';
+        } else if (reduction === 0) {
+          message =
+            'With no reduction assumed, the case has to rest on something other than hours — defensibility, or the cost of the next entity rather than this one.';
+        } else if (reduction >= 0.7) {
+          message =
+            'A reduction above 70% is optimistic for a first year. It usually implies the current process is doing work that could simply stop, which is worth confirming before counting it.';
+        } else if (totalHours > 10_000) {
+          message =
+            'Above roughly 10,000 hours a year, the constraint is normally the number of people who can review rather than the number who can prepare. Worth checking before assuming preparation time is the bottleneck.';
+        }
+
+        flag.textContent = message;
+        flag.hidden = message === '';
+      }
+    };
+
+    for (const input of Object.values(fields)) {
+      input.addEventListener('input', compute);
+      input.addEventListener('change', compute);
+    }
+
+    const printButton =
+      document.querySelector<HTMLButtonElement>('[data-bc-print]');
+
+    if (printButton) {
+      const stamp = out('printedOn');
+      printButton.addEventListener('click', () => {
+        if (stamp) {
+          stamp.textContent = ` · prepared ${new Date().toLocaleDateString(
+            'en-GB',
+            { day: 'numeric', month: 'long', year: 'numeric' }
+          )}`;
+        }
+        document.body.setAttribute('data-print-scope', 'calculator');
+        window.print();
+      });
+
+      const clear = () => document.body.removeAttribute('data-print-scope');
+      window.addEventListener('afterprint', clear);
+      window.addEventListener('focus', clear);
+    }
+
+    compute();
+  }
+</script>

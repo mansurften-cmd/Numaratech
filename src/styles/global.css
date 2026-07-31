@@ -563,6 +563,159 @@ hr {
   background: var(--nt-line-200);
 }
 
+/* -- Ruler ticks: a measured edge along a section boundary --------------
+   Hard-stop repeating gradients. There is no colour transition anywhere in
+   them, so they render as a row of 1px rules — a ruler edge, not a gradient. */
+.nt-ticks {
+  height: 9px;
+  border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--nt-line-300) 0,
+    var(--nt-line-300) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+  background-position: left bottom;
+  background-size: 100% 4px;
+  background-repeat: repeat-x;
+}
+
+/* Every tenth tick runs full height, as on a real rule. Navy rather than teal:
+   teal is the accent and stays sparing — a row of twenty teal marks would
+   spend the page's whole accent budget on a decorative edge. */
+.nt-ticks::after {
+  content: '';
+  display: block;
+  height: 9px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--nt-navy-500) 0,
+    var(--nt-navy-500) 1px,
+    transparent 1px,
+    transparent 120px
+  );
+  opacity: 0.45;
+}
+
+/* -- Corner registration brackets -------------------------------------- */
+.nt-bracket {
+  position: relative;
+}
+
+.nt-bracket::before,
+.nt-bracket::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-style: solid;
+  border-color: var(--nt-accent-rule);
+  pointer-events: none;
+}
+
+.nt-bracket::before {
+  top: 0;
+  left: 0;
+  border-width: var(--nt-hair) 0 0 var(--nt-hair);
+}
+
+.nt-bracket::after {
+  right: 0;
+  bottom: 0;
+  border-width: 0 var(--nt-hair) var(--nt-hair) 0;
+}
+
+/* -- Scroll progress rail — CSS only, decorative ------------------------
+   Hidden entirely unless the browser supports scroll-driven animations, so it
+   can never sit at zero width and read as a stray rule. */
+.nt-progress {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .nt-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 2px;
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    .nt-progress::before {
+      content: '';
+      display: block;
+      height: 100%;
+      background: var(--nt-accent-rule);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      animation: nt-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes nt-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* -- Signal pulse travelling along an SVG trace ------------------------- */
+@keyframes nt-trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nt-trace {
+    stroke-dasharray: 5 195;
+    stroke-dashoffset: 200;
+    animation: nt-trace 3.6s linear infinite;
+  }
+
+  .nt-trace--b {
+    animation-duration: 4.8s;
+    animation-delay: -1.2s;
+  }
+
+  .nt-trace--c {
+    animation-duration: 5.6s;
+    animation-delay: -2.6s;
+  }
+}
+
+/* -- Terminal caret ----------------------------------------------------- */
+@keyframes nt-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.nt-caret::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 0.95em;
+  margin-left: 0.35em;
+  vertical-align: -0.12em;
+  background: var(--nt-accent-rule);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nt-caret::after {
+    animation: nt-blink 1.15s steps(1) infinite;
+  }
+}
+
 /* Crosshair marks — technical registration ticks. */
 .nt-mark {
   position: relative;

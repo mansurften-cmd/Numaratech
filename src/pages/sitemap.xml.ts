@@ -13,6 +13,7 @@ const STATIC_ROUTES: { path: string; priority: string; changefreq: string }[] = 
   { path: '/platform/fs-studio/', priority: '0.8', changefreq: 'monthly' },
   { path: '/platform/client-portal/', priority: '0.8', changefreq: 'monthly' },
   { path: '/services/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/business-case/', priority: '0.8', changefreq: 'monthly' },
   { path: '/about/', priority: '0.7', changefreq: 'yearly' },
   { path: '/insights/', priority: '0.7', changefreq: 'weekly' },
   { path: '/contact/', priority: '0.7', changefreq: 'yearly' },

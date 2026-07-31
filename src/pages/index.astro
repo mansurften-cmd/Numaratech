@@ -5,6 +5,8 @@ import StatStrip from '../components/StatStrip.astro';
 import LineDiagram from '../components/LineDiagram.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Arrow from '../components/Arrow.astro';
+import TraceGraphic from '../components/TraceGraphic.astro';
+import Readout from '../components/Readout.astro';
 import { SITE, UAE_CT } from '../consts';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
 
@@ -89,24 +91,24 @@ const steps = [
 
 const segments = [
   {
-    title: 'Owner-managed businesses',
+    title: 'Scaling owner-managed businesses',
     body:
-      'First Corporate Tax cycle, a lean finance function, and no appetite for a six-figure ERP programme.',
+      'The close was fine at one entity and is straining at four. Fix the method now, while the migration is small and the person who knows it is still here.',
   },
   {
-    title: 'Accounting and audit firms',
+    title: 'Accounting firms adding clients',
     body:
-      'Many entities, one method. Standardise the computation across the portfolio without standardising away judgement.',
+      'Growth is capped by reviewer hours, not by sales. One method across the portfolio raises the ceiling without standardising away judgement.',
   },
   {
     title: 'Free zone entities',
     body:
-      'Qualifying income tests, de minimis tracking, and the evidence to support the position taken.',
+      'Qualifying income tests and de minimis tracking that hold up as the business grows past the thresholds it was structured around.',
   },
   {
     title: 'Groups and holdings',
     body:
-      'Consolidation, intra-group eliminations, and transfer pricing documentation that reconciles to the ledger.',
+      'Consolidation, intra-group eliminations and transfer pricing documentation that reconcile to the ledger — and keep doing so at the next acquisition.',
   },
 ];
 
@@ -123,38 +125,52 @@ const insights = insightsNewestFirst().slice(0, 3);
     <div class="nt-field__rules" aria-hidden="true"></div>
 
     <div class="nt-wrap hero__inner">
-      <p class="nt-micro nt-micro--accent nt-micro-idx">
-        United Arab Emirates &nbsp;/&nbsp; Finance &amp; compliance systems
-      </p>
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <p class="nt-micro nt-micro--accent nt-micro-idx">
+            United Arab Emirates &nbsp;/&nbsp; Finance &amp; compliance systems
+          </p>
 
-      <h1 class="nt-display hero__title">
-        Numbers that<br />survive scrutiny.
-      </h1>
+          <h1 class="nt-display hero__title">
+            Numbers that<br />survive scrutiny.
+          </h1>
 
-      <p class="nt-lead hero__lead">
-        {SITE.name} is a UAE accounting and tax consultancy — and the team behind
-        the platform it works on. Advisory when a position needs judgement;
-        software when the work needs to be repeatable. Either alone, or both.
-      </p>
+          <p class="nt-lead hero__lead">
+            {SITE.name} is a UAE accounting and tax consultancy — and the team
+            behind the platform it works on. Advisory when a position needs
+            judgement; software when the work needs to be repeatable.
+          </p>
 
-      <div class="nt-btn-row hero__actions">
-        <!-- The single solid navy element on this page. -->
-        <a href="/advisory/" class="nt-btn nt-btn--primary">
-          Talk to the practice
-          <Arrow class="nt-btn__arrow" />
-        </a>
-        <a href="/platform/" class="nt-btn nt-btn--ghost">
-          See the platform
-          <Arrow class="nt-btn__arrow" />
-        </a>
+          <div class="nt-btn-row hero__actions">
+            <!-- The single solid navy element on this page. -->
+            <a href="/advisory/" class="nt-btn nt-btn--primary">
+              Talk to the practice
+              <Arrow class="nt-btn__arrow" />
+            </a>
+            <a href="/business-case/" class="nt-btn nt-btn--ghost">
+              Run the business case
+              <Arrow class="nt-btn__arrow" />
+            </a>
+          </div>
+        </div>
+
+        <TraceGraphic class="hero__trace" />
       </div>
 
-      <p class="hero__foot nt-sm">
-        Built in Dubai for the UAE regime — not a global product with an
-        Emirates checkbox.
-      </p>
+      <Readout
+        class="hero__readout"
+        caret={true}
+        items={[
+          { label: 'Ledger', value: 'read-only' },
+          { label: 'Mapping', value: 'once per entity' },
+          { label: 'Lineage', value: 'figure → journal' },
+          { label: 'Status', value: 'accepting engagements' },
+        ]}
+      />
     </div>
   </section>
+
+  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
 
   <!-- Statutory parameter strip ---------------------------------------- -->
   <section class="nt-section nt-section--tight nt-wrap nt-divide">
@@ -396,14 +412,44 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 07 · Segments ------------------------------------------------------ -->
+  <!-- 07 · Growth --------------------------------------------------------- -->
   <section class="nt-section nt-wrap nt-divide nt-reveal">
     <SectionHead
       index="07"
-      eyebrow="Fit"
-      title="Who we build for."
-      lead="Four situations we know well enough to be useful in on the first call."
+      eyebrow="Growth"
+      title="The tenth entity should cost less than the first."
+      lead="A manual close scales linearly — twenty entities cost roughly twenty times one, and it never gets cheaper for having been done before. A mapped ledger does not behave that way."
     />
+
+    <div class="scale nt-bracket">
+      <div class="scale__col">
+        <p class="nt-micro nt-micro-idx">Manual close</p>
+        <p class="scale__claim">Cost grows with the business.</p>
+        <p class="scale__body">
+          Each new entity is a new set of judgements made from scratch, every
+          period, by someone who has to be available.
+        </p>
+      </div>
+      <div class="scale__col">
+        <p class="nt-micro nt-micro-idx">Mapped ledger</p>
+        <p class="scale__claim">Cost grows with new decisions.</p>
+        <p class="scale__body">
+          The expensive part is paid once per entity and reused. Year two costs
+          a fraction of year one, because the method already exists.
+        </p>
+      </div>
+    </div>
+
+    <p class="scale__cta">
+      <a href="/business-case/" class="nt-arrow-link">
+        Work it out on your own numbers
+        <Arrow />
+      </a>
+    </p>
+
+    <div class="segments-head">
+      <p class="nt-micro nt-micro-idx">Where this bites hardest</p>
+    </div>
 
     <div class="nt-cols nt-cols--2 segments">
       {
@@ -468,7 +514,15 @@ const insights = insightsNewestFirst().slice(0, 3);
   }
 
   .hero__inner {
-    padding-block: clamp(3.5rem, 10vw, 8.5rem);
+    /* Less below than above: the readout strip closes the hero, so the extra
+       trailing space just read as a gap before the ruled edge. */
+    padding-block: clamp(3rem, 8vw, 6.5rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: center;
   }
 
   .hero__title {
@@ -477,19 +531,89 @@ const insights = insightsNewestFirst().slice(0, 3);
 
   .hero__lead {
     margin-top: var(--nt-6);
-    max-width: 56ch;
+    max-width: 52ch;
   }
 
   .hero__actions {
     margin-top: var(--nt-7);
   }
 
-  .hero__foot {
-    margin-top: var(--nt-6);
-    padding-top: var(--nt-4);
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+  .hero__trace {
+    justify-self: start;
+  }
+
+  .hero__readout {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (min-width: 62rem) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--nt-8);
+    }
+
+    .hero__trace {
+      justify-self: end;
+    }
+  }
+
+  /* -- Growth ------------------------------------------------------------ */
+  .scale {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .scale__col {
+    padding: var(--nt-6) var(--nt-5) var(--nt-6) 0;
+    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .scale__col:last-child {
+    border-bottom: 0;
+  }
+
+  .scale__claim {
+    margin-top: var(--nt-4);
+    color: var(--nt-navy-900);
+    font-size: var(--nt-fs-h3);
+    font-weight: 600;
+    letter-spacing: var(--nt-tr-heading);
+    max-width: 22ch;
+  }
+
+  .scale__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
     max-width: 44ch;
-    color: var(--nt-text-muted);
+  }
+
+  .scale__cta {
+    margin-top: var(--nt-5);
+  }
+
+  .segments-head {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (min-width: 48rem) {
+    .scale {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .scale__col {
+      border-bottom: 0;
+      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
+      padding-right: var(--nt-6);
+    }
+
+    .scale__col:last-child {
+      border-right: 0;
+      padding-left: var(--nt-6);
+      padding-right: 0;
+    }
   }
 
   .strip-note {
@@ -655,7 +779,7 @@ const insights = insightsNewestFirst().slice(0, 3);
 
   /* -- Segments ---------------------------------------------------------- */
   .segments {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+    margin-top: var(--nt-5);
   }
 
   .segment__title {

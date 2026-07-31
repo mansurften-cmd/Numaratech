@@ -87,6 +87,9 @@ const organisation = {
 
   <body>
     <a class="nt-skip" href="#main">Skip to content</a>
+    <!-- Scroll progress. Pure CSS scroll-driven animation; hidden entirely on
+         browsers without support, so it never renders as a stray rule. -->
+    <div class="nt-progress" aria-hidden="true"></div>
     <Header />
     <main id="main">
       <slot />

@@ -1,0 +1,111 @@
+---
+// Hero signal graphic: orthogonal traces carrying pulses from three ledger
+// sources into a single computed output. Every stroke is hairline weight and
+// the pulses are stroke-dash animations, so this stays inside the identity —
+// no gradient, no glow, no fill.
+//
+// Decorative: aria-hidden, and the surrounding copy carries the meaning. With
+// reduced motion the traces render static.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['trace', className]} aria-hidden="true">
+  <svg viewBox="0 0 420 260" fill="none" role="presentation">
+    <!-- Source nodes -->
+    <g class="t-line">
+      <rect x="0.5" y="24.5" width="72" height="26" />
+      <rect x="0.5" y="116.5" width="72" height="26" />
+      <rect x="0.5" y="208.5" width="72" height="26" />
+    </g>
+
+    <!-- Routing traces -->
+    <g class="t-rule">
+      <path d="M73 37 H136 V129 H196" />
+      <path d="M73 129 H196" />
+      <path d="M73 221 H136 V129 H196" />
+      <path d="M264 129 H316" />
+      <path d="M316 129 V61 H419" />
+      <path d="M316 129 V197 H419" />
+    </g>
+
+    <!-- Pulses travelling the same routes -->
+    <g class="t-pulse">
+      <path class="nt-trace" d="M73 37 H136 V129 H196" />
+      <path class="nt-trace nt-trace--b" d="M73 129 H196" />
+      <path class="nt-trace nt-trace--c" d="M73 221 H136 V129 H196" />
+    </g>
+
+    <!-- Compute block -->
+    <g class="t-line">
+      <rect x="196.5" y="105.5" width="68" height="48" />
+    </g>
+    <g class="t-accent">
+      <path d="M214 129 h32 M230 113 v32" />
+    </g>
+
+    <!-- Outputs -->
+    <g class="t-line">
+      <rect x="347.5" y="48.5" width="72" height="26" />
+      <rect x="347.5" y="184.5" width="72" height="26" />
+    </g>
+
+    <!-- Registration ticks along the baseline -->
+    <g class="t-rule">
+      <path d="M0 252 H420" />
+    </g>
+    <g class="t-tick">
+      <path
+        d="M12 246 v6 M48 246 v6 M84 246 v6 M120 246 v6 M156 246 v6 M192 246 v6
+           M228 246 v6 M264 246 v6 M300 246 v6 M336 246 v6 M372 246 v6 M408 246 v6"
+      ></path>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .trace {
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .t-line {
+    stroke: var(--nt-navy-500);
+    stroke-width: 1;
+  }
+
+  .t-rule {
+    stroke: var(--nt-line-300);
+    stroke-width: 1;
+  }
+
+  .t-accent {
+    stroke: var(--nt-accent-rule);
+    stroke-width: 1;
+  }
+
+  .t-tick {
+    stroke: var(--nt-line-300);
+    stroke-width: 1;
+  }
+
+  .t-pulse {
+    stroke: var(--nt-teal-500);
+    stroke-width: 2;
+    stroke-linecap: square;
+  }
+
+  @media print {
+    .trace {
+      display: none;
+    }
+  }
+</style>

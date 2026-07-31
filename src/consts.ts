@@ -129,6 +129,7 @@ export const NAV: NavItem[] = [
       },
     ],
   },
+  { label: 'Business case', href: '/business-case/' },
   { label: 'Insights', href: '/insights/' },
   { label: 'About', href: '/about/' },
 ];
@@ -157,6 +158,7 @@ export const FOOTER_NAV = [
     heading: 'Company',
     links: [
       { label: 'About', href: '/about/' },
+      { label: 'Business case', href: '/business-case/' },
       { label: 'Insights', href: '/insights/' },
       { label: 'Contact', href: '/contact/' },
     ],
