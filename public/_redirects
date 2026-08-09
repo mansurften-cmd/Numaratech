@@ -1,0 +1,8 @@
+# Cloudflare static-asset redirects.
+# Client Portal was retired before launch; point its URL at the platform
+# overview so any existing link or index entry lands somewhere useful.
+/platform/client-portal/  /platform/  301
+/platform/client-portal   /platform/  301
+
+# The advisory page moved from a single page to a group hub.
+/advisory/index.html  /advisory/  301

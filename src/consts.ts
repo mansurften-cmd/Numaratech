@@ -81,25 +81,29 @@ export type NavItem = {
 
 // Two offerings, kept deliberately separate: the licensed advisory practice and
 // the software platform. Advisory comes first — it is the regulated business.
+//
+// The advisory children mirror the practice's own three groups. Each group page
+// carries its services as anchored sections, so the menu stays at three entries
+// rather than listing all seventeen.
 export const NAV: NavItem[] = [
   {
     label: 'Advisory',
     href: '/advisory/',
     children: [
       {
-        label: 'Corporate Tax',
-        href: '/advisory/#corporate-tax',
-        note: 'Registration, computation, filing and enquiry support',
+        label: 'Accounting & Audit',
+        href: '/advisory/accounting-audit/',
+        note: 'IFRS, outsourced CFO, statutory audit',
       },
       {
-        label: 'Accounting and reporting',
-        href: '/advisory/#accounting',
-        note: 'Bookkeeping, close, and IFRS financial statements',
+        label: 'Tax & Advisory',
+        href: '/advisory/tax/',
+        note: 'Corporate Tax, VAT & Transfer Pricing',
       },
       {
-        label: 'AML and compliance',
-        href: '/advisory/#compliance',
-        note: 'DNFBP obligations, goAML registration and reporting',
+        label: 'Risk & Compliance',
+        href: '/advisory/risk-compliance/',
+        note: 'AML, ESR, UBO, goAML',
       },
     ],
   },
@@ -118,9 +122,9 @@ export const NAV: NavItem[] = [
         note: 'IFRS financial statements from your ledger',
       },
       {
-        label: 'Client Portal',
-        href: '/platform/client-portal/',
-        note: 'One place for documents, queries and approvals',
+        label: 'Roadmap',
+        href: '/platform/#roadmap',
+        note: 'What we intend to build next',
       },
       {
         label: 'Implementation and support',
@@ -139,9 +143,9 @@ export const FOOTER_NAV = [
     heading: 'Advisory',
     links: [
       { label: 'Overview', href: '/advisory/' },
-      { label: 'Corporate Tax', href: '/advisory/#corporate-tax' },
-      { label: 'Accounting and reporting', href: '/advisory/#accounting' },
-      { label: 'AML and compliance', href: '/advisory/#compliance' },
+      { label: 'Accounting & Audit', href: '/advisory/accounting-audit/' },
+      { label: 'Tax & Advisory', href: '/advisory/tax/' },
+      { label: 'Risk & Compliance', href: '/advisory/risk-compliance/' },
     ],
   },
   {
@@ -150,7 +154,7 @@ export const FOOTER_NAV = [
       { label: 'Overview', href: '/platform/' },
       { label: 'Corporate Tax Engine', href: '/platform/corporate-tax/' },
       { label: 'FS Studio', href: '/platform/fs-studio/' },
-      { label: 'Client Portal', href: '/platform/client-portal/' },
+      { label: 'Roadmap', href: '/platform/#roadmap' },
       { label: 'Implementation and support', href: '/services/' },
     ],
   },

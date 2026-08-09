@@ -1,0 +1,325 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { SITE } from '../../consts';
+import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
+
+const why = [
+  {
+    title: 'The people advising you built the tooling',
+    body:
+      'Our advisory team uses the platform we sell. When something is awkward to compute or hard to evidence, the people who feel it are the people who can change it.',
+  },
+  {
+    title: 'Positions documented as they are taken',
+    body:
+      'Every judgement gets its reasoning and evidence recorded at the moment it is made. The file you would need in an enquiry is the file we were already keeping.',
+  },
+  {
+    title: 'You can see the derivation',
+    body:
+      'Ask how any figure in your return was arrived at and the answer comes from the record, not from memory — after staff change, and after the engagement ends.',
+  },
+  {
+    title: 'We say when you do not need us',
+    body:
+      'If your position is straightforward and your books are in order, we will tell you that rather than find work. A small engagement that goes well is worth more than a large one that should not have happened.',
+  },
+];
+---
+
+<Base
+  title="Advisory"
+  description="NUMARATECH is a UAE accounting and tax consultancy: audit and assurance, accounting and CFO services, Corporate Tax, VAT, transfer pricing, and AML and regulatory compliance."
+>
+  <PageHeader
+    eyebrow="Advisory"
+    title="A licensed practice, not a help centre."
+    lead="We take engagements, form judgements, and put our name to the positions we recommend — with the working papers to support them."
+    meta={[
+      { label: 'Practice', value: 'Accounting and tax consultants' },
+      { label: 'Service lines', value: `${ALL_SERVICES.length} across three groups` },
+      { label: 'Engagements', value: 'Under a signed engagement letter' },
+      { label: 'Also', value: 'We build the platform we use' },
+    ]}
+  />
+
+  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
+
+  <!-- Groups ------------------------------------------------------------ -->
+  <section class="nt-section nt-wrap">
+    <SectionHead
+      index="01"
+      eyebrow="Service lines"
+      title="What we are engaged to do."
+      lead="Three groups. Most clients start in one and end up using two, because the underlying data is the same and running them together is cheaper than running them apart."
+    />
+
+    <div class="groups">
+      {
+        SERVICE_GROUPS.map((group, i) => (
+          <article class="group nt-reveal">
+            <div class="group__head">
+              <p class="nt-micro nt-micro-idx">
+                <span class="nt-fig idx">{String(i + 1).padStart(2, '0')}</span>
+                {group.strap}
+              </p>
+              <h3 class="nt-h2 group__name">
+                <a href={`/advisory/${group.slug}/`}>{group.name}</a>
+              </h3>
+              <p class="group__lead">{group.lead}</p>
+              <p class="group__cta">
+                <a href={`/advisory/${group.slug}/`} class="nt-arrow-link">
+                  {group.name}
+                  <Arrow />
+                </a>
+              </p>
+            </div>
+
+            <ul class="group__list">
+              {group.services.map((service) => (
+                <li>
+                  <a href={`/advisory/${group.slug}/#${service.slug}`}>
+                    <span class="group__service">{service.name}</span>
+                    <span class="group__strap">{service.strap}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Two halves -------------------------------------------------------- -->
+  <section class="nt-section nt-section--inset nt-reveal">
+    <div class="nt-wrap">
+      <div class="nt-split">
+        <SectionHead
+          index="02"
+          eyebrow="Two halves"
+          title="Advice and software, kept separate."
+        />
+
+        <div class="prose">
+          <p class="nt-lead">
+            NUMARATECH does two things, and it matters that you know which one
+            you are buying.
+          </p>
+          <p>
+            <strong>The advisory practice</strong> — this page — is engaged
+            under an engagement letter. We form professional judgements and are
+            accountable for the advice we give.
+          </p>
+          <p>
+            <strong>The platform</strong> is software, used by our own team and
+            licensed to other firms and finance functions. It computes and
+            evidences; it does not decide.
+          </p>
+          <p>
+            You can take either without the other, and they are deliberately not
+            bundled.
+          </p>
+          <p>
+            <a href="/platform/" class="nt-arrow-link">
+              The platform side
+              <Arrow />
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us ------------------------------------------------------------ -->
+  <section class="nt-section nt-wrap nt-reveal">
+    <SectionHead
+      index="03"
+      eyebrow="Why us"
+      title="What makes this practice different."
+      lead="Not size, and not price. The difference is that we own the tooling underneath the advice."
+    />
+
+    <div class="nt-cols nt-cols--2 why">
+      {
+        why.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true" />
+            <h3 class="nt-h3 why__title">{item.title}</h3>
+            <p class="why__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Engagement basis -------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
+    <div class="nt-split">
+      <SectionHead
+        index="04"
+        eyebrow="How engagements work"
+        title="Before anything begins."
+      />
+
+      <div class="prose">
+        <p>
+          Advisory work starts with a signed engagement letter setting out
+          scope, responsibilities, the fee basis and the limits of our
+          liability. Nothing on this website is advice, and no advisory
+          relationship exists until that letter is signed by both sides — see
+          our <a href="/terms/">terms of use</a>.
+        </p>
+        <p>
+          Fees are quoted against defined scope. If the underlying records turn
+          out to be materially worse than presented, we re-quote before doing
+          the additional work rather than after.
+        </p>
+        <p>
+          We are accounting and tax consultants. We do not audit clients whose
+          books we keep — a firm that prepares the records cannot independently
+          audit them — and we are not a law firm.
+        </p>
+        <p class="prose__contact">
+          Questions about scope or fees:
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Next step"
+    title="Tell us about your position."
+    body="A first call is thirty minutes and costs nothing. Bring your last filed return or your current trial balance and we will tell you plainly what we think — including if the answer is that you are fine as you are."
+  />
+</Base>
+
+<style>
+  .groups {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--nt-6);
+    align-items: start;
+    padding-block: var(--nt-7);
+    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+  }
+
+  .idx {
+    color: var(--nt-teal-800);
+  }
+
+  .group__name {
+    margin-top: var(--nt-4);
+  }
+
+  .group__name a {
+    color: var(--nt-navy-900);
+    text-decoration: none;
+  }
+
+  .group__name a:hover {
+    color: var(--nt-teal-800);
+  }
+
+  .group__lead {
+    margin-top: var(--nt-4);
+    max-width: 46ch;
+  }
+
+  .group__cta {
+    margin-top: var(--nt-5);
+  }
+
+  .group__list {
+    list-style: none;
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .group__list > li {
+    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+
+  .group__list a {
+    display: grid;
+    gap: 2px;
+    padding: var(--nt-3) 0;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    padding-left: 0;
+    transition: border-color var(--nt-dur) var(--nt-ease),
+      padding-left var(--nt-dur) var(--nt-ease);
+  }
+
+  .group__list a:hover {
+    border-left-color: var(--nt-accent-rule);
+    padding-left: var(--nt-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .group__list a {
+      transition: none;
+    }
+  }
+
+  .group__service {
+    color: var(--nt-navy-900);
+    font-size: var(--nt-fs-sm);
+    font-weight: 500;
+  }
+
+  .group__list a:hover .group__service {
+    color: var(--nt-teal-800);
+  }
+
+  .group__strap {
+    color: var(--nt-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 60rem) {
+    .group {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--nt-7);
+    }
+  }
+
+  .prose {
+    max-width: 64ch;
+  }
+
+  .prose > * + * {
+    margin-top: var(--nt-4);
+  }
+
+  .prose__contact {
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    font-size: var(--nt-fs-sm);
+  }
+
+  .why {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .why__title {
+    margin-top: var(--nt-4);
+    max-width: 28ch;
+  }
+
+  .why__body {
+    margin-top: var(--nt-3);
+    font-size: var(--nt-fs-sm);
+    max-width: 52ch;
+  }
+</style>

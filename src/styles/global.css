@@ -828,6 +828,15 @@ hr {
   align-items: start;
 }
 
+/* Grid items default to min-width: auto, so a wide child — a table with a
+   min-width, say — pushes its track past the viewport instead of scrolling
+   inside its own container. Overriding to 0 lets the track shrink and hands
+   the overflow back to .nt-table-scroll where it belongs. */
+.nt-split > *,
+.nt-cols > * {
+  min-width: 0;
+}
+
 @media (min-width: 60rem) {
   .nt-split {
     grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);

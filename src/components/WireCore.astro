@@ -1,0 +1,200 @@
+---
+// A rotating wireframe structure in real 3D — CSS perspective and
+// transform-style: preserve-3d, no library and no canvas.
+//
+// It reads as a CAD viewport rather than a rendered object, which is how it
+// stays inside the identity: every edge is a 1px rule in navy or teal, there is
+// no fill, no shadow, no gradient and no lighting. Depth comes from perspective
+// and parallax alone.
+//
+// The four planes are the platform's layers, narrowing from many ledger sources
+// to a single filed position. Decorative — the copy beside it carries meaning.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+
+// Four equal planes stacked in Z. Equal rather than tapered so the corner posts
+// connect exactly and the whole thing reads as one wireframe solid rather than
+// as loose sheets.
+const layers = [0, 1, 2, 3];
+---
+
+<div class:list={['wire', className]} aria-hidden="true">
+  <div class="wire__scene">
+    {
+      layers.map((i) => (
+        <div class="wire__layer" style={`--i:${i}`}>
+          <span class="wire__tick wire__tick--tl" />
+          <span class="wire__tick wire__tick--tr" />
+          <span class="wire__tick wire__tick--bl" />
+          <span class="wire__tick wire__tick--br" />
+
+          {/* Posts drop from this plane to the one below. They are children of
+              the plane, so they sit on its corners at any container size. */}
+          {i > 0 && (
+            <>
+              <span class="wire__post wire__post--tl" />
+              <span class="wire__post wire__post--tr" />
+              <span class="wire__post wire__post--bl" />
+              <span class="wire__post wire__post--br" />
+            </>
+          )}
+        </div>
+      ))
+    }
+
+    <!-- Central axis, standing upright through the stack. -->
+    <div class="wire__axis"></div>
+
+    <!-- Ground rule, the plane everything is measured from. -->
+    <div class="wire__ground"></div>
+  </div>
+</div>
+
+<style>
+  .wire {
+    --gap: 44px;
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 1 / 0.82;
+    perspective: 1100px;
+    perspective-origin: 50% 42%;
+  }
+
+  .wire__scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    /* Tipped back so the stack is seen from above and to the side. */
+    transform: rotateX(64deg) rotateZ(-24deg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .wire__scene {
+      animation: wire-spin 44s linear infinite;
+    }
+  }
+
+  @keyframes wire-spin {
+    from {
+      transform: rotateX(64deg) rotateZ(0deg);
+    }
+    to {
+      transform: rotateX(64deg) rotateZ(360deg);
+    }
+  }
+
+  .wire__layer {
+    position: absolute;
+    inset: 12%;
+    border: var(--nt-hair) solid var(--nt-navy-500);
+    transform: translateZ(calc(var(--i) * var(--gap)));
+    transform-style: preserve-3d;
+  }
+
+  /* The topmost plane is the filed position — marked in the accent. */
+  .wire__layer:last-of-type {
+    border-color: var(--nt-teal-500);
+  }
+
+  /* Corner posts. A child div's height runs along +Y in its parent's plane;
+     rotateX(-90deg) about its top edge sends that height into -Z, so it drops
+     exactly one gap to the plane below. */
+  .wire__post {
+    position: absolute;
+    width: var(--nt-hair);
+    height: var(--gap);
+    background: var(--nt-navy-500);
+    transform-origin: 50% 0;
+    transform: rotateX(-90deg);
+  }
+
+  .wire__post--tl {
+    top: 0;
+    left: 0;
+  }
+  .wire__post--tr {
+    top: 0;
+    right: 0;
+  }
+  .wire__post--bl {
+    bottom: 0;
+    left: 0;
+  }
+  .wire__post--br {
+    bottom: 0;
+    right: 0;
+  }
+
+  /* Corner registration ticks, drawn on each plane. */
+  .wire__tick {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-style: solid;
+    border-color: var(--nt-accent-rule);
+  }
+
+  .wire__tick--tl {
+    top: -1px;
+    left: -1px;
+    border-width: var(--nt-hair) 0 0 var(--nt-hair);
+  }
+
+  .wire__tick--tr {
+    top: -1px;
+    right: -1px;
+    border-width: var(--nt-hair) var(--nt-hair) 0 0;
+  }
+
+  .wire__tick--bl {
+    bottom: -1px;
+    left: -1px;
+    border-width: 0 0 var(--nt-hair) var(--nt-hair);
+  }
+
+  .wire__tick--br {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 var(--nt-hair) var(--nt-hair) 0;
+  }
+
+  /* A vertical rule through the centre of the stack. Rotated upright out of
+     the ground plane, so it genuinely stands in the scene. */
+  .wire__axis {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--nt-hair);
+    height: 180px;
+    background: var(--nt-accent-rule);
+    transform: translate(-50%, -50%) rotateX(90deg) translateZ(0);
+    transform-origin: 50% 50%;
+  }
+
+  /* The measured ground plane the stack sits above. */
+  .wire__ground {
+    position: absolute;
+    inset: 2%;
+    border: var(--nt-hair) solid var(--nt-line-200);
+    transform: translateZ(-34px);
+  }
+
+  /* Flatten to a plain elevation on very small screens, where a rotating
+     stack costs more than it communicates. */
+  @media (max-width: 30rem) {
+    .wire {
+      --gap: 30px;
+      aspect-ratio: 1 / 0.7;
+      perspective: 900px;
+    }
+  }
+
+  @media print {
+    .wire {
+      display: none;
+    }
+  }
+</style>

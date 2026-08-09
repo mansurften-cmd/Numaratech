@@ -8,10 +8,12 @@ import { INSIGHTS } from '../insights';
 const STATIC_ROUTES: { path: string; priority: string; changefreq: string }[] = [
   { path: '/', priority: '1.0', changefreq: 'monthly' },
   { path: '/advisory/', priority: '0.9', changefreq: 'monthly' },
+  { path: '/advisory/accounting-audit/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/advisory/tax/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/advisory/risk-compliance/', priority: '0.8', changefreq: 'monthly' },
   { path: '/platform/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/corporate-tax/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/fs-studio/', priority: '0.8', changefreq: 'monthly' },
-  { path: '/platform/client-portal/', priority: '0.8', changefreq: 'monthly' },
   { path: '/services/', priority: '0.8', changefreq: 'monthly' },
   { path: '/business-case/', priority: '0.8', changefreq: 'monthly' },
   { path: '/about/', priority: '0.7', changefreq: 'yearly' },

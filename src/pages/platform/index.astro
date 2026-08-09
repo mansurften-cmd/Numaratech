@@ -5,57 +5,18 @@ import SectionHead from '../../components/SectionHead.astro';
 import LineDiagram from '../../components/LineDiagram.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import Arrow from '../../components/Arrow.astro';
+import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 
-const products = [
-  {
-    variant: 'tax' as const,
-    index: '01',
-    name: 'Corporate Tax Engine',
-    href: '/platform/corporate-tax/',
-    line: 'Trial balance to filed return',
-    body:
-      'Reads the trial balance, applies your defined adjustments, computes the liability, and holds the working papers against each line. Small Business Relief, free zone qualifying income and group relief are positions you take explicitly — with the reasoning recorded.',
-    points: [
-      'Adjustment library you control, versioned by period',
-      'Zero band, relief elections and instalments handled in one computation',
-      'Printable computation schedule with references to source entries',
-    ],
-  },
-  {
-    variant: 'statements' as const,
-    index: '02',
-    name: 'FS Studio',
-    href: '/platform/fs-studio/',
-    line: 'IFRS statements, generated',
-    body:
-      'Statements derived from the mapped ledger instead of retyped into a template. Change a mapping once and the balance sheet, the notes and the comparatives move together.',
-    points: [
-      'IFRS and IFRS for SMEs presentation sets',
-      'Notes that recompute when the underlying mapping changes',
-      'Comparatives locked to the prior filed position',
-    ],
-  },
-  {
-    variant: 'portal' as const,
-    index: '03',
-    name: 'Client Portal',
-    href: '/platform/client-portal/',
-    line: 'One thread per obligation',
-    body:
-      'A shared surface for documents, open queries and approvals. Built for firms that would rather not run their year-end over email attachments.',
-    points: [
-      'Request lists that show what is outstanding and who holds it',
-      'Approvals captured with a timestamp and an identity',
-      'The year-end file assembles as the work happens',
-    ],
-  },
-];
+const diagrams: Record<string, 'tax' | 'statements'> = {
+  'corporate-tax': 'tax',
+  'fs-studio': 'statements',
+};
 
 const foundations = [
   {
     title: 'One mapped ledger',
     body:
-      'Your chart of accounts is mapped once into a structure that carries statutory presentation and tax classification at the same time. Two answers from one source, so they cannot diverge.',
+      'Your chart of accounts is mapped once into a structure carrying statutory presentation and tax classification at the same time. Two answers from one source, so they cannot diverge.',
   },
   {
     title: 'Lineage on every figure',
@@ -80,43 +41,47 @@ const foundations = [
   {
     title: 'Data stays where you put it',
     body:
-      'UAE-region hosting, per-entity separation, and an export path that gives you everything back in open formats whenever you ask.',
+      'UAE-region hosting, per-entity separation, and an export path that returns everything in open formats whenever you ask.',
   },
 ];
 ---
 
 <Base
   title="Platform"
-  description="Three products on one mapped ledger: the NUMARATECH Corporate Tax Engine, FS Studio for IFRS financial statements, and the Client Portal."
+  description="The NUMARATECH platform: a live Corporate Tax Engine and FS Studio built on one mapped ledger, plus a roadmap of four products at idea stage."
 >
   <PageHeader
     eyebrow="Platform"
-    title="One model of your business. Three ways to use it."
+    title="One model of your business. Several ways to use it."
     lead="Most compliance tooling treats the statements and the tax computation as separate exercises. We map your ledger once and derive both from it, which is why they agree."
     meta={[
-      { label: 'Products', value: 'Corporate Tax Engine · FS Studio · Client Portal' },
-      { label: 'Jurisdiction', value: 'United Arab Emirates' },
+      { label: 'Live', value: `${LIVE_PRODUCTS.length} products` },
+      { label: 'Roadmap', value: `${IDEA_PRODUCTS.length} at idea stage` },
       { label: 'Ledger access', value: 'Read-only by default' },
       { label: 'Deployment', value: 'Hosted, UAE region' },
     ]}
   />
 
-  <!-- Products --------------------------------------------------------- -->
+  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
+
+  <!-- Live products ------------------------------------------------------ -->
   <section class="nt-section nt-wrap">
     <SectionHead
       index="01"
-      eyebrow="Products"
-      title="What each one does."
+      eyebrow="In production"
+      title="What you can use today."
     />
 
     <ul class="nt-ruled products">
       {
-        products.map((product) => (
+        LIVE_PRODUCTS.map((product, i) => (
           <li class="product nt-reveal">
             <div class="product__main">
               <p class="nt-micro nt-micro-idx">
-                <span class="nt-fig idx">{product.index}</span>
-                {product.line}
+                <span class="nt-fig idx">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {product.strap}
               </p>
               <h3 class="nt-h2 product__name">
                 <a href={product.href}>{product.name}</a>
@@ -137,48 +102,104 @@ const foundations = [
               </p>
             </div>
 
-            <LineDiagram variant={product.variant} class="product__diagram" />
+            <LineDiagram
+              variant={diagrams[product.slug]}
+              class="product__diagram"
+            />
           </li>
         ))
       }
     </ul>
   </section>
 
-  <!-- Foundations ------------------------------------------------------ -->
-  <section class="nt-section nt-section--invert nt-reveal">
+  <!-- Roadmap ------------------------------------------------------------ -->
+  <section class="nt-section nt-section--invert nt-reveal" id="roadmap">
     <div class="nt-wrap">
       <SectionHead
         index="02"
-        eyebrow="Foundations"
-        title="Decisions that hold across all three."
-        lead="These are not features so much as constraints we accepted early and have not traded away."
+        eyebrow="Roadmap"
+        title="What we intend to build next."
+        lead="These do not exist yet. They are listed because we would rather be judged on a stated direction than imply a catalogue we do not have — and because the order is worth arguing with."
         invert={true}
       />
 
-      <div class="nt-cols nt-cols--3 foundations">
+      <ul class="ideas">
         {
-          foundations.map((item) => (
-            <div>
-              <span class="nt-mark" aria-hidden="true"></span>
-              <h3 class="nt-h3 foundation__title">{item.title}</h3>
-              <p class="foundation__body">{item.body}</p>
-            </div>
+          IDEA_PRODUCTS.map((product, i) => (
+            <li class="idea">
+              <div class="idea__head">
+                <p class="nt-micro nt-micro--invert nt-micro-idx">
+                  <span class="nt-fig">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {product.strap}
+                </p>
+                <h3 class="nt-h3 idea__name">
+                  {product.name}
+                  <span class="idea__stage">Idea stage</span>
+                </h3>
+              </div>
+
+              <div>
+                <p class="idea__body">{product.body}</p>
+                <ul class="nt-checks idea__points">
+                  {product.points.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
           ))
         }
-      </div>
+      </ul>
+
+      <p class="ideas__note">
+        Nothing here is committed, dated or available to buy. If one of these
+        would change how your finance function runs, that is worth a
+        conversation — the order we build in should be set by the people who
+        would use them.
+      </p>
+
+      <p class="ideas__cta">
+        <a href="/contact/" class="nt-arrow-link">
+          Tell us which one matters
+          <Arrow />
+        </a>
+      </p>
     </div>
   </section>
 
-  <!-- Integrations ----------------------------------------------------- -->
+  <!-- Foundations -------------------------------------------------------- -->
   <section class="nt-section nt-wrap nt-reveal">
+    <SectionHead
+      index="03"
+      eyebrow="Foundations"
+      title="Decisions that hold across everything we build."
+      lead="Constraints we accepted early and have not traded away — including in the roadmap above."
+    />
+
+    <div class="nt-cols nt-cols--3 foundations">
+      {
+        foundations.map((item) => (
+          <div>
+            <span class="nt-mark" aria-hidden="true" />
+            <h3 class="nt-h3 foundation__title">{item.title}</h3>
+            <p class="foundation__body">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Connections -------------------------------------------------------- -->
+  <section class="nt-section nt-wrap nt-divide nt-reveal">
     <div class="nt-split">
-      <div>
-        <SectionHead
-          index="03"
-          eyebrow="Connections"
-          title="It has to work with what you already run."
-        />
-      </div>
+      <SectionHead
+        index="04"
+        eyebrow="Connections"
+        title="It has to work with what you already run."
+      />
+
       <div>
         <p class="nt-lead">
           We connect to mainstream accounting systems and UAE banking exports
@@ -215,7 +236,7 @@ const foundations = [
               </tr>
               <tr>
                 <td>Working papers and support</td>
-                <td>Client Portal upload</td>
+                <td>Secure upload</td>
                 <td>Read / write</td>
               </tr>
               <tr>
@@ -239,7 +260,7 @@ const foundations = [
   <CtaBand
     eyebrow="Next step"
     title="See it against your own trial balance."
-    body="Walkthroughs are done with your numbers, not a demo dataset. Thirty minutes is usually enough to know whether this fits."
+    body="Walkthroughs use your numbers, not a demo dataset. Thirty minutes is usually enough to know whether this fits."
   />
 </Base>
 
@@ -303,6 +324,72 @@ const foundations = [
     }
   }
 
+  /* -- Roadmap ---------------------------------------------------------- */
+  .ideas {
+    list-style: none;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: var(--nt-hair) solid var(--nt-teal-500);
+  }
+
+  .idea {
+    display: grid;
+    gap: var(--nt-4);
+    align-items: start;
+    padding-block: var(--nt-6);
+    border-bottom: var(--nt-hair) solid rgb(255 255 255 / 0.14);
+  }
+
+  .idea__name {
+    margin-top: var(--nt-3);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--nt-3);
+  }
+
+  /* A stated stage, not a badge — square, hairline, no fill. */
+  .idea__stage {
+    border: var(--nt-hair) solid var(--nt-teal-500);
+    padding: 2px var(--nt-2);
+    color: var(--nt-teal-500);
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    font-weight: 500;
+    letter-spacing: var(--nt-tr-micro);
+    text-transform: uppercase;
+  }
+
+  .idea__body {
+    color: var(--nt-line-300);
+    max-width: 58ch;
+  }
+
+  .idea__points {
+    margin-top: var(--nt-4);
+    font-size: var(--nt-fs-sm);
+    color: var(--nt-line-300);
+    max-width: 52ch;
+  }
+
+  .ideas__note {
+    margin-top: var(--nt-6);
+    color: var(--nt-line-300);
+    font-size: var(--nt-fs-sm);
+    max-width: 64ch;
+  }
+
+  .ideas__cta {
+    margin-top: var(--nt-5);
+  }
+
+  @media (min-width: 60rem) {
+    .idea {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--nt-7);
+    }
+  }
+
+  /* -- Foundations and connections -------------------------------------- */
   .foundations {
     margin-top: clamp(2.5rem, 5vw, 4rem);
   }
@@ -314,7 +401,6 @@ const foundations = [
   .foundation__body {
     margin-top: var(--nt-3);
     font-size: var(--nt-fs-sm);
-    color: var(--nt-line-300);
     max-width: 44ch;
   }
 
