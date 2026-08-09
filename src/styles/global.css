@@ -60,6 +60,13 @@
   --nt-line-100: #f1f4f8; /*  DECORATIVE: zebra, inset bands             */
   --nt-white: #ffffff;
 
+  /* Dark grounds. The site now leads dark: the austere white-only treatment
+     read as empty at full-page scale, so weight comes from inverted surfaces
+     rather than from whitespace. */
+  --nt-ink-950: #030b16;
+  --nt-ink-900: #061527;
+  --nt-ink-850: #0a1e35;
+
   /* Semantic aliases — prefer these in components. */
   --nt-bg: var(--nt-white);
   --nt-bg-inset: var(--nt-line-100);
@@ -109,8 +116,9 @@
   --nt-9: 6rem;
   --nt-10: 8rem;
 
-  /* Vertical rhythm for full-bleed sections. */
-  --nt-section-y: clamp(3.5rem, 8vw, 7.5rem);
+  /* Vertical rhythm for full-bleed sections. Tightened: the previous scale put
+     so much air between bands that the page read as empty at full-page zoom. */
+  --nt-section-y: clamp(3rem, 5.5vw, 5rem);
 
   /* -- Structure -------------------------------------------------------- */
   --nt-measure: 1320px; /* content field width  */
@@ -278,6 +286,82 @@ hr {
 
 .nt-section--tight {
   padding-block: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* -- Dark surface -------------------------------------------------------
+   Rather than restyling every component for dark, this redefines the colour
+   tokens themselves inside the surface. Anything downstream that reads
+   --nt-navy-900 for a heading, or --nt-hairline for a rule, inverts
+   automatically — which is the whole reason colour literals were confined to
+   the token block in the first place. */
+.nt-dark {
+  --nt-navy-900: #ffffff;
+  --nt-navy-700: var(--nt-teal-500);
+  --nt-navy-500: var(--nt-teal-500);
+  --nt-teal-800: var(--nt-teal-500);
+  --nt-teal-700: var(--nt-teal-500);
+  --nt-ink-600: #a9bacd;
+  --nt-ink-400: #7d90a6;
+  --nt-line-300: #a9bacd;
+  --nt-line-200: rgb(255 255 255 / 0.16);
+  --nt-line-100: rgb(255 255 255 / 0.05);
+  /* --nt-white is deliberately NOT redefined here. It is used as a text colour
+     as well as a surface (the inverted wordmark, primary button labels), so
+     flipping it turns that text dark-on-dark. Surfaces that need to darken are
+     overridden explicitly below instead. */
+
+  --nt-bg: var(--nt-ink-950);
+  --nt-bg-inset: var(--nt-ink-900);
+  --nt-text: #ffffff;
+  --nt-text-body: #a9bacd;
+  --nt-text-muted: #7d90a6;
+  --nt-hairline: rgb(255 255 255 / 0.20);
+  --nt-hairline-soft: rgb(255 255 255 / 0.10);
+  --nt-focus: var(--nt-teal-500);
+
+  background: var(--nt-bg);
+  color: var(--nt-text-body);
+}
+
+/* The one solid element on a dark surface is teal, not navy — navy on
+   near-black carries no contrast. */
+.nt-dark .nt-btn {
+  border-color: var(--nt-teal-500);
+  color: #ffffff;
+}
+
+.nt-dark .nt-btn--primary {
+  background: var(--nt-teal-500);
+  color: var(--nt-ink-950);
+}
+
+.nt-dark .nt-btn--primary:hover {
+  background: #17c4bf;
+  border-color: #17c4bf;
+  color: var(--nt-ink-950);
+}
+
+.nt-dark .nt-btn--ghost:hover {
+  background: rgb(18 166 162 / 0.12);
+  color: #ffffff;
+}
+
+.nt-dark .nt-input,
+.nt-dark .nt-select,
+.nt-dark .nt-textarea,
+.nt-dark .nt-affix {
+  background: rgb(255 255 255 / 0.04);
+  color: #ffffff;
+}
+
+.nt-dark .nt-affix__unit {
+  background: rgb(255 255 255 / 0.06);
+  color: var(--nt-teal-500);
+}
+
+.nt-dark ::selection {
+  background: var(--nt-teal-500);
+  color: var(--nt-ink-950);
 }
 
 .nt-section--invert {

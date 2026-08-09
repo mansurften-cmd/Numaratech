@@ -114,7 +114,7 @@ const insights = insightsNewestFirst().slice(0, 3);
   bareTitle={true}
 >
   <!-- 01 · Hero ------------------------------------------------------- -->
-  <section class="hero nt-field">
+  <section class="hero nt-field nt-dark">
     <div class="nt-field__rules" aria-hidden="true"></div>
 
     <div class="nt-wrap hero__inner">
@@ -163,10 +163,14 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
+  <!-- The ticks edge sits between two dark bands, so it carries the dark
+       surface too — otherwise the page ground shows through as a white stripe. -->
+  <div class="nt-dark">
+    <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
+  </div>
 
   <!-- Statutory parameter strip ---------------------------------------- -->
-  <section class="nt-section nt-section--tight nt-wrap nt-divide">
+  <section class="nt-section nt-section--tight nt-dark"><div class="nt-wrap">
     <StatStrip
       caption="UAE Corporate Tax — statutory parameters"
       items={parameters}
@@ -177,6 +181,7 @@ const insights = insightsNewestFirst().slice(0, 3);
       <a href="/platform/corporate-tax/">run your own numbers</a> through the
       estimator.
     </p>
+    </div>
   </section>
 
   <!-- 02 · The problem -------------------------------------------------- -->
@@ -226,7 +231,7 @@ const insights = insightsNewestFirst().slice(0, 3);
   </section>
 
   <!-- 03 · Two halves ---------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
+  <section class="nt-section nt-dark nt-reveal"><div class="nt-wrap">
     <SectionHead
       index="03"
       eyebrow="How we work"
@@ -284,6 +289,7 @@ const insights = insightsNewestFirst().slice(0, 3);
       to file with it, and the advice is faster because the tooling underneath it
       was built for exactly this.
     </p>
+    </div>
   </section>
 
   <!-- 04 · Platform ----------------------------------------------------- -->
@@ -340,8 +346,9 @@ const insights = insightsNewestFirst().slice(0, 3);
     </div>
   </section>
 
-  <!-- 05 · Service lines ------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
+  <!-- 05 · Service lines ------------------------------------------------- -->
+  <section class="nt-section nt-dark nt-reveal">
+    <div class="nt-wrap">
     <SectionHead
       index="05"
       eyebrow="Advisory"
@@ -375,17 +382,17 @@ const insights = insightsNewestFirst().slice(0, 3);
         ))
       }
     </div>
+    </div>
   </section>
 
   <!-- 06 · Method (inverted for contrast) ------------------------------- -->
-  <section class="nt-section nt-section--invert nt-reveal">
+  <section class="nt-section nt-section--inset nt-reveal">
     <div class="nt-wrap">
       <SectionHead
         index="06"
         eyebrow="Method"
         title="Derived, not assembled."
         lead="The same four steps whether you are one company filing your first return or a firm running two hundred."
-        invert={true}
       />
 
       <ol class="nt-cols nt-cols--4 steps">
@@ -873,10 +880,12 @@ const insights = insightsNewestFirst().slice(0, 3);
     list-style: none;
   }
 
+  /* This band is light now, so its type takes the light-surface colours —
+     the previous values were tuned for the inverted version and washed out. */
   .step__index {
     display: block;
     text-align: left;
-    color: var(--nt-teal-500);
+    color: var(--nt-teal-800);
     font-family: var(--nt-font-mono);
     font-size: var(--nt-fs-micro);
     letter-spacing: var(--nt-tr-micro);
@@ -889,7 +898,7 @@ const insights = insightsNewestFirst().slice(0, 3);
   .step__body {
     margin-top: var(--nt-3);
     font-size: var(--nt-fs-sm);
-    color: var(--nt-line-300);
+    color: var(--nt-ink-600);
   }
 
   .method__cta {

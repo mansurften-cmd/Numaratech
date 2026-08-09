@@ -8,7 +8,7 @@ const isCurrent = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
 ---
 
-<header class="nt-site-header">
+<header class="nt-site-header nt-dark">
   <div class="nt-wrap bar">
     <a href="/" class="brand" aria-label="NUMARATECH — home">
       <Wordmark />
@@ -112,8 +112,8 @@ const isCurrent = (href: string) =>
     position: sticky;
     top: 0;
     z-index: 50;
-    background: var(--nt-white);
-    border-bottom: var(--nt-hair) solid var(--nt-hairline);
+    background: var(--nt-ink-950);
+    border-bottom: var(--nt-hair) solid rgb(255 255 255 / 0.14);
   }
 
   .bar {
@@ -175,7 +175,7 @@ const isCurrent = (href: string) =>
     top: 100%;
     left: calc(var(--nt-4) * -1);
     min-width: 21rem;
-    background: var(--nt-white);
+    background: var(--nt-ink-900);
     border: var(--nt-hair) solid var(--nt-hairline);
     border-top-color: var(--nt-accent-rule);
     opacity: 0;
@@ -206,7 +206,7 @@ const isCurrent = (href: string) =>
   }
 
   .menu__link:hover {
-    background: var(--nt-line-100);
+    background: rgb(255 255 255 / 0.05);
   }
 
   .menu__label {
@@ -263,7 +263,7 @@ const isCurrent = (href: string) =>
   .nt-nav-toggle__bars > span {
     display: block;
     height: var(--nt-hair);
-    background: var(--nt-navy-900);
+    background: #ffffff;
     transition: transform var(--nt-dur) var(--nt-ease),
       opacity var(--nt-dur) var(--nt-ease);
   }
@@ -289,8 +289,8 @@ const isCurrent = (href: string) =>
 
   /* -- Mobile panel ---------------------------------------------------- */
   .mobile {
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-    background: var(--nt-white);
+    border-top: var(--nt-hair) solid rgb(255 255 255 / 0.10);
+    background: var(--nt-ink-950);
     max-height: calc(100dvh - var(--nt-header-h));
     overflow-y: auto;
   }
