@@ -11,7 +11,16 @@ export const SITE = {
   tagline: 'Finance and compliance for UAE business — advisory and platform.',
   description:
     'NUMARATECH is a UAE accounting and tax consultancy, and the team behind a platform for Corporate Tax, financial statements and client workflow. Advisory when you need judgement; software when you need it repeatable.',
-  url: 'https://numaratech.com',
+  /**
+   * The origin that actually serves. numaratech.com is NOT yet purchased and
+   * does not resolve, so canonical, og:url and the sitemap must not point at
+   * it — doing so attributes ranking signal to a dead host.
+   *
+   * When numaratech.com is live: flip this, drop Disallow:/ from robots.txt,
+   * remove the X-Robots-Tag noindex from public/_headers, keep noindex
+   * permanently on *.workers.dev, and 301 workers.dev -> apex.
+   */
+  url: 'https://numaratech.mansurften.workers.dev',
   locale: 'en_AE',
   email: 'hello@numaratech.com',
   phoneDisplay: '+971 4 000 0000',

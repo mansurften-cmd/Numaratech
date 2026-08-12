@@ -4,7 +4,8 @@ import { defineConfig } from 'astro/config';
 // Update `site` to the production hostname before the first deploy; it is used
 // for canonical URLs, the sitemap and Open Graph tags.
 export default defineConfig({
-  site: 'https://numaratech.com',
+  // Must match SITE.url in src/consts.ts — drives canonical and the sitemap.
+  site: 'https://numaratech.mansurften.workers.dev',
   output: 'static',
   trailingSlash: 'always',
   build: {
