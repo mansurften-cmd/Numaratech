@@ -1,420 +1,84 @@
 ---
+/** /contact/ — Web3Forms form when an access key is present, direct details
+ *  otherwise (a visible gap rather than a form that discards enquiries). */
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionHead from '../components/SectionHead.astro';
-import Arrow from '../components/Arrow.astro';
+import PageHero from '../components/PageHero.astro';
 import { SITE, WEB3FORMS, hasContactForm } from '../consts';
-
-// Advisory options first — the practice is the regulated business, and most
-// first enquiries are about it rather than about licensing software.
-const interests = [
-  'Advisory — Accounting & Audit',
-  'Advisory — Tax & Advisory',
-  'Advisory — Risk & Compliance',
-  'Platform — Corporate Tax Engine',
-  'Platform — FS Studio',
-  'Platform — something on the roadmap',
-  'Implementation or data remediation',
-  'Something else',
-];
 ---
 
 <Base
   title="Contact"
-  description="Book a 30-minute walkthrough with NUMARATECH, or write to us directly. Based in Dubai, working with UAE businesses and accounting firms."
+  description="Talk to NUMARATECH about advisory work or the platform. Business Bay, Dubai."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Contact"
-    title="Thirty minutes, your numbers, no deck."
-    lead="Tell us what you are running and where it hurts. We will come back with a direct answer on whether we can help — including when the answer is no."
-    meta={[
+  <PageHero
+    kicker="Contact / Dubai"
+    title="Tell us what is due, and when."
+    lead="Bring your year end, your licence type and whatever is currently unresolved. A 30-minute call is usually enough to tell you what needs doing and what it costs."
+    stats={[
       { label: 'Email', value: SITE.email },
       { label: 'Telephone', value: SITE.phoneDisplay },
-      { label: 'Based in', value: `${SITE.address.city}, ${SITE.address.country}` },
-      { label: 'Response', value: 'One working day' },
+      { label: 'Office', value: `${SITE.address.line1}, ${SITE.address.city}` },
+      { label: 'Response', value: 'one business day' },
     ]}
   />
 
-  <section class="nt-section nt-wrap">
-    <div class="contact">
-      <!-- Form ------------------------------------------------------- -->
+  <section class="nt-section">
+    <div class="nt-split--even nt-split">
       <div>
-        <SectionHead
-          index="01"
-          eyebrow="Enquiry"
-          title="Send us the shape of the problem."
-        />
-
-        {
-          !hasContactForm() && (
-            <p class="nt-error form__unconfigured">
-              The enquiry form is not live yet. Please email
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a> — it reaches the
-              same place and we read it directly.
-            </p>
-          )
-        }
-
-        {/* Posts directly to Web3Forms. `action` is a real endpoint, so the
-            form still works with JavaScript disabled; the script below
-            intercepts submission only to report the result in place. */}
-        {hasContactForm() && (
-        <form
-          class="form"
-          id="contact-form"
-          method="post"
-          action={WEB3FORMS.endpoint}
-          novalidate
-        >
-          <input type="hidden" name="access_key" value={WEB3FORMS.accessKey} />
-          <input type="hidden" name="subject" value={WEB3FORMS.subject} />
-          <input type="hidden" name="from_name" value={SITE.name} />
-          <div class="form__fields">
-            <div class="nt-field-group">
-              <label class="nt-label" for="c-name">Your name</label>
-              <input
-                class="nt-input"
-                id="c-name"
-                name="name"
-                type="text"
-                autocomplete="name"
-                maxlength="120"
-                required
-              />
-            </div>
-
-            <div class="nt-field-group">
-              <label class="nt-label" for="c-email">Work email</label>
-              <input
-                class="nt-input"
-                id="c-email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                maxlength="200"
-                required
-              />
-            </div>
-
-            <div class="nt-field-group">
-              <label class="nt-label" for="c-company">Company</label>
-              <input
-                class="nt-input"
-                id="c-company"
-                name="company"
-                type="text"
-                autocomplete="organization"
-                maxlength="160"
-              />
-            </div>
-
-            <div class="nt-field-group">
-              <label class="nt-label" for="c-interest">What is this about?</label>
-              <select class="nt-select" id="c-interest" name="interest">
-                {interests.map((interest) => <option value={interest}>{interest}</option>)}
-              </select>
-            </div>
-
-            <div class="nt-field-group form__wide">
-              <label class="nt-label" for="c-message">
-                What are you trying to solve?
-              </label>
-              <textarea
-                class="nt-textarea"
-                id="c-message"
-                name="message"
-                maxlength="4000"
-                required
-                aria-describedby="c-message-hint"></textarea>
-              <p class="nt-hint" id="c-message-hint">
-                How many entities, what accounting system, and what currently
-                takes the longest. Detail helps us give you a useful answer
-                first time.
-              </p>
-            </div>
-
-            {/* Honeypot. Web3Forms rejects any submission where its reserved
-                `botcheck` field is filled, so this needs no logic of our own. */}
-            <div class="form__trap" aria-hidden="true">
-              <label for="c-botcheck">Website</label>
-              <input
-                id="c-botcheck"
-                name="botcheck"
-                type="checkbox"
-                tabindex="-1"
-                autocomplete="off"
-              />
-            </div>
-          </div>
-
-          <p class="form__consent">
-            By sending this you agree we may contact you about your enquiry. We
-            do not add you to a mailing list. See our
-            <a href="/privacy/">privacy notice</a>.
-          </p>
-
-          <div class="form__actions">
-            <!-- The single solid navy element on this page. -->
-            <button type="submit" class="nt-btn nt-btn--primary" data-submit>
-              Send enquiry
-              <Arrow class="nt-btn__arrow" />
-            </button>
-          </div>
-
-          <p class="nt-error form__status" data-status role="status" hidden></p>
-
-          <p class="form__processor nt-sm">
-            Sending this passes your details to Web3Forms, which forwards them to
-            our mailbox. See our <a href="/privacy/">privacy notice</a>.
-          </p>
-        </form>
-        )}
+        <div class="nt-eyebrow"><b>01</b><span>Direct</span></div>
+        <h2 class="nt-h2">Write, or call.</h2>
+        <p class="nt-body">
+          Either reaches the same three people. If your question is specific, send the detail — it
+          saves a round trip.
+        </p>
+        <div class="nt-footer__meta" style="color:var(--nt-ink)">
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
+          <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a><br />
+          {SITE.address.line1}<br />
+          {SITE.address.city}, {SITE.address.country}
+        </div>
       </div>
 
-      <!-- Direct routes ---------------------------------------------- -->
-      <aside class="side">
-        <div class="side__block">
-          <p class="nt-micro nt-micro--accent nt-micro-idx">Direct</p>
-          <ul class="side__list">
-            <li>
-              <span class="nt-micro">Email</span>
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            </li>
-            <li>
-              <span class="nt-micro">Telephone</span>
-              <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
-            </li>
-            <li>
-              <span class="nt-micro">Office</span>
-              <span>
-                {SITE.address.line1}<br />
-                {SITE.address.city}, {SITE.address.country}
-              </span>
-            </li>
-          </ul>
-        </div>
+      <div>
+        <div class="nt-eyebrow"><b>02</b><span>Enquiry</span></div>
+        {
+          hasContactForm() ? (
+            <form action={WEB3FORMS.endpoint} method="POST" style="display:flex; flex-direction:column; gap:16px; max-width:34em">
+              <input type="hidden" name="access_key" value={WEB3FORMS.accessKey} />
+              <input type="hidden" name="subject" value={WEB3FORMS.subject} />
+              <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" />
 
-        <div class="side__block">
-          <p class="nt-micro nt-micro--accent nt-micro-idx">
-            Before you write
-          </p>
-          <ul class="nt-checks side__checks">
-            <li>
-              Want to see the arithmetic first? The
-              <a href="/platform/corporate-tax/#estimator">estimator</a> runs in
-              your browser and stores nothing.
-            </li>
-            <li>
-              We do advise, but only under a signed engagement letter. Nothing
-              sent through this form is advice, and it does not make you a
-              client — see our <a href="/terms/">terms</a>.
-            </li>
-            <li>
-              Recruiters and vendors: please use email rather than this form.
-            </li>
-          </ul>
-        </div>
-      </aside>
+              <label style="display:flex; flex-direction:column; gap:7px">
+                <span class="nt-kicker">Name</span>
+                <input required name="name" type="text" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px" />
+              </label>
+              <label style="display:flex; flex-direction:column; gap:7px">
+                <span class="nt-kicker">Email</span>
+                <input required name="email" type="email" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px" />
+              </label>
+              <label style="display:flex; flex-direction:column; gap:7px">
+                <span class="nt-kicker">What do you need?</span>
+                <textarea required name="message" rows="5" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px; resize:vertical"></textarea>
+              </label>
+              <button class="nt-btn" type="submit" style="align-self:flex-start">Send enquiry</button>
+              <p style="margin:0; font-size:12.5px; color:var(--nt-mute)">
+                Delivered by Web3Forms to our mailbox. We do not add you to a list.
+              </p>
+            </form>
+          ) : (
+            <div style="border:1px solid var(--nt-navy); padding:24px 26px; max-width:34em">
+              <div class="nt-kicker" style="margin-bottom:10px">Form not yet live</div>
+              <p class="nt-small" style="margin:0 0 14px">
+                The enquiry form is switched off until a Web3Forms access key is set in
+                <code style="font-family:var(--nt-mono)">src/consts.ts</code>. Until then, email or
+                telephone reaches us directly.
+              </p>
+              <a class="nt-btn" href={`mailto:${SITE.email}`}>Email us</a>
+            </div>
+          )
+        }
+      </div>
     </div>
   </section>
 </Base>
-
-<style>
-  .contact {
-    display: grid;
-    gap: var(--nt-7);
-    align-items: start;
-  }
-
-  .form {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  .form__fields {
-    display: grid;
-    gap: var(--nt-5);
-    padding-top: var(--nt-5);
-    border-top: var(--nt-hair) solid var(--nt-hairline);
-  }
-
-  .form__trap {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  /* The 16px input floor holds without exception, honeypot included, so the
-     rule can be asserted for every input on the page. */
-  .form__trap input {
-    font-size: 1rem;
-  }
-
-  .form__consent {
-    margin-top: var(--nt-5);
-    color: var(--nt-text-muted);
-    font-size: var(--nt-fs-sm);
-    max-width: 54ch;
-  }
-
-  .form__actions {
-    margin-top: var(--nt-5);
-  }
-
-  .form__status {
-    margin-top: var(--nt-5);
-    max-width: 56ch;
-  }
-
-  .form__status[hidden] {
-    display: none;
-  }
-
-  .form__unconfigured {
-    margin-top: clamp(2rem, 4vw, 3rem);
-    max-width: 56ch;
-  }
-
-  .form__processor {
-    margin-top: var(--nt-5);
-    padding-top: var(--nt-4);
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-    color: var(--nt-text-muted);
-    max-width: 56ch;
-  }
-
-  /* -- Side --------------------------------------------------------- */
-  .side {
-    display: grid;
-    gap: var(--nt-6);
-    border-top: var(--nt-hair) solid var(--nt-accent-rule);
-    padding-top: var(--nt-4);
-  }
-
-  .side__list {
-    list-style: none;
-    display: grid;
-    gap: var(--nt-4);
-    margin-top: var(--nt-4);
-    font-size: var(--nt-fs-sm);
-  }
-
-  .side__list > li {
-    display: grid;
-    gap: var(--nt-1);
-  }
-
-  .side__list a {
-    color: var(--nt-navy-700);
-    text-decoration: none;
-    border-bottom: var(--nt-hair) solid var(--nt-hairline);
-    justify-self: start;
-  }
-
-  .side__list a:hover {
-    color: var(--nt-accent);
-    border-color: var(--nt-accent-rule);
-  }
-
-  .side__block:not(:first-child) {
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-    padding-top: var(--nt-5);
-  }
-
-  .side__checks {
-    margin-top: var(--nt-4);
-    font-size: var(--nt-fs-sm);
-  }
-
-  @media (min-width: 48rem) {
-    .form__fields {
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: var(--nt-5);
-    }
-
-    .form__wide {
-      grid-column: 1 / -1;
-    }
-  }
-
-  @media (min-width: 62rem) {
-    .contact {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      gap: var(--nt-8);
-    }
-  }
-</style>
-
-<script>
-  // Progressive enhancement over a form that already works on its own.
-  //
-  // The form's `action` is the real Web3Forms endpoint, so with JavaScript
-  // disabled it submits natively and Web3Forms renders its own confirmation.
-  // This script intercepts submission purely to report the outcome in place.
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-
-  if (form) {
-    const status = form.querySelector<HTMLElement>('[data-status]');
-    const submit = form.querySelector<HTMLButtonElement>('[data-submit]');
-
-    const say = (message: string) => {
-      if (!status) return;
-      status.textContent = message;
-      status.hidden = message === '';
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      // Use the browser's own validation messages before going near the network.
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-
-      const payload = Object.fromEntries(new FormData(form).entries());
-
-      if (submit) submit.disabled = true;
-      say('Sending…');
-
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            accept: 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-
-        // Web3Forms answers with { success: boolean, message: string } and uses
-        // a non-2xx status on failure, so check both rather than trusting one.
-        const result = (await response.json().catch(() => ({}))) as {
-          success?: boolean;
-          message?: string;
-        };
-
-        if (response.ok && result.success !== false) {
-          form.reset();
-          say(
-            'Thank you — your enquiry is with us. We reply within one working day.'
-          );
-        } else {
-          say(
-            `${
-              result.message ?? 'We could not send that.'
-            } Please email hello@numaratech.com and we will pick it up directly.`
-          );
-        }
-      } catch {
-        say(
-          'Network error — nothing was sent. Please email hello@numaratech.com instead.'
-        );
-      } finally {
-        if (submit) submit.disabled = false;
-      }
-    });
-  }
-</script>

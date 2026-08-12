@@ -1,1022 +1,194 @@
 ---
 import Base from '../layouts/Base.astro';
-import SectionHead from '../components/SectionHead.astro';
-import StatStrip from '../components/StatStrip.astro';
-import LineDiagram from '../components/LineDiagram.astro';
-import CtaBand from '../components/CtaBand.astro';
-import Arrow from '../components/Arrow.astro';
-import WireCore from '../components/WireCore.astro';
-import Readout from '../components/Readout.astro';
-import { SITE, UAE_CT } from '../consts';
-import { SERVICE_GROUPS, IDEA_PRODUCTS } from '../services';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
+import { SERVICE_GROUPS, LIVE_PRODUCTS, ALL_SERVICES } from '../services';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
-
-const nf = new Intl.NumberFormat('en-AE');
-
-const parameters = [
-  {
-    figure: `${UAE_CT.standardRate * 100}%`,
-    label: 'Standard CT rate',
-    note: 'Applied to taxable income above the zero band.',
-  },
-  {
-    figure: nf.format(UAE_CT.zeroBandCeiling),
-    label: `Zero band (${UAE_CT.currency})`,
-    note: 'Taxable income up to this amount is taxed at 0%.',
-  },
-  {
-    figure: nf.format(UAE_CT.smallBusinessReliefRevenueCap),
-    label: `Small Business Relief cap (${UAE_CT.currency})`,
-    note: 'Revenue ceiling for electing the relief.',
-  },
-  {
-    figure: '2023',
-    label: 'Regime in force',
-    note: `Financial years beginning on or after ${UAE_CT.effectiveFrom}.`,
-  },
-];
-
-const products = [
-  {
-    variant: 'tax' as const,
-    name: 'Corporate Tax Engine',
-    href: '/platform/corporate-tax/',
-    line: 'From trial balance to filed return',
-    body:
-      'Pulls the trial balance, applies the adjustments you have defined, computes the liability, and keeps the working papers attached to every line.',
-  },
-  {
-    variant: 'statements' as const,
-    name: 'FS Studio',
-    href: '/platform/fs-studio/',
-    line: 'IFRS statements, generated',
-    body:
-      'Financial statements built from the ledger rather than retyped into a template. Change a mapping and every affected note updates with it.',
-  },
-];
-
-const steps = [
-  {
-    index: '01',
-    title: 'Connect',
-    body:
-      'Read-only connections to your accounting system and banks. Nothing is retyped, so nothing drifts.',
-  },
-  {
-    index: '02',
-    title: 'Normalise',
-    body:
-      'Your chart of accounts is mapped once to a structure that can carry both a statutory statement and a tax computation.',
-  },
-  {
-    index: '03',
-    title: 'Compute',
-    body:
-      'Statements and the tax position are derived, not assembled by hand. Every figure keeps a link back to the entries behind it.',
-  },
-  {
-    index: '04',
-    title: 'File and defend',
-    body:
-      'Submit with the working papers already attached. When a question arrives eighteen months later, the answer is still in the file.',
-  },
-];
-
-const segments = [
-  {
-    title: 'Scaling owner-managed businesses',
-    body:
-      'The close was fine at one entity and is straining at four. Fix the method now, while the migration is small and the person who knows it is still here.',
-  },
-  {
-    title: 'Accounting firms adding clients',
-    body:
-      'Growth is capped by reviewer hours, not by sales. One method across the portfolio raises the ceiling without standardising away judgement.',
-  },
-  {
-    title: 'Free zone entities',
-    body:
-      'Qualifying income tests and de minimis tracking that hold up as the business grows past the thresholds it was structured around.',
-  },
-  {
-    title: 'Groups and holdings',
-    body:
-      'Consolidation, intra-group eliminations and transfer pricing documentation that reconcile to the ledger — and keep doing so at the next acquisition.',
-  },
-];
+import { SITE, UAE_CT } from '../consts';
 
 const insights = insightsNewestFirst().slice(0, 3);
 ---
 
-<Base
-  title={`${SITE.name} — ${SITE.tagline}`}
-  description={SITE.description}
-  bareTitle={true}
->
-  <!-- 01 · Hero ------------------------------------------------------- -->
-  <section class="hero nt-field nt-dark">
-    <div class="nt-field__rules" aria-hidden="true"></div>
+<Base title={SITE.name} description={SITE.description} ownNav={true}>
+  <PageHero
+    kicker="Advisory and platform / United Arab Emirates"
+    title="Finance that can be defended."
+    lead="A licensed UAE accounting and tax practice, and the platform our own filings run through. Advisory when you need judgement; software when you need it repeatable."
+    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    secondary={{ label: 'See the platform', href: '/platform/' }}
+    stats={[
+      { label: 'Advisory groups', value: 'three' },
+      { label: 'Service lines', value: String(ALL_SERVICES.length) },
+      { label: 'Products live', value: String(LIVE_PRODUCTS.length) },
+      { label: 'Roadmap', value: 'four at idea stage', live: true },
+    ]}
+  />
 
-    <div class="nt-wrap hero__inner">
-      <div class="hero__grid">
-        <div class="hero__copy">
-          <p class="nt-micro nt-micro--accent nt-micro-idx">
-            United Arab Emirates &nbsp;/&nbsp; Finance &amp; compliance systems
-          </p>
-
-          <h1 class="nt-display hero__title">
-            Numbers that<br />survive scrutiny.
-          </h1>
-
-          <p class="nt-lead hero__lead">
-            {SITE.name} is a UAE accounting and tax consultancy — and the team
-            behind the platform it works on. Advisory when a position needs
-            judgement; software when the work needs to be repeatable.
-          </p>
-
-          <div class="nt-btn-row hero__actions">
-            <!-- The single solid navy element on this page. -->
-            <a href="/advisory/" class="nt-btn nt-btn--primary">
-              Talk to the practice
-              <Arrow class="nt-btn__arrow" />
-            </a>
-            <a href="/business-case/" class="nt-btn nt-btn--ghost">
-              Run the business case
-              <Arrow class="nt-btn__arrow" />
-            </a>
-          </div>
-        </div>
-
-        <WireCore class="hero__trace" />
-      </div>
-
-      <Readout
-        class="hero__readout"
-        caret={true}
-        items={[
-          { label: 'Ledger', value: 'read-only' },
-          { label: 'Mapping', value: 'once per entity' },
-          { label: 'Lineage', value: 'figure → journal' },
-          { label: 'Status', value: 'accepting engagements' },
-        ]}
-      />
-    </div>
-  </section>
-
-  <!-- The ticks edge sits between two dark bands, so it carries the dark
-       surface too — otherwise the page ground shows through as a white stripe. -->
-  <div class="nt-dark">
-    <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
-  </div>
-
-  <!-- Statutory parameter strip ---------------------------------------- -->
-  <section class="nt-section nt-section--tight nt-dark"><div class="nt-wrap">
-    <StatStrip
-      caption="UAE Corporate Tax — statutory parameters"
-      items={parameters}
-    />
-    <p class="strip-note nt-sm">
-      Figures as published by the Federal Tax Authority. Verify against current
-      guidance before relying on them —
-      <a href="/platform/corporate-tax/">run your own numbers</a> through the
-      estimator.
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Advisory</span></div>
+    <h2 class="nt-h2">Three groups, one team.</h2>
+    <p class="nt-body">
+      Books and assurance, tax positions, and the obligations that carry real penalties. Each group
+      page carries its services in full.
     </p>
-    </div>
-  </section>
-
-  <!-- 02 · The problem -------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <SectionHead
-      index="02"
-      eyebrow="The gap"
-      title="Compliance moved. The tooling stayed where it was."
-      lead="A Corporate Tax regime arrived, statutory financial statements came with it, and e-invoicing is next. Most finance functions absorbed all of it into the same spreadsheet they were already using."
-    />
-
-    <div class="nt-cols nt-cols--3 problem">
-      <div>
-        <p class="nt-micro nt-micro-idx">Derivation is invisible</p>
-        <h3 class="nt-h3 problem__title">
-          Nobody can say where the number came from
-        </h3>
-        <p class="problem__body">
-          A figure is typed into a return from a workbook, which was built from
-          an export, which was filtered by someone who has since left. The
-          answer exists; the trail does not.
-        </p>
-      </div>
-      <div>
-        <p class="nt-micro nt-micro-idx">Work is repeated</p>
-        <h3 class="nt-h3 problem__title">
-          The same mapping, re-done every period
-        </h3>
-        <p class="problem__body">
-          Accounts get grouped by hand for the statements, then grouped again,
-          differently, for the tax computation. Two sets of judgement that are
-          supposed to agree and quietly stop agreeing.
-        </p>
-      </div>
-      <div>
-        <p class="nt-micro nt-micro-idx">Evidence arrives late</p>
-        <h3 class="nt-h3 problem__title">
-          Working papers assembled after the fact
-        </h3>
-        <p class="problem__body">
-          Support is gathered when the auditor or the FTA asks, which is the
-          most expensive possible moment to gather it — and the point at which
-          memory has already gone.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 · Two halves ---------------------------------------------------- -->
-  <section class="nt-section nt-dark nt-reveal"><div class="nt-wrap">
-    <SectionHead
-      index="03"
-      eyebrow="How we work"
-      title="Two halves, kept separate."
-      lead="It matters that you know which one you are buying. Plenty of clients take one and never touch the other — they are deliberately not bundled."
-    />
-
-    <div class="nt-cols nt-cols--2 halves">
-      <div>
-        <p class="nt-micro nt-micro-idx">Regulated practice</p>
-        <h3 class="nt-h3 half__title">Advisory</h3>
-        <p class="half__body">
-          A licensed accounting and tax consultancy. Engaged under an engagement
-          letter, forming professional judgements, accountable for the positions
-          we recommend — Corporate Tax, accounting and IFRS reporting, AML and
-          DNFBP compliance.
-        </p>
-        <ul class="nt-checks half__points">
-          <li>We take the position and stand behind it</li>
-          <li>Working papers built as the work happens</li>
-          <li>Support if the FTA asks a question later</li>
-        </ul>
-        <p class="half__cta">
-          <a href="/advisory/" class="nt-arrow-link">
-            The advisory practice
-            <Arrow />
-          </a>
-        </p>
-      </div>
-
-      <div>
-        <p class="nt-micro nt-micro-idx">Software</p>
-        <h3 class="nt-h3 half__title">Platform</h3>
-        <p class="half__body">
-          The tooling our own team files with, licensed to other firms and
-          finance functions. It computes and it evidences; it does not decide.
-          Judgement stays with your people.
-        </p>
-        <ul class="nt-checks half__points">
-          <li>One mapped ledger behind every output</li>
-          <li>Lineage from a filed figure back to the journal</li>
-          <li>Yours to run, with your own team in control</li>
-        </ul>
-        <p class="half__cta">
-          <a href="/platform/" class="nt-arrow-link">
-            The platform
-            <Arrow />
-          </a>
-        </p>
-      </div>
-    </div>
-
-    <p class="halves__note nt-sm">
-      Each half makes the other honest: the software is shaped by people who have
-      to file with it, and the advice is faster because the tooling underneath it
-      was built for exactly this.
-    </p>
-    </div>
-  </section>
-
-  <!-- 04 · Platform ----------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <SectionHead
-      index="04"
-      eyebrow="Platform"
-      title="Three products. One model of your business."
-      lead="They share a single mapped ledger, so the statements, the tax computation and the client file cannot disagree with each other."
-    />
-
-    <ul class="nt-ruled products">
-      {
-        products.map((product) => (
-          <li class="product">
-            <div class="product__body">
-              <p class="nt-micro nt-micro-idx">{product.line}</p>
-              <h3 class="nt-h3 product__name">
-                <a href={product.href}>{product.name}</a>
-              </h3>
-              <p class="product__text">{product.body}</p>
-              <p class="product__more">
-                <a href={product.href} class="nt-arrow-link">
-                  {product.name}
-                  <Arrow />
-                </a>
-              </p>
-            </div>
-            <LineDiagram variant={product.variant} class="product__diagram" />
-          </li>
-        ))
-      }
-    </ul>
-
-    <div class="roadmap">
-      <p class="nt-micro nt-micro--accent nt-micro-idx">
-        Roadmap &nbsp;·&nbsp; idea stage
-      </p>
-      <ul class="roadmap__list">
-        {
-          IDEA_PRODUCTS.map((product) => (
-            <li>
-              <span class="roadmap__name">{product.name}</span>
-              <span class="roadmap__strap">{product.strap}</span>
-            </li>
-          ))
-        }
-      </ul>
-      <p class="roadmap__note nt-sm">
-        These do not exist yet and are not available to buy. We list them so the
-        direction is arguable —
-        <a href="/platform/#roadmap">see what each one would do</a>.
-      </p>
-    </div>
-  </section>
-
-  <!-- 05 · Service lines ------------------------------------------------- -->
-  <section class="nt-section nt-dark nt-reveal">
-    <div class="nt-wrap">
-    <SectionHead
-      index="05"
-      eyebrow="Advisory"
-      title="Seventeen service lines, three groups."
-      lead="The regulated half of the business. Most clients start in one group and end up using two, because the underlying data is shared and running them together costs less than running them apart."
-    />
-
-    <div class="lines">
+    <div class="nt-cells nt-cells--3" style="--nt-cols:3">
       {
         SERVICE_GROUPS.map((group, i) => (
-          <div class="line nt-bracket">
-            <p class="nt-micro nt-micro-idx">
-              <span class="nt-fig">{String(i + 1).padStart(2, '0')}</span>
-              {group.strap}
-            </p>
-            <h3 class="nt-h3 line__name">
-              <a href={`/advisory/${group.slug}/`}>{group.name}</a>
-            </h3>
-            <ul class="line__services">
-              {group.services.map((service) => (
-                <li>{service.name}</li>
-              ))}
-            </ul>
-            <p class="line__cta">
-              <a href={`/advisory/${group.slug}/`} class="nt-arrow-link">
-                Read more
-                <Arrow />
-              </a>
-            </p>
+          <div class="nt-cell">
+            <div class="nt-cell__num">{String(i + 1).padStart(2, '0')}</div>
+            <h3 class="nt-h3">{group.name}</h3>
+            <div class="nt-kicker">{group.strap}</div>
+            <p>{group.lead}</p>
+            <a class="nt-link" href={`/advisory/${group.slug}/`} style="margin-top:8px">
+              {group.name} in full
+            </a>
           </div>
         ))
       }
     </div>
-    </div>
   </section>
 
-  <!-- 06 · Method (inverted for contrast) ------------------------------- -->
-  <section class="nt-section nt-section--inset nt-reveal">
-    <div class="nt-wrap">
-      <SectionHead
-        index="06"
-        eyebrow="Method"
-        title="Derived, not assembled."
-        lead="The same four steps whether you are one company filing your first return or a firm running two hundred."
-      />
-
-      <ol class="nt-cols nt-cols--4 steps">
+  <section class="nt-section nt-dark nt-section--flush">
+    <div class="nt-grid--v"></div>
+    <div class="nt-layer">
+      <div class="nt-eyebrow"><b>02</b><span>Platform</span></div>
+      <h2 class="nt-h2">It computes and it evidences. It does not decide.</h2>
+      <p class="nt-body">
+        Two products in production, both reading the same mapped ledger — so the statements and the
+        tax computation cannot disagree with each other.
+      </p>
+      <div class="nt-cells" style="--nt-cols:2">
         {
-          steps.map((step) => (
-            <li class="step">
-              <span class="nt-fig step__index">{step.index}</span>
-              <h3 class="nt-h3 step__title">{step.title}</h3>
-              <p class="step__body">{step.body}</p>
-            </li>
+          LIVE_PRODUCTS.map((product) => (
+            <div class="nt-cell">
+              <div class="nt-cell__head">
+                <h3 class="nt-h3">{product.name}</h3>
+                <span class="nt-stage nt-stage--live">{product.stage}</span>
+              </div>
+              <div class="nt-kicker">{product.strap}</div>
+              <p>{product.body}</p>
+              <div class="nt-cell__notes">
+                {product.points.map((point) => <div>{point}</div>)}
+              </div>
+              {product.href && (
+                <a class="nt-link" href={product.href} style="margin-top:8px; border-bottom-color:var(--nt-teal-light)">
+                  {product.name}
+                </a>
+              )}
+            </div>
           ))
         }
-      </ol>
-
-      <p class="method__cta">
-        <a href="/services/" class="nt-arrow-link">
-          How implementation works
-          <Arrow />
-        </a>
-      </p>
-    </div>
-  </section>
-
-  <!-- 07 · Estimator teaser --------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-reveal">
-    <div class="teaser">
-      <div>
-        <SectionHead
-          index="07"
-          eyebrow="Try it"
-          title="Estimate your Corporate Tax position now."
-          lead="A working estimator, free and on this site. Enter accounting profit and your adjustments; it returns the computation as a schedule you can print."
-        />
-        <p class="teaser__cta">
-          <a href="/platform/corporate-tax/#estimator" class="nt-arrow-link">
-            Open the estimator
-            <Arrow />
-          </a>
-        </p>
-      </div>
-
-      <div class="teaser__panel">
-        <p class="nt-micro">Illustrative computation</p>
-        <table class="nt-table teaser__table">
-          <tbody>
-            <tr>
-              <td>Accounting profit</td>
-              <td class="nt-fig">1,250,000</td>
-            </tr>
-            <tr>
-              <td>Non-deductible adjustments</td>
-              <td class="nt-fig">75,000</td>
-            </tr>
-            <tr>
-              <td>Taxable income</td>
-              <td class="nt-fig">1,325,000</td>
-            </tr>
-            <tr>
-              <td>Less zero band</td>
-              <td class="nt-fig">(375,000)</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Corporate Tax at 9%</td>
-              <td class="nt-fig">85,500</td>
-            </tr>
-          </tfoot>
-        </table>
-        <p class="teaser__note nt-sm">
-          Illustration only, in {UAE_CT.currency}. Not a computation of your
-          liability and not tax advice.
-        </p>
       </div>
     </div>
   </section>
 
-  <!-- 08 · Growth --------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <SectionHead
-      index="08"
-      eyebrow="Growth"
-      title="The tenth entity should cost less than the first."
-      lead="A manual close scales linearly — twenty entities cost roughly twenty times one, and it never gets cheaper for having been done before. A mapped ledger does not behave that way."
-    />
-
-    <div class="scale nt-bracket">
-      <div class="scale__col">
-        <p class="nt-micro nt-micro-idx">Manual close</p>
-        <p class="scale__claim">Cost grows with the business.</p>
-        <p class="scale__body">
-          Each new entity is a new set of judgements made from scratch, every
-          period, by someone who has to be available.
-        </p>
-      </div>
-      <div class="scale__col">
-        <p class="nt-micro nt-micro-idx">Mapped ledger</p>
-        <p class="scale__claim">Cost grows with new decisions.</p>
-        <p class="scale__body">
-          The expensive part is paid once per entity and reused. Year two costs
-          a fraction of year one, because the method already exists.
-        </p>
-      </div>
-    </div>
-
-    <p class="scale__cta">
-      <a href="/business-case/" class="nt-arrow-link">
-        Work it out on your own numbers
-        <Arrow />
-      </a>
+  <section class="nt-section" id="estimator">
+    <div class="nt-eyebrow"><b>03</b><span>Corporate Tax estimator</span></div>
+    <h2 class="nt-h2">Drag the year's taxable income.</h2>
+    <p class="nt-body">
+      The published UAE rules, applied to one number: nothing above the zero band is taxed until it
+      is, and the rate is flat after that. Indicative only — reliefs and free zone positions change
+      the answer.
     </p>
 
-    <div class="segments-head">
-      <p class="nt-micro nt-micro-idx">Where this bites hardest</p>
-    </div>
+    <div class="nt-split--even nt-split">
+      <div>
+        <label for="nt-income" class="nt-kicker" style="display:block; margin-bottom:14px">
+          Taxable income · {UAE_CT.currency}
+        </label>
+        <!-- The statutory parameters travel on data attributes rather than via
+             define:vars, because define:vars forces an inline script and this
+             site's CSP is script-src 'self' with no 'unsafe-inline'. An inline
+             script here would be refused by the browser and the estimator would
+             sit dead on the page. -->
+        <input
+          id="nt-income"
+          type="range"
+          min="0"
+          max="5000000"
+          step="25000"
+          value="1500000"
+          data-rate={String(UAE_CT.standardRate)}
+          data-band={String(UAE_CT.zeroBandCeiling)}
+          style="width:100%; accent-color:var(--nt-teal)"
+        />
+        <div style="display:flex; justify-content:space-between; font-family:var(--nt-mono); font-size:11px; color:var(--nt-mute); margin-top:8px">
+          <span>0</span><span>5,000,000</span>
+        </div>
+      </div>
 
-    <div class="nt-cols nt-cols--2 segments">
+      <div style="border:1px solid var(--nt-navy); padding:0">
+        <div class="nt-console__bar">
+          <span>Estimate</span>
+          <span>{UAE_CT.standardRate * 100}% above {UAE_CT.currency} {UAE_CT.zeroBandCeiling.toLocaleString('en-AE')}</span>
+        </div>
+        <div style="padding:20px 22px; display:flex; flex-direction:column; gap:14px">
+          <div class="nt-meter"><span>Taxable income</span><span id="nt-out-income">1,500,000</span></div>
+          <div class="nt-meter"><span>Taxed at 0%</span><span id="nt-out-zero">375,000</span></div>
+          <div class="nt-meter"><span>Taxed at 9%</span><span id="nt-out-taxed">1,125,000</span></div>
+          <div class="nt-figure nt-figure--lead" style="border-top:2px solid var(--nt-navy); padding-top:12px">
+            <span>Corporate Tax</span>
+            <span id="nt-out-tax">101,250</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>04</b><span>Insights</span></div>
+    <h2 class="nt-h2">What we have written down.</h2>
+    <div class="nt-cells nt-cells--3" style="--nt-cols:3">
       {
-        segments.map((segment) => (
-          <div>
-            <span class="nt-mark" aria-hidden="true"></span>
-            <h3 class="nt-h3 segment__title">{segment.title}</h3>
-            <p class="segment__body">{segment.body}</p>
+        insights.map((insight) => (
+          <div class="nt-cell">
+            <div class="nt-kicker">{insight.topic}</div>
+            <h3 class="nt-h3">{insight.title}</h3>
+            <p>{insight.summary}</p>
+            <div class="nt-cell__notes">
+              <div>{formatInsightDate(insight.date)} · {insight.readingMinutes} min read</div>
+            </div>
+            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it</a>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- 09 · Insights ------------------------------------------------------ -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <div class="insights__head">
-      <SectionHead
-        index="09"
-        eyebrow="Insights"
-        title="What we have learned doing the work."
-      />
-      <p class="insights__all">
-        <a href="/insights/" class="nt-arrow-link">
-          All insights
-          <Arrow />
-        </a>
-      </p>
-    </div>
+  <NextBand
+    title="Start with what is due."
+    body="A 30-minute call. Bring your year end, your licence type and whatever is currently unresolved — we will tell you plainly what needs doing and what it costs."
+  />
 
-    <ul class="nt-ruled insights">
-      {
-        insights.map((insight) => (
-          <li class="insight">
-            <p class="nt-micro insight__meta">
-              <span>{insight.topic}</span>
-              <span aria-hidden="true">·</span>
-              <time datetime={insight.date}>
-                {formatInsightDate(insight.date)}
-              </time>
-              <span aria-hidden="true">·</span>
-              <span>{insight.readingMinutes} min read</span>
-            </p>
-            <h3 class="nt-h3 insight__title">
-              <a href={`/insights/${insight.slug}/`}>{insight.title}</a>
-            </h3>
-            <p class="insight__summary">{insight.summary}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  <script>
+    // Bundled to an external file (no is:inline), so script-src 'self' allows
+    // it. Parameters come off the input's data attributes.
+    const slider = document.getElementById('nt-income') as HTMLInputElement | null;
 
-  <!-- The hero already spends this page's one solid navy element. -->
-  <CtaBand primary={false} />
+    if (slider) {
+      const rate = Number(slider.dataset.rate);
+      const band = Number(slider.dataset.band);
+      const fmt = (n: number) => Math.round(n).toLocaleString('en-AE');
+
+      const out = {
+        income: document.getElementById('nt-out-income'),
+        zero: document.getElementById('nt-out-zero'),
+        taxed: document.getElementById('nt-out-taxed'),
+        tax: document.getElementById('nt-out-tax'),
+      };
+
+      const update = () => {
+        const income = Number(slider.value);
+        const zero = Math.min(income, band);
+        const taxed = Math.max(0, income - band);
+        if (out.income) out.income.textContent = fmt(income);
+        if (out.zero) out.zero.textContent = fmt(zero);
+        if (out.taxed) out.taxed.textContent = fmt(taxed);
+        if (out.tax) out.tax.textContent = fmt(taxed * rate);
+      };
+
+      slider.addEventListener('input', update);
+      update();
+    }
+  </script>
 </Base>
-
-<style>
-  /* -- Hero -------------------------------------------------------------- */
-  .hero {
-    border-bottom: var(--nt-hair) solid var(--nt-hairline);
-  }
-
-  .hero__inner {
-    /* Less below than above: the readout strip closes the hero, so the extra
-       trailing space just read as a gap before the ruled edge. */
-    padding-block: clamp(3rem, 8vw, 6.5rem) clamp(2rem, 4vw, 3rem);
-  }
-
-  .hero__grid {
-    display: grid;
-    gap: var(--nt-7);
-    align-items: center;
-  }
-
-  .hero__title {
-    margin-top: var(--nt-5);
-  }
-
-  .hero__lead {
-    margin-top: var(--nt-6);
-    max-width: 52ch;
-  }
-
-  .hero__actions {
-    margin-top: var(--nt-7);
-  }
-
-  .hero__trace {
-    justify-self: start;
-  }
-
-  .hero__readout {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  @media (min-width: 62rem) {
-    .hero__grid {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-      gap: var(--nt-8);
-    }
-
-    .hero__trace {
-      justify-self: end;
-    }
-  }
-
-  /* -- Growth ------------------------------------------------------------ */
-  .scale {
-    display: grid;
-    gap: 0;
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    border-top: var(--nt-hair) solid var(--nt-navy-700);
-    border-bottom: var(--nt-hair) solid var(--nt-hairline);
-  }
-
-  .scale__col {
-    padding: var(--nt-6) var(--nt-5) var(--nt-6) 0;
-    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
-  }
-
-  .scale__col:last-child {
-    border-bottom: 0;
-  }
-
-  .scale__claim {
-    margin-top: var(--nt-4);
-    color: var(--nt-navy-900);
-    font-size: var(--nt-fs-h3);
-    font-weight: 600;
-    letter-spacing: var(--nt-tr-heading);
-    max-width: 22ch;
-  }
-
-  .scale__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 44ch;
-  }
-
-  .scale__cta {
-    margin-top: var(--nt-5);
-  }
-
-  .segments-head {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  @media (min-width: 48rem) {
-    .scale {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .scale__col {
-      border-bottom: 0;
-      border-right: var(--nt-hair) solid var(--nt-hairline-soft);
-      padding-right: var(--nt-6);
-    }
-
-    .scale__col:last-child {
-      border-right: 0;
-      padding-left: var(--nt-6);
-      padding-right: 0;
-    }
-  }
-
-  .strip-note {
-    margin-top: var(--nt-5);
-    max-width: 62ch;
-    color: var(--nt-text-muted);
-  }
-
-  /* -- Problem ----------------------------------------------------------- */
-  .problem {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .problem__title {
-    margin-top: var(--nt-4);
-    max-width: 22ch;
-  }
-
-  .problem__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-  }
-
-  /* -- Two halves -------------------------------------------------------- */
-  .halves {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .half__title {
-    margin-top: var(--nt-4);
-  }
-
-  .half__body {
-    margin-top: var(--nt-3);
-    max-width: 48ch;
-  }
-
-  .half__points {
-    margin-top: var(--nt-5);
-    font-size: var(--nt-fs-sm);
-    max-width: 44ch;
-  }
-
-  .half__cta {
-    margin-top: var(--nt-5);
-  }
-
-  .halves__note {
-    margin-top: var(--nt-6);
-    color: var(--nt-text-muted);
-    max-width: 68ch;
-  }
-
-  /* -- Products ---------------------------------------------------------- */
-  .products {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .product {
-    display: grid;
-    gap: var(--nt-5);
-    align-items: center;
-  }
-
-  .product__name {
-    margin-top: var(--nt-4);
-  }
-
-  .product__name a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .product__name a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .product__text {
-    margin-top: var(--nt-3);
-    max-width: 54ch;
-  }
-
-  .product__more {
-    margin-top: var(--nt-4);
-  }
-
-  .product__diagram {
-    justify-self: start;
-  }
-
-  @media (min-width: 60rem) {
-    .product {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      gap: var(--nt-7);
-    }
-
-    .product__diagram {
-      justify-self: end;
-    }
-  }
-
-  /* -- Roadmap teaser ---------------------------------------------------- */
-  .roadmap {
-    margin-top: clamp(2rem, 4vw, 3rem);
-    padding-top: var(--nt-5);
-    border-top: var(--nt-hair) solid var(--nt-accent-rule);
-  }
-
-  .roadmap__list {
-    list-style: none;
-    display: grid;
-    gap: 0;
-    margin-top: var(--nt-4);
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-  }
-
-  .roadmap__list > li {
-    display: grid;
-    gap: 2px;
-    padding-block: var(--nt-3);
-    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
-  }
-
-  .roadmap__name {
-    color: var(--nt-navy-900);
-    font-size: var(--nt-fs-sm);
-    font-weight: 500;
-  }
-
-  .roadmap__strap {
-    color: var(--nt-text-muted);
-    font-size: 0.8125rem;
-  }
-
-  .roadmap__note {
-    margin-top: var(--nt-4);
-    color: var(--nt-text-muted);
-    max-width: 60ch;
-  }
-
-  @media (min-width: 48rem) {
-    .roadmap__list {
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: var(--nt-6);
-    }
-  }
-
-  @media (min-width: 64rem) {
-    .roadmap__list {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  /* -- Service lines ----------------------------------------------------- */
-  .lines {
-    display: grid;
-    gap: var(--nt-6);
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .line {
-    padding: var(--nt-5) var(--nt-4);
-    border: var(--nt-hair) solid var(--nt-hairline);
-  }
-
-  .line__name {
-    margin-top: var(--nt-4);
-  }
-
-  .line__name a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .line__name a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .line__services {
-    list-style: none;
-    margin-top: var(--nt-5);
-    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-    font-size: var(--nt-fs-sm);
-  }
-
-  .line__services > li {
-    padding-block: var(--nt-2);
-    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
-    color: var(--nt-ink-600);
-  }
-
-  .line__cta {
-    margin-top: var(--nt-5);
-  }
-
-  @media (min-width: 56rem) {
-    .lines {
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--nt-5);
-    }
-  }
-
-  /* -- Steps ------------------------------------------------------------- */
-  .steps {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    list-style: none;
-  }
-
-  /* This band is light now, so its type takes the light-surface colours —
-     the previous values were tuned for the inverted version and washed out. */
-  .step__index {
-    display: block;
-    text-align: left;
-    color: var(--nt-teal-800);
-    font-family: var(--nt-font-mono);
-    font-size: var(--nt-fs-micro);
-    letter-spacing: var(--nt-tr-micro);
-  }
-
-  .step__title {
-    margin-top: var(--nt-4);
-  }
-
-  .step__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    color: var(--nt-ink-600);
-  }
-
-  .method__cta {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  /* -- Estimator teaser -------------------------------------------------- */
-  .teaser {
-    display: grid;
-    gap: var(--nt-7);
-    align-items: start;
-  }
-
-  .teaser__cta {
-    margin-top: var(--nt-5);
-  }
-
-  .teaser__panel {
-    border-top: var(--nt-hair) solid var(--nt-accent-rule);
-    padding-top: var(--nt-4);
-  }
-
-  .teaser__table {
-    min-width: 0;
-    margin-top: var(--nt-4);
-  }
-
-  .teaser__note {
-    margin-top: var(--nt-4);
-    color: var(--nt-text-muted);
-  }
-
-  @media (min-width: 60rem) {
-    .teaser {
-      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-      gap: var(--nt-8);
-    }
-  }
-
-  /* -- Segments ---------------------------------------------------------- */
-  .segments {
-    margin-top: var(--nt-5);
-  }
-
-  .segment__title {
-    margin-top: var(--nt-4);
-  }
-
-  .segment__body {
-    margin-top: var(--nt-3);
-    max-width: 48ch;
-    font-size: var(--nt-fs-sm);
-  }
-
-  /* -- Insights ---------------------------------------------------------- */
-  .insights__head {
-    display: grid;
-    gap: var(--nt-5);
-    align-items: end;
-  }
-
-  .insights {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  .insight__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--nt-2);
-  }
-
-  .insight__title {
-    margin-top: var(--nt-3);
-    max-width: 34ch;
-  }
-
-  .insight__title a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .insight__title a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .insight__summary {
-    margin-top: var(--nt-3);
-    max-width: 68ch;
-    font-size: var(--nt-fs-sm);
-  }
-
-  @media (min-width: 60rem) {
-    .insights__head {
-      grid-template-columns: 1fr auto;
-      gap: var(--nt-6);
-    }
-
-    .insight {
-      display: grid;
-      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-      gap: var(--nt-6);
-      align-items: start;
-    }
-
-    .insight__meta {
-      grid-row: 1;
-    }
-
-    .insight__title {
-      grid-column: 1;
-      grid-row: 2;
-      margin-top: var(--nt-3);
-    }
-
-    .insight__summary {
-      grid-column: 2;
-      grid-row: 1 / span 2;
-      margin-top: 0;
-    }
-  }
-</style>

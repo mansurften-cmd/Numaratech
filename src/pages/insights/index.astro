@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import CtaBand from '../../components/CtaBand.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
 import { insightsNewestFirst, formatInsightDate } from '../../insights';
 
 const insights = insightsNewestFirst();
@@ -9,111 +9,46 @@ const insights = insightsNewestFirst();
 
 <Base
   title="Insights"
-  description="Notes on UAE Corporate Tax, financial close and finance systems from the NUMARATECH team."
+  description="Notes on UAE Corporate Tax, financial control and the systems underneath them — written from the work, not for search engines."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Insights"
-    title="Notes from doing the work."
-    lead="Short pieces on Corporate Tax, closing the books and the systems underneath both. No thought leadership — just what we keep running into."
-    meta={[
-      { label: 'Published', value: `${insights.length} pieces` },
-      { label: 'Topics', value: 'Corporate Tax · Financial control · Systems' },
-      { label: 'Audience', value: 'Finance teams and accounting firms' },
+  <PageHero
+    kicker="Insights / Notes from the work"
+    title="Written down once, so it can be argued with."
+    lead="Short notes on the problems we keep meeting: first Corporate Tax returns, slow closes, and audit trails treated as reports rather than requirements."
+    primary={{ label: 'Talk to us', href: '/contact/' }}
+    stats={[
+      { label: 'Notes published', value: String(insights.length) },
+      { label: 'Topics', value: 'CT · control · systems' },
+      { label: 'Latest', value: formatInsightDate(insights[0].date) },
+      { label: 'Reading', value: '5–7 minutes' },
     ]}
   />
 
-  <section class="nt-section nt-wrap">
-    <ul class="nt-ruled list">
+  <section class="nt-section">
+    <div class="nt-cells" style="--nt-cols:2">
       {
-        insights.map((insight, i) => (
-          <li class="item nt-reveal">
-            <div class="item__meta">
-              <span class="nt-fig idx">
-                {String(insights.length - i).padStart(2, '0')}
-              </span>
-              <p class="nt-micro">
-                <span>{insight.topic}</span>
-                <br />
-                <time datetime={insight.date}>
-                  {formatInsightDate(insight.date)}
-                </time>
-                <br />
-                <span>{insight.readingMinutes} min read</span>
-              </p>
+        insights.map((insight) => (
+          <article class="nt-cell">
+            <div class="nt-cell__head">
+              <div class="nt-kicker">{insight.topic}</div>
+              <span class="nt-stage">{insight.readingMinutes} min</span>
             </div>
-
-            <div class="item__body">
-              <h2 class="nt-h2 item__title">
-                <a href={`/insights/${insight.slug}/`}>{insight.title}</a>
-              </h2>
-              <p class="item__summary">{insight.summary}</p>
+            <h2 class="nt-h3" style="font-size:24px">{insight.title}</h2>
+            <p>{insight.summary}</p>
+            <div class="nt-cell__notes">
+              <div><time datetime={insight.date}>{formatInsightDate(insight.date)}</time></div>
             </div>
-          </li>
+            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it</a>
+          </article>
         ))
       }
-    </ul>
+    </div>
   </section>
 
-  <CtaBand
-    eyebrow="Next step"
-    title="Prefer to discuss it directly?"
-    body="If one of these describes a problem you currently have, a short call is usually more useful than another article."
+  <NextBand
+    title="Disagree with any of it?"
+    body="These are positions, not neutral summaries. If your situation points the other way we would rather hear it."
+    cta="Write to us"
   />
 </Base>
-
-<style>
-  .list {
-    margin-top: 0;
-  }
-
-  .item {
-    display: grid;
-    gap: var(--nt-4);
-    align-items: start;
-    padding-block: var(--nt-6);
-  }
-
-  .item__meta {
-    display: flex;
-    gap: var(--nt-4);
-    align-items: baseline;
-  }
-
-  .idx {
-    color: var(--nt-teal-800);
-    font-family: var(--nt-font-mono);
-    font-size: var(--nt-fs-micro);
-    letter-spacing: var(--nt-tr-micro);
-    text-align: left;
-  }
-
-  .item__title {
-    max-width: 32ch;
-  }
-
-  .item__title a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .item__title a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .item__summary {
-    margin-top: var(--nt-4);
-    max-width: 66ch;
-  }
-
-  @media (min-width: 60rem) {
-    .item {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
-      gap: var(--nt-7);
-    }
-
-    .item__meta {
-      flex-direction: column;
-      gap: var(--nt-3);
-    }
-  }
-</style>

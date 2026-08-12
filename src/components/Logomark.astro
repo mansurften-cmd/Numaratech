@@ -1,0 +1,12 @@
+---
+/** The brand mark: Monogram N — two white uprights with a teal diagonal.
+ *  Drawn inline so it inherits the dark band. */
+interface Props { size?: number; }
+const { size = 34 } = Astro.props;
+---
+
+<svg width={size} height={size} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+  <rect x="7" y="7" width="3.5" height="26" fill="#FFFFFF"></rect>
+  <rect x="29.5" y="7" width="3.5" height="26" fill="#FFFFFF"></rect>
+  <path d="M8.75 7 L31.25 33" stroke="#4FB3CC" stroke-width="3.5" fill="none"></path>
+</svg>

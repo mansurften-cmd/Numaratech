@@ -1,155 +1,37 @@
 ---
 import { SITE, FOOTER_NAV } from '../consts';
-import Wordmark from './Wordmark.astro';
-
+import Logomark from './Logomark.astro';
 const year = new Date().getFullYear();
 ---
 
-<footer class="nt-site-footer nt-dark">
-  <div class="nt-wrap">
-    <div class="top">
-      <div class="identity">
-        <a href="/" class="brand" aria-label="NUMARATECH — home">
-          <Wordmark invert={true} />
-        </a>
-        <p class="claim">{SITE.tagline}</p>
-        <address class="addr">
-          {SITE.address.line1}<br />
-          {SITE.address.city}, {SITE.address.country}<br />
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
-          <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
-        </address>
+<footer>
+  <div class="nt-footer">
+    <div class="nt-footer__col">
+      <div style="display:flex; align-items:center; gap:12px">
+        <Logomark size={28} />
+        <span style="font-size:17px; font-weight:700; letter-spacing:.05em; color:#fff">{SITE.name}</span>
       </div>
-
-      <div class="columns">
-        {
-          FOOTER_NAV.map((group) => (
-            <div class="column">
-              <h2 class="nt-micro nt-micro--invert">{group.heading}</h2>
-              <ul>
-                {group.links.map((link) => (
-                  <li>
-                    <a href={link.href}>{link.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
+      <div style="font-size:13.5px; line-height:1.6; max-width:22em">{SITE.tagline}</div>
+      <div class="nt-footer__meta">
+        {SITE.address.line1}<br />
+        {SITE.address.city}, {SITE.address.country}<br />
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
+        <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
       </div>
     </div>
 
-    <div class="base">
-      <p class="fine">
-        &copy; {year} {SITE.legalName}. All rights reserved.
-      </p>
-      <p class="fine">
-        Registered in the United Arab Emirates. Content on this site is general
-        information, not tax or accounting advice.
-      </p>
-    </div>
+    {
+      FOOTER_NAV.map((group) => (
+        <div class="nt-footer__col">
+          <h2>{group.heading}</h2>
+          {group.links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </div>
+      ))
+    }
+  </div>
+  <div class="nt-legal">
+    © {year} {SITE.legalName}. All rights reserved.<br />
+    Registered in the United Arab Emirates. Content on this site is general information, not tax or
+    accounting advice.
   </div>
 </footer>
-
-<style>
-  .nt-site-footer {
-    background: var(--nt-ink-950);
-    color: var(--nt-line-300);
-    border-top: var(--nt-hair) solid var(--nt-accent-rule);
-    padding-block: clamp(2.5rem, 5vw, 4.5rem) var(--nt-6);
-    font-size: var(--nt-fs-sm);
-  }
-
-  .top {
-    display: grid;
-    gap: var(--nt-7);
-  }
-
-  .brand {
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .claim {
-    margin-top: var(--nt-4);
-    max-width: 30ch;
-    color: var(--nt-line-300);
-  }
-
-  .addr {
-    margin-top: var(--nt-5);
-    font-style: normal;
-    color: var(--nt-ink-400);
-    line-height: 1.8;
-  }
-
-  .addr a {
-    color: var(--nt-line-300);
-    text-decoration: none;
-    border-bottom: var(--nt-hair) solid rgb(255 255 255 / 0.24);
-  }
-
-  .addr a:hover {
-    color: var(--nt-teal-500);
-    border-color: var(--nt-teal-500);
-  }
-
-  .columns {
-    display: grid;
-    gap: var(--nt-6);
-  }
-
-  .column ul {
-    list-style: none;
-    margin-top: var(--nt-4);
-    display: grid;
-    gap: var(--nt-3);
-  }
-
-  .column a {
-    color: var(--nt-line-300);
-    text-decoration: none;
-  }
-
-  .column a:hover {
-    color: var(--nt-teal-500);
-  }
-
-  .base {
-    display: grid;
-    gap: var(--nt-2);
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    padding-top: var(--nt-5);
-    border-top: var(--nt-hair) solid rgb(255 255 255 / 0.14);
-  }
-
-  .fine {
-    color: var(--nt-ink-400);
-    font-size: 0.8125rem;
-    max-width: 70ch;
-  }
-
-  @media (min-width: 40rem) {
-    .columns {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--nt-6) var(--nt-5);
-    }
-  }
-
-  @media (min-width: 60rem) {
-    .columns {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .top {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
-      gap: var(--nt-7);
-    }
-
-    .base {
-      grid-template-columns: auto 1fr;
-      gap: var(--nt-6);
-      align-items: baseline;
-    }
-  }
-</style>

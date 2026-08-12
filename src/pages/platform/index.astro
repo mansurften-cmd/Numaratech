@@ -1,416 +1,134 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import SectionHead from '../../components/SectionHead.astro';
-import LineDiagram from '../../components/LineDiagram.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import Arrow from '../../components/Arrow.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
+import CtConsole from '../../components/CtConsole.astro';
+import FsConsole from '../../components/FsConsole.astro';
 import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
-
-const diagrams: Record<string, 'tax' | 'statements'> = {
-  'corporate-tax': 'tax',
-  'fs-studio': 'statements',
-};
-
-const foundations = [
-  {
-    title: 'One mapped ledger',
-    body:
-      'Your chart of accounts is mapped once into a structure carrying statutory presentation and tax classification at the same time. Two answers from one source, so they cannot diverge.',
-  },
-  {
-    title: 'Lineage on every figure',
-    body:
-      'Each number holds a reference to the entries and adjustments that produced it. Drill from a filed figure to a journal without leaving the screen.',
-  },
-  {
-    title: 'Period locking',
-    body:
-      'Once a period is filed it is frozen. Later corrections become explicit prior-period adjustments rather than silent restatements of history.',
-  },
-  {
-    title: 'Print as an output',
-    body:
-      'Every computation and statement has a considered printed form, because the version that gets filed and defended is usually the paper one.',
-  },
-  {
-    title: 'Read-only by default',
-    body:
-      'Connections into your accounting system are read-only unless you deliberately grant write access. We would rather compute than mutate.',
-  },
-  {
-    title: 'Data stays where you put it',
-    body:
-      'UAE-region hosting, per-entity separation, and an export path that returns everything in open formats whenever you ask.',
-  },
-];
 ---
 
 <Base
   title="Platform"
-  description="The NUMARATECH platform: a live Corporate Tax Engine and FS Studio built on one mapped ledger, plus a roadmap of four products at idea stage."
+  description="The tooling NUMARATECH files with, licensed to firms and finance functions: a Corporate Tax Engine and FS Studio, both reading one mapped ledger."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Platform"
-    title="One model of your business. Several ways to use it."
-    lead="Most compliance tooling treats the statements and the tax computation as separate exercises. We map your ledger once and derive both from it, which is why they agree."
-    meta={[
-      { label: 'Live', value: `${LIVE_PRODUCTS.length} products` },
-      { label: 'Roadmap', value: `${IDEA_PRODUCTS.length} at idea stage` },
-      { label: 'Ledger access', value: 'Read-only by default' },
-      { label: 'Deployment', value: 'Hosted, UAE region' },
+  <PageHero
+    kicker="Platform / Software licensed to firms and finance functions"
+    title="It computes and it evidences. It does not decide."
+    lead="The tooling our own team files with, licensed to other firms and finance functions. Judgement stays with your people — the platform's job is to make every figure derivable and every derivation durable."
+    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    secondary={{ label: 'See what is next', href: '#roadmap' }}
+    stats={[
+      { label: 'Live products', value: 'two' },
+      { label: 'Shared model', value: 'one mapped ledger' },
+      { label: 'Ledger access', value: 'read-only' },
+      { label: 'Roadmap', value: `${IDEA_PRODUCTS.length} at idea stage`, live: true },
     ]}
   />
 
-  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Live now</span></div>
+    <h2 class="nt-h2">Two products in production.</h2>
+    <p class="nt-body">
+      Both read the same mapped ledger, so the statements and the tax computation cannot disagree
+      with each other.
+    </p>
 
-  <!-- Live products ------------------------------------------------------ -->
-  <section class="nt-section nt-wrap">
-    <SectionHead
-      index="01"
-      eyebrow="In production"
-      title="What you can use today."
-    />
-
-    <ul class="nt-ruled products">
-      {
-        LIVE_PRODUCTS.map((product, i) => (
-          <li class="product nt-reveal">
-            <div class="product__main">
-              <p class="nt-micro nt-micro-idx">
-                <span class="nt-fig idx">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                {product.strap}
-              </p>
-              <h3 class="nt-h2 product__name">
-                <a href={product.href}>{product.name}</a>
-              </h3>
-              <p class="product__text nt-lead">{product.body}</p>
-
-              <ul class="nt-checks product__points">
-                {product.points.map((point) => (
-                  <li>{point}</li>
-                ))}
-              </ul>
-
-              <p class="product__more">
-                <a href={product.href} class="nt-arrow-link">
-                  Read more about {product.name}
-                  <Arrow />
-                </a>
-              </p>
-            </div>
-
-            <LineDiagram
-              variant={diagrams[product.slug]}
-              class="product__diagram"
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <!-- Roadmap ------------------------------------------------------------ -->
-  <section class="nt-section nt-section--invert nt-reveal" id="roadmap">
-    <div class="nt-wrap">
-      <SectionHead
-        index="02"
-        eyebrow="Roadmap"
-        title="What we intend to build next."
-        lead="These do not exist yet. They are listed because we would rather be judged on a stated direction than imply a catalogue we do not have — and because the order is worth arguing with."
-        invert={true}
-      />
-
-      <ul class="ideas">
-        {
-          IDEA_PRODUCTS.map((product, i) => (
-            <li class="idea">
-              <div class="idea__head">
-                <p class="nt-micro nt-micro--invert nt-micro-idx">
-                  <span class="nt-fig">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  {product.strap}
-                </p>
-                <h3 class="nt-h3 idea__name">
-                  {product.name}
-                  <span class="idea__stage">Idea stage</span>
-                </h3>
-              </div>
-
-              <div>
-                <p class="idea__body">{product.body}</p>
-                <ul class="nt-checks idea__points">
-                  {product.points.map((point) => (
-                    <li>{point}</li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="ideas__note">
-        Nothing here is committed, dated or available to buy. If one of these
-        would change how your finance function runs, that is worth a
-        conversation — the order we build in should be set by the people who
-        would use them.
-      </p>
-
-      <p class="ideas__cta">
-        <a href="/contact/" class="nt-arrow-link">
-          Tell us which one matters
-          <Arrow />
+    <div class="nt-split" style="margin-bottom:56px">
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <div class="nt-kicker">{LIVE_PRODUCTS[0].strap}</div>
+        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{LIVE_PRODUCTS[0].name}</h3>
+        <p class="nt-small">{LIVE_PRODUCTS[0].body}</p>
+        <ul class="nt-rail">{LIVE_PRODUCTS[0].points.map((point) => <li>{point}</li>)}</ul>
+        <a class="nt-link" href="/platform/corporate-tax/" style="margin-top:12px">
+          Corporate Tax Engine in full
         </a>
-      </p>
+      </div>
+      <CtConsole />
+    </div>
+
+    <div class="nt-split">
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <div class="nt-kicker">{LIVE_PRODUCTS[1].strap}</div>
+        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{LIVE_PRODUCTS[1].name}</h3>
+        <p class="nt-small">{LIVE_PRODUCTS[1].body}</p>
+        <ul class="nt-rail">{LIVE_PRODUCTS[1].points.map((point) => <li>{point}</li>)}</ul>
+        <a class="nt-link" href="/platform/fs-studio/" style="margin-top:12px">FS Studio in full</a>
+      </div>
+      <FsConsole />
     </div>
   </section>
 
-  <!-- Foundations -------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-reveal">
-    <SectionHead
-      index="03"
-      eyebrow="Foundations"
-      title="Decisions that hold across everything we build."
-      lead="Constraints we accepted early and have not traded away — including in the roadmap above."
-    />
+  <section class="nt-section nt-dark nt-section--flush">
+    <div class="nt-grid--v"></div>
+    <div class="nt-layer">
+      <div class="nt-eyebrow"><b>02</b><span>The shared model</span></div>
+      <h2 class="nt-h2">Mapped once, read by everything.</h2>
+      <p class="nt-body">
+        Your chart of accounts is mapped once to a structure that can carry both a statutory
+        statement and a tax computation. Every product downstream reads that one mapping.
+      </p>
+      <div class="nt-cells nt-cells--4" style="--nt-cols:4">
+        <div class="nt-cell">
+          <div class="nt-cell__num">01</div>
+          <h3 class="nt-h3">Connect</h3>
+          <p>Read-only connections to your accounting system and banks. Nothing is retyped, so nothing drifts.</p>
+        </div>
+        <div class="nt-cell">
+          <div class="nt-cell__num">02</div>
+          <h3 class="nt-h3">Normalise</h3>
+          <p>
+            One mapping carries both the statutory statement and the tax computation, instead of two
+            sets of judgement that quietly stop agreeing.
+          </p>
+        </div>
+        <div class="nt-cell">
+          <div class="nt-cell__num">03</div>
+          <h3 class="nt-h3">Compute</h3>
+          <p>
+            Statements and the tax position are derived, not assembled by hand. Every figure keeps a
+            link back to the entries behind it.
+          </p>
+        </div>
+        <div class="nt-cell">
+          <div class="nt-cell__num">04</div>
+          <h3 class="nt-h3">File and defend</h3>
+          <p>
+            Submit with the working papers already attached. When a question arrives eighteen months
+            later, the answer is still in the file.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="nt-cols nt-cols--3 foundations">
+  <section class="nt-section" id="roadmap">
+    <div class="nt-eyebrow"><b>03</b><span>Roadmap · idea stage</span></div>
+    <h2 class="nt-h2">{IDEA_PRODUCTS.length} we intend to build.</h2>
+    <p class="nt-body">
+      These do not exist yet and are not available to buy. We list them so the direction is arguable.
+    </p>
+    <div class="nt-cells" style="--nt-cols:2">
       {
-        foundations.map((item) => (
-          <div>
-            <span class="nt-mark" aria-hidden="true" />
-            <h3 class="nt-h3 foundation__title">{item.title}</h3>
-            <p class="foundation__body">{item.body}</p>
+        IDEA_PRODUCTS.map((product) => (
+          <div class="nt-cell">
+            <div class="nt-cell__head">
+              <h3 class="nt-h3">{product.name}</h3>
+              <span class="nt-stage">{product.stage}</span>
+            </div>
+            <div class="nt-kicker">{product.strap}</div>
+            <p>{product.body}</p>
+            <div class="nt-cell__notes">
+              {product.points.map((point) => <div>{point}</div>)}
+            </div>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- Connections -------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <div class="nt-split">
-      <SectionHead
-        index="04"
-        eyebrow="Connections"
-        title="It has to work with what you already run."
-      />
-
-      <div>
-        <p class="nt-lead">
-          We connect to mainstream accounting systems and UAE banking exports
-          rather than asking you to migrate. Where an API exists we use it;
-          where it does not, we take a structured file and validate it on the
-          way in.
-        </p>
-
-        <div class="nt-table-scroll connections">
-          <table class="nt-table">
-            <caption>Connection types</caption>
-            <thead>
-              <tr>
-                <th scope="col">Source</th>
-                <th scope="col">Method</th>
-                <th scope="col">Direction</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Cloud accounting systems</td>
-                <td>Vendor API</td>
-                <td>Read</td>
-              </tr>
-              <tr>
-                <td>On-premise ledgers</td>
-                <td>Scheduled structured export</td>
-                <td>Read</td>
-              </tr>
-              <tr>
-                <td>Bank statements</td>
-                <td>Statement file or feed</td>
-                <td>Read</td>
-              </tr>
-              <tr>
-                <td>Working papers and support</td>
-                <td>Secure upload</td>
-                <td>Read / write</td>
-              </tr>
-              <tr>
-                <td>Your own reporting stack</td>
-                <td>Export API, open formats</td>
-                <td>Read</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p class="connections__note nt-sm">
-          Using something not listed here? Tell us what it is —
-          <a href="/contact/">we will say honestly</a> whether we can read it
-          well or not at all.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <CtaBand
-    eyebrow="Next step"
-    title="See it against your own trial balance."
-    body="Walkthroughs use your numbers, not a demo dataset. Thirty minutes is usually enough to know whether this fits."
+  <NextBand
+    title="See it on your own trial balance."
+    body="A 30-minute walkthrough, your numbers on screen. We will tell you plainly whether the platform fits how you work — and what it would take."
   />
 </Base>
-
-<style>
-  .products {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  .product {
-    display: grid;
-    gap: var(--nt-6);
-    align-items: start;
-    padding-block: var(--nt-7);
-  }
-
-  .idx {
-    color: var(--nt-teal-800);
-  }
-
-  .product__name {
-    margin-top: var(--nt-4);
-  }
-
-  .product__name a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .product__name a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .product__text {
-    margin-top: var(--nt-4);
-    max-width: 56ch;
-  }
-
-  .product__points {
-    margin-top: var(--nt-5);
-    font-size: var(--nt-fs-sm);
-    max-width: 52ch;
-  }
-
-  .product__more {
-    margin-top: var(--nt-5);
-  }
-
-  .product__diagram {
-    justify-self: start;
-  }
-
-  @media (min-width: 60rem) {
-    .product {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-      gap: var(--nt-7);
-    }
-
-    .product__diagram {
-      justify-self: end;
-      margin-top: var(--nt-6);
-    }
-  }
-
-  /* -- Roadmap ---------------------------------------------------------- */
-  .ideas {
-    list-style: none;
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    border-top: var(--nt-hair) solid var(--nt-teal-500);
-  }
-
-  .idea {
-    display: grid;
-    gap: var(--nt-4);
-    align-items: start;
-    padding-block: var(--nt-6);
-    border-bottom: var(--nt-hair) solid rgb(255 255 255 / 0.14);
-  }
-
-  .idea__name {
-    margin-top: var(--nt-3);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--nt-3);
-  }
-
-  /* A stated stage, not a badge — square, hairline, no fill. */
-  .idea__stage {
-    border: var(--nt-hair) solid var(--nt-teal-500);
-    padding: 2px var(--nt-2);
-    color: var(--nt-teal-500);
-    font-family: var(--nt-font-mono);
-    font-size: var(--nt-fs-micro);
-    font-weight: 500;
-    letter-spacing: var(--nt-tr-micro);
-    text-transform: uppercase;
-  }
-
-  .idea__body {
-    color: var(--nt-line-300);
-    max-width: 58ch;
-  }
-
-  .idea__points {
-    margin-top: var(--nt-4);
-    font-size: var(--nt-fs-sm);
-    color: var(--nt-line-300);
-    max-width: 52ch;
-  }
-
-  .ideas__note {
-    margin-top: var(--nt-6);
-    color: var(--nt-line-300);
-    font-size: var(--nt-fs-sm);
-    max-width: 64ch;
-  }
-
-  .ideas__cta {
-    margin-top: var(--nt-5);
-  }
-
-  @media (min-width: 60rem) {
-    .idea {
-      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-      gap: var(--nt-7);
-    }
-  }
-
-  /* -- Foundations and connections -------------------------------------- */
-  .foundations {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .foundation__title {
-    margin-top: var(--nt-4);
-  }
-
-  .foundation__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 44ch;
-  }
-
-  .connections {
-    margin-top: var(--nt-6);
-  }
-
-  .connections__note {
-    margin-top: var(--nt-5);
-    color: var(--nt-text-muted);
-    max-width: 56ch;
-  }
-</style>

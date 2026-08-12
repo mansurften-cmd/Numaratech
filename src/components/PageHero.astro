@@ -1,0 +1,59 @@
+---
+/** The dark opening band: nav, eyebrow, extruded outline headline, lead,
+ *  actions, and an optional four-cell measurement strip.
+ *  `stats` is [{ label, value, live? }]. */
+import Nav from './Nav.astro';
+
+interface Props {
+  kicker: string;
+  title: string;
+  lead: string;
+  stats?: { label: string; value: string; live?: boolean }[];
+  primary?: { label: string; href: string };
+  secondary?: { label: string; href: string };
+}
+
+const { kicker, title, lead, stats = [], primary, secondary } = Astro.props;
+---
+
+<div class="nt-dark">
+  <div class="nt-grid"></div>
+  <Nav />
+
+  <div class="nt-layer nt-hero">
+    <div class="nt-kicker" style="margin-bottom:36px">{kicker}</div>
+
+    <div class="nt-extrude">
+      <div class="nt-h1 nt-extrude__ghost nt-extrude__ghost--near" aria-hidden="true">{title}</div>
+      <div class="nt-h1 nt-extrude__ghost" aria-hidden="true">{title}</div>
+      <h1 class="nt-h1 nt-extrude__solid">{title}</h1>
+    </div>
+
+    <p class="nt-lead">{lead}</p>
+
+    {
+      (primary || secondary) && (
+        <div class="nt-actions">
+          {primary && <a class="nt-btn" href={primary.href}>{primary.label}</a>}
+          {secondary && <a class="nt-btn nt-btn--ghost" href={secondary.href}>{secondary.label}</a>}
+        </div>
+      )
+    }
+  </div>
+
+  {
+    stats.length > 0 && (
+      <dl class="nt-layer nt-strip" style="margin:0">
+        {stats.map((stat) => (
+          <div>
+            <dt>{stat.label}</dt>
+            <dd class={stat.live ? 'nt-strip__value--teal' : ''}>
+              {stat.live && <i class="nt-pulse"></i>}
+              {stat.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+</div>

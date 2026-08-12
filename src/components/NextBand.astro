@@ -1,0 +1,32 @@
+---
+/** The closing navy band. Every page ends on one. */
+import { SITE } from '../consts';
+
+interface Props {
+  title: string;
+  body: string;
+  cta?: string;
+  href?: string;
+}
+
+const {
+  title,
+  body,
+  cta = 'Book a walkthrough',
+  href = '/contact/',
+} = Astro.props;
+---
+
+<div class="nt-next" id="next">
+  <div>
+    <div class="nt-kicker" style="margin-bottom:16px">Next step</div>
+    <h2>{title}</h2>
+    <p>{body}</p>
+  </div>
+  <div class="nt-next__side">
+    <a class="nt-btn" href={href}>{cta}</a>
+    <div style="font-size:14px; color:var(--nt-paper-text)">
+      Or write to us directly at <a href={`mailto:${SITE.email}`} style="border-bottom:1px solid var(--nt-teal-pale)">{SITE.email}</a>.
+    </div>
+  </div>
+</div>

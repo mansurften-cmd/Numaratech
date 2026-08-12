@@ -1,0 +1,44 @@
+---
+/** The dark nav band. Renders NAV from consts.ts, with hover/focus dropdowns
+ *  for the two sections that have children. CSS-only — no client JS. */
+import { NAV } from '../consts';
+import Logomark from './Logomark.astro';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<div class="nt-nav">
+  <a class="nt-brand" href="/" aria-label="NUMARATECH — home">
+    <Logomark size={32} />
+    <span style="display:flex; flex-direction:column; gap:5px">
+      <span class="nt-brand__name">NUMARATECH</span>
+      <span class="nt-brand__strap">ACCOUNTING · TAX · ADVISORY</span>
+    </span>
+  </a>
+
+  <nav class="nt-nav__links" aria-label="Primary">
+    {
+      NAV.map((item) =>
+        item.children ? (
+          <span class={`nt-nav__item${isCurrent(item.href) ? ' nt-nav__item--current' : ''}`}>
+            <a href={item.href}>{item.label}</a>
+            <span class="nt-nav__menu">
+              {item.children.map((child) => (
+                <a href={child.href}>
+                  {child.label}
+                  {child.note && <i>{child.note}</i>}
+                </a>
+              ))}
+            </span>
+          </span>
+        ) : (
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            {item.label}
+          </a>
+        )
+      )
+    }
+    <a class="nt-btn nt-btn--sm" href="/contact/">Book a walkthrough</a>
+  </nav>
+</div>

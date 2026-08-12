@@ -1,9 +1,9 @@
 ---
+/** The three advisory group pages: /advisory/accounting-audit/, /tax/,
+ *  /risk-compliance/. Each carries its services as anchored sections. */
 import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
-import SectionHead from '../../components/SectionHead.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import Arrow from '../../components/Arrow.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS } from '../../services';
 
 export function getStaticPaths() {
@@ -14,40 +14,33 @@ export function getStaticPaths() {
 }
 
 const { group } = Astro.props;
-const others = SERVICE_GROUPS.filter((g) => g.slug !== group.slug);
 ---
 
-<Base
-  title={group.name}
-  description={`${group.name} from NUMARATECH — ${group.strap}. ${group.lead}`}
->
-  <PageHeader
-    eyebrow={`Advisory / ${group.strap}`}
+<Base title={group.name} description={group.lead} ownNav={true}>
+  <PageHero
+    kicker={`Advisory / ${group.name}`}
     title={group.name}
     lead={group.lead}
-    meta={[
-      { label: 'Services', value: String(group.services.length) },
-      { label: 'Engaged', value: 'Under an engagement letter' },
+    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    secondary={{ label: 'All advisory', href: '/advisory/' }}
+    stats={[
+      { label: 'Service lines', value: String(group.services.length) },
+      { label: 'Covers', value: group.strap },
+      { label: 'Delivery', value: 'fixed fee where knowable' },
       { label: 'Jurisdiction', value: 'United Arab Emirates' },
-      { label: 'Fees', value: 'Fixed against defined scope' },
     ]}
   />
 
-  <div class="nt-wrap"><div class="nt-ticks" aria-hidden="true"></div></div>
-
-  <!-- Contents ---------------------------------------------------------- -->
-  <section class="nt-section nt-section--tight nt-wrap">
-    <p class="nt-micro nt-micro--accent nt-micro-idx">In this group</p>
-    <ul class="toc">
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>In this group</span></div>
+    <h2 class="nt-h2">{group.services.length} service lines.</h2>
+    <ul class="nt-jump">
       {
-        group.services.map((service, i) => (
+        group.services.map((service) => (
           <li>
             <a href={`#${service.slug}`}>
-              <span class="nt-fig toc__idx">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <span class="toc__name">{service.name}</span>
-              <span class="toc__strap">{service.strap}</span>
+              {service.name}
+              <span>{service.strap}</span>
             </a>
           </li>
         ))
@@ -55,203 +48,28 @@ const others = SERVICE_GROUPS.filter((g) => g.slug !== group.slug);
     </ul>
   </section>
 
-  <!-- Services ---------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-divide">
-    <ul class="services">
-      {
-        group.services.map((service, i) => (
-          <li class="service nt-reveal" id={service.slug}>
-            <div>
-              <p class="nt-micro nt-micro-idx">
-                <span class="nt-fig idx">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                {service.strap}
-              </p>
-              <h2 class="nt-h2 service__name">{service.name}</h2>
-            </div>
-
-            <div class="service__detail">
-              <p class="nt-lead">{service.body}</p>
-              <ul class="nt-checks service__points">
-                {service.points.map((point) => (
-                  <li>{point}</li>
-                ))}
-              </ul>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+  <section class="nt-section">
+    {
+      group.services.map((service, i) => (
+        <article class="nt-service" id={service.slug}>
+          <div class="nt-service__head">
+            <div class="nt-service__idx">{String(i + 1).padStart(2, '0')}</div>
+            <h3 class="nt-h2" style="font-size:30px; margin-bottom:6px">{service.name}</h3>
+            <div class="nt-kicker">{service.strap}</div>
+          </div>
+          <div>
+            <p class="nt-body" style="margin-bottom:20px">{service.body}</p>
+            <ul class="nt-points">
+              {service.points.map((point) => <li>{point}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
   </section>
 
-  <!-- Other groups ------------------------------------------------------ -->
-  <section class="nt-section nt-section--inset nt-reveal">
-    <div class="nt-wrap">
-      <SectionHead
-        eyebrow="Also from the practice"
-        title="The other two groups."
-        lead="Most obligations share underlying data. Running them together is normally cheaper than running them separately."
-      />
-
-      <div class="nt-cols nt-cols--2 others">
-        {
-          others.map((other) => (
-            <div>
-              <span class="nt-mark" aria-hidden="true" />
-              <h3 class="nt-h3 other__name">
-                <a href={`/advisory/${other.slug}/`}>{other.name}</a>
-              </h3>
-              <p class="other__body">{other.lead}</p>
-              <p class="other__cta">
-                <a href={`/advisory/${other.slug}/`} class="nt-arrow-link">
-                  {other.strap}
-                  <Arrow />
-                </a>
-              </p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CtaBand
-    eyebrow="Next step"
+  <NextBand
     title={`Talk to us about ${group.name.toLowerCase()}.`}
-    body="A first call is thirty minutes and costs nothing. We will tell you plainly what we think — including if the answer is that you do not need us."
+    body="A 30-minute call, no obligation. We will tell you what the work involves, what it costs, and what we need from you to start."
   />
 </Base>
-
-<style>
-  .toc {
-    list-style: none;
-    margin-top: var(--nt-5);
-    border-top: var(--nt-hair) solid var(--nt-navy-700);
-  }
-
-  .toc > li {
-    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
-  }
-
-  .toc a {
-    display: grid;
-    gap: var(--nt-1);
-    padding: var(--nt-4) 0;
-    text-decoration: none;
-    border-left: 2px solid transparent;
-    transition: border-color var(--nt-dur) var(--nt-ease),
-      padding-left var(--nt-dur) var(--nt-ease);
-  }
-
-  .toc a:hover {
-    border-left-color: var(--nt-accent-rule);
-    padding-left: var(--nt-3);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .toc a {
-      transition: none;
-    }
-  }
-
-  .toc__idx {
-    text-align: left;
-    color: var(--nt-teal-800);
-    font-family: var(--nt-font-mono);
-    font-size: var(--nt-fs-micro);
-    letter-spacing: var(--nt-tr-micro);
-  }
-
-  .toc__name {
-    color: var(--nt-navy-900);
-    font-size: var(--nt-fs-h3);
-    font-weight: 600;
-    letter-spacing: var(--nt-tr-heading);
-  }
-
-  .toc a:hover .toc__name {
-    color: var(--nt-teal-800);
-  }
-
-  .toc__strap {
-    color: var(--nt-text-muted);
-    font-size: var(--nt-fs-sm);
-  }
-
-  @media (min-width: 48rem) {
-    .toc a {
-      grid-template-columns: 3rem minmax(0, 20rem) minmax(0, 1fr);
-      gap: var(--nt-4);
-      align-items: baseline;
-    }
-  }
-
-  .services {
-    list-style: none;
-  }
-
-  .service {
-    display: grid;
-    gap: var(--nt-5);
-    align-items: start;
-    padding-block: var(--nt-7);
-    border-bottom: var(--nt-hair) solid var(--nt-hairline);
-    scroll-margin-top: calc(var(--nt-header-h) + var(--nt-5));
-  }
-
-  .service:last-child {
-    border-bottom: 0;
-  }
-
-  .idx {
-    color: var(--nt-teal-800);
-  }
-
-  .service__name {
-    margin-top: var(--nt-4);
-  }
-
-  .service__detail {
-    max-width: 60ch;
-  }
-
-  .service__points {
-    margin-top: var(--nt-5);
-    font-size: var(--nt-fs-sm);
-  }
-
-  @media (min-width: 60rem) {
-    .service {
-      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-      gap: var(--nt-7);
-    }
-  }
-
-  .others {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  .other__name {
-    margin-top: var(--nt-4);
-  }
-
-  .other__name a {
-    color: var(--nt-navy-900);
-    text-decoration: none;
-  }
-
-  .other__name a:hover {
-    color: var(--nt-teal-800);
-  }
-
-  .other__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 48ch;
-  }
-
-  .other__cta {
-    margin-top: var(--nt-4);
-  }
-</style>

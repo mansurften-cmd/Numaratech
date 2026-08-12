@@ -1,22 +1,33 @@
 ---
-import '../styles/global.css';
+/**
+ * The 2a shell. Every page uses this: SEO head, the dark nav band, the page
+ * body, the closing band (optional) and the footer.
+ *
+ * The nav sits inside the page's own dark hero when `heroNav` is true (the
+ * pattern the homepage and platform page use) — pages that open on white keep
+ * the nav as its own dark band.
+ */
 import { SITE } from '../consts';
-import Header from '../components/Header.astro';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+import '../styles/nt-2a.css';
 
 interface Props {
   title: string;
-  description: string;
-  /** Omit the " — NUMARATECH" suffix (used on the home page). */
-  bareTitle?: boolean;
-  /** Set on pages that should not be indexed. */
+  description?: string;
+  /** Set when the page renders its own dark hero and includes <Nav /> itself. */
+  ownNav?: boolean;
+  /** Set on pages that must not be indexed (404). */
   noindex?: boolean;
 }
 
-const { title, description, bareTitle = false, noindex = false } = Astro.props;
-
-const fullTitle = bareTitle ? title : `${title} — ${SITE.name}`;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+const {
+  title,
+  description = SITE.description,
+  ownNav = false,
+  noindex = false,
+} = Astro.props;
 
 const organisation = {
   '@context': 'https://schema.org',
@@ -33,26 +44,36 @@ const organisation = {
     addressCountry: 'AE',
   },
 };
+const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${title} — ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-AE">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{fullTitle}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
-    <!-- A meta tag cannot read a custom property, so this is the one colour
-         literal outside global.css. Keep it equal to --nt-navy-900. The other
-         is public/favicon.svg, which is a standalone file. -->
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:type" content="website" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#061a34" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
 
-    <!-- Self-hosted fonts: preload the two files the first paint needs. -->
+    <!-- Inter and JetBrains Mono are self-hosted from public/fonts and declared
+         in global.css. The handoff loaded them from Google's CDN, which this
+         site's Content-Security-Policy blocks (font-src 'self', style-src
+         'self') — and which would be a slower third request for typefaces we
+         already ship. Same two families, no external origin. -->
     <link
       rel="preload"
       href="/fonts/inter-latin-wght-normal.woff2"
@@ -68,36 +89,25 @@ const organisation = {
       crossorigin
     />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content={SITE.locale} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-
     <script
       is:inline
       type="application/ld+json"
       set:html={JSON.stringify(organisation)}
     />
   </head>
-
-  <body>
+  <body class="nt">
     <a class="nt-skip" href="#main">Skip to content</a>
-    <!-- Scroll progress. Pure CSS scroll-driven animation; hidden entirely on
-         browsers without support, so it never renders as a stray rule. -->
-    <div class="nt-progress" aria-hidden="true"></div>
-    <Header />
+    {
+      !ownNav && (
+        <div class="nt-dark">
+          <div class="nt-grid"></div>
+          <Nav />
+        </div>
+      )
+    }
     <main id="main">
       <slot />
     </main>
     <Footer />
-
-    <!-- The scroll reveal is pure CSS (see .nt-reveal in global.css). There is
-         deliberately no script here: content visibility must not depend on
-         JavaScript running. -->
   </body>
 </html>
