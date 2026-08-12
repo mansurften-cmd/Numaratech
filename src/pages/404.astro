@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Arrow from '../components/Arrow.astro';
+import PageHero from '../components/PageHero.astro';
 import { NAV } from '../consts';
 
 const destinations = [
@@ -13,43 +13,16 @@ const destinations = [
   title="Page not found"
   description="That page does not exist on the NUMARATECH website."
   noindex={true}
+  ownNav={true}
 >
-  <section class="nf nt-field">
-    <div class="nt-field__rules" aria-hidden="true"></div>
-    <div class="nt-wrap inner">
-      <p class="nt-micro nt-micro--accent nt-micro-idx">
-        Error <span class="nt-fig">404</span>
-      </p>
-
-      <h1 class="nt-display title">This page<br />does not reconcile.</h1>
-
-      <p class="nt-lead lead">
-        The address you followed does not exist here. It may have moved, or the
-        link may have been mistyped.
-      </p>
-
-      <div class="nt-btn-row actions">
-        <!-- The single solid navy element on this page. -->
-        <a href="/" class="nt-btn nt-btn--primary">
-          Back to the home page
-          <Arrow class="nt-btn__arrow" />
-        </a>
-      </div>
-
-      <div class="also">
-        <p class="nt-micro">Or try</p>
-        <ul class="also__list">
-          {
-            destinations.map((destination) => (
-              <li>
-                <a href={destination.href}>{destination.label}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-  </section>
+  <PageHero
+    kicker="Error / 404"
+    title="This page does not reconcile."
+    lead="The address you followed does not exist here. It may have moved, or the link may have been mistyped."
+    primary={{ label: 'Back to the home page', href: '/' }}
+    secondary={{ label: 'Talk to the practice', href: '/contact/' }}
+    stats={destinations.slice(0, 4).map((d) => ({ label: 'Try', value: d.label }))}
+  />
 </Base>
 
 <style>

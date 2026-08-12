@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 import { SITE } from '../consts';
 
 const updated = '30 July 2026';
@@ -9,26 +10,22 @@ const updated = '30 July 2026';
 <Base
   title="Privacy notice"
   description="How NUMARATECH handles personal data collected through this website and in the course of providing its services."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Legal"
-    title="Privacy notice"
-    lead="What we collect, why, and what you can ask us to do about it."
-    meta={[
+  <PageHero
+    kicker="Legal / Privacy"
+    title="What we collect, and why."
+    lead="This notice covers personal data that NUMARATECH handles through this website. Data we process on behalf of a client under a services agreement is governed by that agreement, not by this notice."
+    stats={[
       { label: 'Last updated', value: updated },
       { label: 'Controller', value: SITE.legalName },
       { label: 'Contact', value: SITE.email },
+      { label: 'Trackers', value: 'none' },
     ]}
   />
 
-  <section class="nt-section nt-wrap">
+  <section class="nt-section">
     <div class="nt-prose">
-      <p class="nt-lead">
-        This notice covers personal data that {SITE.legalName} handles through
-        this website. Data we process on behalf of a client under a services
-        agreement is governed by that agreement, not by this notice.
-      </p>
-
       <h2>What we collect</h2>
 
       <p>There are three ways personal data reaches us from this site.</p>
@@ -169,4 +166,10 @@ const updated = '30 July 2026';
       </p>
     </div>
   </section>
+  <NextBand
+    title="Questions about your data?"
+    body="Write to us and we will answer within 30 days — including a copy of what we hold, or its deletion where we have no continuing basis to keep it."
+    cta="Email us"
+    href="/contact/"
+  />
 </Base>

@@ -355,3 +355,121 @@
   .nt-console__body { grid-template-columns: 1fr !important; }
   .nt-console__nav { display: none; }
 }
+
+/* ==========================================================================
+   Contrast corrections
+   ==========================================================================
+   Found by auditing computed foreground against each element's actual
+   rendered background, not by eye. nt-2a.css loads after global.css, so these
+   win without touching either file's structure.                            */
+
+/* global.css colours headings with an element selector (h1,h2,…{color}),
+   which beats the colour a dark band sets on its container — so headings
+   inside .nt-dark and .nt-next rendered navy-on-navy at 1.30:1. Inheriting
+   restores the band's own colour. */
+.nt-dark :is(h1, h2, h3, h4, h5, h6),
+.nt-next :is(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
+/* Teal at #0E7490 is only 2.50:1 on navy. On dark grounds the accent has to
+   be the lighter teal; the deep teal stays for white grounds, where it is
+   5.36:1 reversed out in white. */
+.nt-dark .nt-eyebrow b,
+.nt-next .nt-eyebrow b {
+  color: var(--nt-teal-light);
+}
+
+/* Small mono labels were #7C7C7C on white — 4.17:1, just under AA. */
+.nt-kicker,
+.nt-eyebrow span {
+  color: #666666;
+}
+
+/* Muted metadata on navy was 4.43:1. */
+.nt-dark .nt-kicker,
+.nt-next .nt-kicker,
+.nt-dark .nt-eyebrow span,
+.nt-next .nt-eyebrow span {
+  color: #a8bed2;
+}
+
+/* `.nt a` (0,1,1) out-specifies `.nt-btn` (0,1,0), so every anchor styled as
+   a button inherited the teal link colour and rendered teal-on-teal — a 1.00:1
+   invisible label on every CTA site-wide. These restate the button colours at
+   a specificity that wins, including inside dark bands where `.nt-dark a`
+   would otherwise apply. */
+.nt a.nt-btn {
+  color: #ffffff;
+}
+
+.nt a.nt-btn:hover {
+  color: var(--nt-navy);
+}
+
+.nt a.nt-btn--ghost {
+  color: #ffffff;
+}
+
+.nt a.nt-btn--ghost:hover {
+  color: var(--nt-teal-light);
+}
+
+/* The skip link is off-screen until focused, but it must be legible the
+   moment it appears — and it is an anchor, so it hits the same conflict. */
+.nt a.nt-skip {
+  background: var(--nt-deep);
+  color: #ffffff;
+}
+
+/* --nt-mute was #7C7C7C — 4.17:1 on white, just under AA, and it carries the
+   small mono metadata (reading times, console figures, cell notes). Darkened
+   once here rather than patched at each call site. Dark grounds use
+   --nt-mute-dark and are unaffected. */
+:root {
+  --nt-mute: #666666;
+}
+
+/* .nt-lead is the pale hero lead. global.css also owns a .nt-lead, so the
+   class lands on white sections too, where pale-on-white measured 1.48:1.
+   Pale is now scoped to the dark grounds it was drawn for. */
+.nt-lead {
+  color: var(--nt-ink);
+}
+
+.nt-dark .nt-lead,
+.nt-hero .nt-lead,
+.nt-next .nt-lead {
+  color: var(--nt-paper-text);
+}
+
+/* Inline links in the closing navy band took the deep teal at 2.50:1. */
+.nt a.nt-link,
+.nt-next a,
+.nt-dark a {
+  color: var(--nt-teal-pale);
+}
+
+.nt-next a:hover,
+.nt-dark a:hover {
+  color: #ffffff;
+}
+
+/* On white grounds the deep teal is correct (5.36:1 reversed, 5.36:1 as text). */
+.nt-section:not(.nt-dark) a.nt-link {
+  color: var(--nt-teal);
+}
+
+/* The hero strip's "live" marker sat at 3.25:1 on the deep ground. */
+.nt-strip__value--teal,
+.nt-pulse {
+  color: var(--nt-teal-light);
+}
+
+/* .nt-stage--live is the deep teal, which is 2.50:1 on navy and 3.25:1 on the
+   deep ground. On dark bands it takes the light teal. */
+.nt-dark .nt-stage--live,
+.nt-next .nt-stage--live {
+  color: var(--nt-teal-light);
+  border-color: var(--nt-teal-light);
+}

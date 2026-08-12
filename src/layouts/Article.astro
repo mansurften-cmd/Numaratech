@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
-import CtaBand from '../components/CtaBand.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 import Arrow from '../components/Arrow.astro';
 import { formatInsightDate, insightsNewestFirst, type Insight } from '../insights';
 
@@ -17,25 +18,21 @@ const others = insightsNewestFirst()
   .slice(0, 2);
 ---
 
-<Base title={insight.title} description={insight.summary}>
+<Base title={insight.title} description={insight.summary} ownNav={true}>
   <article>
-    <header class="head nt-field">
-      <div class="nt-field__rules" aria-hidden="true"></div>
-      <div class="nt-wrap head__inner">
-        <p class="nt-micro nt-micro--accent nt-micro-idx">
-          <span>{insight.topic}</span>
-          <span aria-hidden="true">/</span>
-          <time datetime={insight.date}>{formatInsightDate(insight.date)}</time>
-          <span aria-hidden="true">/</span>
-          <span>{insight.readingMinutes} min read</span>
-        </p>
+    <PageHero
+      kicker={`Insights / ${insight.topic}`}
+      title={insight.title}
+      lead={standfirst}
+      stats={[
+        { label: 'Topic', value: insight.topic },
+        { label: 'Published', value: formatInsightDate(insight.date) },
+        { label: 'Reading time', value: `${insight.readingMinutes} min` },
+        { label: 'Author', value: 'the NUMARATECH team' },
+      ]}
+    />
 
-        <h1 class="nt-h1 title">{insight.title}</h1>
-        <p class="nt-lead standfirst">{standfirst}</p>
-      </div>
-    </header>
-
-    <div class="nt-section nt-wrap body">
+    <div class="nt-section body">
       <div class="nt-prose">
         <slot />
       </div>
@@ -56,7 +53,7 @@ const others = insightsNewestFirst()
       </aside>
     </div>
 
-    <section class="nt-section nt-section--tight nt-wrap nt-divide">
+    <section class="nt-section">
       <p class="nt-micro nt-micro--accent nt-micro-idx">Read next</p>
       <ul class="nt-ruled next">
         {
@@ -76,7 +73,10 @@ const others = insightsNewestFirst()
     </section>
   </article>
 
-  <CtaBand />
+  <NextBand
+    title="Bring us the version of this you are actually dealing with."
+    body="A 30-minute call. Bring your year end and whatever is currently unresolved — we will tell you plainly what needs doing."
+  />
 </Base>
 
 <style>

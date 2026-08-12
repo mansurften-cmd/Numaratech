@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 import SectionHead from '../components/SectionHead.astro';
-import CtaBand from '../components/CtaBand.astro';
 import Arrow from '../components/Arrow.astro';
 import { UAE_CT } from '../consts';
 
@@ -37,23 +37,25 @@ const levers = [
 <Base
   title="The business case"
   description="Work out what your close actually costs, on your own numbers, and where the time goes back. A browser-side calculator from NUMARATECH — nothing you enter is sent anywhere."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Growth"
+  <PageHero
+    kicker="Growth / The business case"
     title="Compliance is a fixed cost. It should not scale with you."
     lead="Every entity you add multiplies a manual close. The question is not whether the work is worth doing — it is how much of it should still need a person."
-    cta={{ label: 'Work it out on your numbers', href: '#calculator' }}
-    meta={[
-      { label: 'Method', value: 'Your inputs, your arithmetic' },
-      { label: 'Privacy', value: 'Runs in your browser only' },
-      { label: 'Output', value: 'Printable schedule' },
-      { label: 'Claims', value: 'None — we supply no figures' },
+    primary={{ label: 'Work it out on your numbers', href: '#calculator' }}
+    secondary={{ label: 'Talk to the practice', href: '/contact/' }}
+    stats={[
+      { label: 'Method', value: 'your inputs, your arithmetic' },
+      { label: 'Privacy', value: 'runs in your browser only' },
+      { label: 'Output', value: 'printable schedule' },
+      { label: 'Claims', value: 'none — we supply no figures' },
     ]}
   />
 
   <!-- Calculator -------------------------------------------------------- -->
   <section
-    class="nt-section nt-wrap"
+    class="nt-section"
     id="calculator"
     data-print-region
   >
@@ -283,8 +285,7 @@ const levers = [
     </div>
   </section>
 
-  <CtaBand
-    eyebrow="Next step"
+  <NextBand
     title="Test the case on one closed period."
     body="Bring an entity you have already closed and we will rebuild it alongside your existing workpapers. You get a real comparison instead of an estimate — including if it shows the gain is small."
   />

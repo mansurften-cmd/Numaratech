@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHeader from '../../components/PageHeader.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
 import SectionHead from '../../components/SectionHead.astro';
-import CtaBand from '../../components/CtaBand.astro';
 import Arrow from '../../components/Arrow.astro';
 import { UAE_CT, CALCULATOR, hasCalculator } from '../../consts';
 
@@ -45,22 +45,24 @@ const capabilities = [
 <Base
   title="Corporate Tax Engine"
   description="Compute UAE Corporate Tax from your trial balance, with adjustments, relief elections and working papers held against every line. Includes a free Corporate Tax estimator."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Platform / 01"
+  <PageHero
+    kicker="Platform / Corporate Tax Engine"
     title="Corporate Tax, computed from the ledger up."
     lead="Not a form to retype numbers into. The engine reads your trial balance, applies the adjustments you have defined, and produces a computation that still explains itself two years later."
-    cta={{ label: 'Jump to the free estimator', href: '#estimator' }}
-    meta={[
+    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    secondary={{ label: 'Use the free estimator', href: '#estimator' }}
+    stats={[
       { label: 'Standard rate', value: `${UAE_CT.standardRate * 100}% above the zero band` },
       { label: 'Zero band', value: `${UAE_CT.currency} ${nf.format(UAE_CT.zeroBandCeiling)}` },
-      { label: 'Regime in force', value: `FY beginning on or after ${UAE_CT.effectiveFrom}` },
-      { label: 'Starting point', value: 'Your trial balance' },
+      { label: 'Regime in force', value: `FY from ${UAE_CT.effectiveFrom}` },
+      { label: 'Starting point', value: 'your trial balance' },
     ]}
   />
 
   <!-- Estimator --------------------------------------------------------- -->
-  <section class="nt-section nt-wrap" id="estimator" data-print-region>
+  <section class="nt-section" id="estimator" data-print-region>
     <div class="est__intro" data-print-hide>
       <SectionHead
         index="01"
@@ -344,8 +346,7 @@ const capabilities = [
     </div>
   </section>
 
-  <CtaBand
-    eyebrow="Next step"
+  <NextBand
     title="Run a period with us before you commit."
     body="Bring one entity and one closed period. We will build the computation alongside your existing workpapers and you can compare the two."
   />

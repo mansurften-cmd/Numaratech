@@ -1,13 +1,13 @@
 ---
+/** /services/ — platform implementation and support. Distinct from the
+ *  advisory practice; cross-links so neither audience lands in the wrong
+ *  place. Copy carried over from the previous build unchanged. */
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionHead from '../components/SectionHead.astro';
-import CtaBand from '../components/CtaBand.astro';
-import Arrow from '../components/Arrow.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 
 const services = [
   {
-    index: '01',
     name: 'Implementation',
     line: 'Four to eight weeks, one period proven',
     body:
@@ -20,7 +20,6 @@ const services = [
     ],
   },
   {
-    index: '02',
     name: 'Data remediation',
     line: 'Before the system, the data',
     body:
@@ -33,7 +32,6 @@ const services = [
     ],
   },
   {
-    index: '03',
     name: 'Process automation',
     line: 'The work that should not need a person',
     body:
@@ -46,7 +44,6 @@ const services = [
     ],
   },
   {
-    index: '04',
     name: 'Ongoing support',
     line: 'Someone who knows your file',
     body:
@@ -57,6 +54,33 @@ const services = [
       'Quarterly review of mappings and adjustments',
       'Support during audit and any FTA correspondence',
     ],
+  },
+];
+
+const phases = [
+  {
+    when: 'Week 1',
+    title: 'Look at the ledger',
+    body:
+      'We take a read-only copy and assess whether it can support a computation. You get a written view of what needs fixing before any configuration starts.',
+  },
+  {
+    when: 'Weeks 2–3',
+    title: 'Map and connect',
+    body:
+      'Chart of accounts mapped for both statutory and tax presentation. Connections established. Your adjustment library built from what you actually did last year.',
+  },
+  {
+    when: 'Weeks 4–6',
+    title: 'Reproduce a period',
+    body:
+      'We rebuild a period you have already closed and reconcile to it line by line. Differences are explained, not smoothed. This is the part that tells you whether it works.',
+  },
+  {
+    when: 'Weeks 7–8',
+    title: 'Hand over',
+    body:
+      'Your team runs the next close, with us alongside rather than doing it. Training is the close itself; there is no separate course.',
   },
 ];
 
@@ -87,229 +111,95 @@ const principles = [
 <Base
   title="Implementation and support"
   description="Getting the NUMARATECH platform running on your ledger: implementation, data remediation, process automation and ongoing support. Fixed scope, one period proven before you switch over."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Platform / Implementation"
+  <PageHero
+    kicker="Platform / Implementation and support"
     title="Licensing the software is the easy part."
-    lead="A platform is worth nothing sitting on top of a ledger that cannot support it. This page is the work that makes the software able to tell the truth — separate from our advisory practice, and available whether or not you use it."
-    meta={[
-      { label: 'Implementation', value: 'Typically 4–8 weeks' },
-      { label: 'Commercials', value: 'Fixed scope, quoted in writing' },
-      { label: 'Proof', value: 'One historical period reproduced' },
-      { label: 'Exit', value: 'Full export, open formats' },
+    lead="A platform is worth nothing sitting on top of a ledger that cannot support it. This is the work that makes the software able to tell the truth — separate from the advisory practice, and available whether or not you use it."
+    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    secondary={{ label: 'The advisory practice', href: '/advisory/' }}
+    stats={[
+      { label: 'Implementation', value: 'four to eight weeks' },
+      { label: 'Commercials', value: 'fixed scope, quoted in writing' },
+      { label: 'Proof', value: 'one historical period' },
+      { label: 'Exit', value: 'full export, open formats' },
     ]}
   />
 
-  <!-- Services --------------------------------------------------------- -->
-  <section class="nt-section nt-wrap">
-    <SectionHead
-      index="01"
-      eyebrow="Engagements"
-      title="Four ways we work."
-      lead="Most clients start with implementation. A meaningful minority need remediation first, and we will say so before quoting anything else. These are platform engagements — if what you actually want is someone to take the position and file, that is the advisory practice."
-    />
-
-    <p class="cross-ref nt-sm">
-      <a href="/advisory/" class="nt-arrow-link">
-        Looking for the advisory practice instead?
-        <Arrow />
-      </a>
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Engagements</span></div>
+    <h2 class="nt-h2">Four ways we work.</h2>
+    <p class="nt-body">
+      Most clients start with implementation. A meaningful minority need remediation first, and we
+      will say so before quoting anything else. These are platform engagements — if what you want is
+      someone to take the position and file, that is the
+      <a class="nt-link" href="/advisory/">advisory practice</a>.
     </p>
 
-    <ul class="nt-ruled services">
-      {
-        services.map((service) => (
-          <li class="service nt-reveal">
-            <div>
-              <p class="nt-micro nt-micro-idx">
-                <span class="nt-fig idx">{service.index}</span>
-                {service.line}
-              </p>
-              <h3 class="nt-h2 service__name">{service.name}</h3>
-            </div>
-
-            <div class="service__detail">
-              <p class="nt-lead">{service.body}</p>
-              <ul class="nt-checks service__points">
-                {service.points.map((point) => (
-                  <li>{point}</li>
-                ))}
-              </ul>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      services.map((service, i) => (
+        <article class="nt-service">
+          <div class="nt-service__head">
+            <div class="nt-service__idx">{String(i + 1).padStart(2, '0')}</div>
+            <h3 class="nt-h2" style="font-size:30px; margin-bottom:6px">{service.name}</h3>
+            <div class="nt-kicker">{service.line}</div>
+          </div>
+          <div>
+            <p class="nt-body" style="margin-bottom:20px">{service.body}</p>
+            <ul class="nt-points">
+              {service.points.map((point) => <li>{point}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))
+    }
   </section>
 
-  <!-- How an engagement runs -------------------------------------------- -->
-  <section class="nt-section nt-section--invert nt-reveal">
-    <div class="nt-wrap">
-      <SectionHead
-        index="02"
-        eyebrow="Sequence"
-        title="How an implementation actually runs."
-        lead="No discovery phase that produces a document nobody reads. We start on your real ledger in the first week."
-        invert={true}
-      />
-
-      <ol class="nt-cols nt-cols--4 phases">
-        <li>
-          <span class="nt-fig phase__index">Week 1</span>
-          <h3 class="nt-h3 phase__title">Look at the ledger</h3>
-          <p class="phase__body">
-            We take a read-only copy and assess whether it can support a
-            computation. You get a written view of what needs fixing before any
-            configuration starts.
-          </p>
-        </li>
-        <li>
-          <span class="nt-fig phase__index">Weeks 2–3</span>
-          <h3 class="nt-h3 phase__title">Map and connect</h3>
-          <p class="phase__body">
-            Chart of accounts mapped for both statutory and tax presentation.
-            Connections established. Your adjustment library built from what you
-            actually did last year.
-          </p>
-        </li>
-        <li>
-          <span class="nt-fig phase__index">Weeks 4–6</span>
-          <h3 class="nt-h3 phase__title">Reproduce a period</h3>
-          <p class="phase__body">
-            We rebuild a period you have already closed and reconcile to it line
-            by line. Differences are explained, not smoothed. This is the part
-            that tells you whether it works.
-          </p>
-        </li>
-        <li>
-          <span class="nt-fig phase__index">Weeks 7–8</span>
-          <h3 class="nt-h3 phase__title">Hand over</h3>
-          <p class="phase__body">
-            Your team runs the next close, with us alongside rather than doing
-            it. Training is the close itself; there is no separate course.
-          </p>
-        </li>
-      </ol>
+  <section class="nt-section nt-dark nt-dark--navy nt-section--flush">
+    <div class="nt-grid--v"></div>
+    <div class="nt-layer">
+      <div class="nt-eyebrow"><b>02</b><span>Sequence</span></div>
+      <h2 class="nt-h2">How an implementation actually runs.</h2>
+      <p class="nt-body">
+        No discovery phase that produces a document nobody reads. We start on your real ledger in the
+        first week.
+      </p>
+      <div class="nt-cells nt-cells--4" style="--nt-cols:4">
+        {
+          phases.map((phase, i) => (
+            <div class="nt-cell">
+              <div class="nt-cell__num">{String(i + 1).padStart(2, '0')}</div>
+              <div class="nt-kicker">{phase.when}</div>
+              <h3 class="nt-h3">{phase.title}</h3>
+              <p>{phase.body}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <!-- Principles -------------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-reveal">
-    <SectionHead
-      index="03"
-      eyebrow="How we engage"
-      title="Four commitments."
-      lead="These constrain us more than they constrain you. That is the point of writing them down."
-    />
-
-    <div class="nt-cols nt-cols--2 principles">
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>03</b><span>How we engage</span></div>
+    <h2 class="nt-h2">Four commitments.</h2>
+    <p class="nt-body">
+      These constrain us more than they constrain you. That is the point of writing them down.
+    </p>
+    <div class="nt-cells" style="--nt-cols:2">
       {
         principles.map((principle) => (
-          <div>
-            <span class="nt-mark" aria-hidden="true"></span>
-            <h3 class="nt-h3 principle__title">{principle.title}</h3>
-            <p class="principle__body">{principle.body}</p>
+          <div class="nt-cell">
+            <h3 class="nt-h3">{principle.title}</h3>
+            <p>{principle.body}</p>
           </div>
         ))
       }
     </div>
-
-    <p class="principles__cta">
-      <a href="/about/" class="nt-arrow-link">
-        Why we work this way
-        <Arrow />
-      </a>
-    </p>
   </section>
 
-  <CtaBand
-    eyebrow="Next step"
+  <NextBand
     title="Start with the ledger review."
     body="Before any quote, we look at your actual data and tell you what state it is in. That conversation is useful even if you never become a client."
   />
 </Base>
-
-<style>
-  .cross-ref {
-    margin-top: var(--nt-5);
-  }
-
-  .services {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-
-  .service {
-    display: grid;
-    gap: var(--nt-5);
-    align-items: start;
-    padding-block: var(--nt-7);
-  }
-
-  .idx {
-    color: var(--nt-teal-800);
-  }
-
-  .service__name {
-    margin-top: var(--nt-4);
-  }
-
-  .service__detail {
-    max-width: 60ch;
-  }
-
-  .service__points {
-    margin-top: var(--nt-5);
-    font-size: var(--nt-fs-sm);
-  }
-
-  @media (min-width: 60rem) {
-    .service {
-      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
-      gap: var(--nt-7);
-    }
-  }
-
-  .phases {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    list-style: none;
-  }
-
-  .phase__index {
-    display: block;
-    text-align: left;
-    color: var(--nt-teal-500);
-    font-family: var(--nt-font-mono);
-    font-size: var(--nt-fs-micro);
-    letter-spacing: var(--nt-tr-micro);
-    text-transform: uppercase;
-  }
-
-  .phase__title {
-    margin-top: var(--nt-4);
-  }
-
-  .phase__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    color: var(--nt-line-300);
-  }
-
-  .principles {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .principle__title {
-    margin-top: var(--nt-4);
-    max-width: 26ch;
-  }
-
-  .principle__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 50ch;
-  }
-
-  .principles__cta {
-    margin-top: clamp(2rem, 4vw, 3rem);
-  }
-</style>

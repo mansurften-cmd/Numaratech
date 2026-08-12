@@ -1,10 +1,12 @@
 ---
+/** /about/ — positioning, beliefs and boundaries. Copy carried over from the
+ *  previous build unchanged; no team names or headcount are asserted, because
+ *  none have been supplied. */
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
-import SectionHead from '../components/SectionHead.astro';
-import CtaBand from '../components/CtaBand.astro';
-import Arrow from '../components/Arrow.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 import { SITE } from '../consts';
+import { ALL_SERVICES } from '../services';
 
 const beliefs = [
   {
@@ -38,231 +40,152 @@ const beliefs = [
       'If your ledger will not support what you want, or the project is larger than you hoped, that is a first-call conversation. Discovering it in month three serves nobody.',
   },
 ];
+
+const boundaries = [
+  {
+    title: 'Not your auditor',
+    body:
+      'We are accounting and tax consultants. A firm that prepares the records cannot independently audit them, so we do not audit clients whose books we keep. We will work alongside your auditor and prepare the year-end file for them.',
+  },
+  {
+    title: 'Not a law firm',
+    body:
+      'Tax has legal edges, and some questions belong with a lawyer. We will say when you have reached one rather than answering outside what we are qualified to answer.',
+  },
+  {
+    title: 'Not an advice channel on this website',
+    body:
+      'We do advise — under a signed engagement letter. Nothing on this site is advice, and no advisory relationship arises from reading it or from using the estimator. That distinction protects you as much as us.',
+  },
+  {
+    title: 'Not a replacement for your ledger',
+    body:
+      'The platform reads your accounting system; it does not replace it. If you are choosing bookkeeping software, that decision comes before us and we are happy to be left out of it.',
+  },
+];
 ---
 
 <Base
   title="About"
   description="NUMARATECH is a UAE accounting and tax consultancy that also builds the platform it works on — why we exist, what we believe, and where the boundaries are."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="About"
+  <PageHero
+    kicker="About / Dubai, United Arab Emirates"
     title="A practice that builds its own tools."
     lead="Between the accounting system and the filing there is a gap that has always been filled by a spreadsheet and somebody's memory. We advise in that gap, and we build the software that closes it."
-    meta={[
+    primary={{ label: 'Talk to the practice', href: '/contact/' }}
+    secondary={{ label: 'See the platform', href: '/platform/' }}
+    stats={[
+      { label: 'Practice', value: 'accounting and tax consultants' },
+      { label: 'Service lines', value: String(ALL_SERVICES.length) },
       { label: 'Base', value: `${SITE.address.city}, ${SITE.address.country}` },
-      { label: 'Practice', value: 'Accounting and tax consultants' },
-      { label: 'Platform', value: 'Corporate Tax, FS, client workflow' },
-      { label: 'Serving', value: 'Businesses and accounting firms' },
+      { label: 'Platform', value: 'two live, four at idea stage' },
     ]}
   />
 
-  <!-- Why ---------------------------------------------------------------- -->
-  <section class="nt-section nt-wrap">
-    <div class="nt-split">
-      <SectionHead index="01" eyebrow="Why" title="Where this came from." />
-
-      <div class="prose">
-        <p class="nt-lead">
-          The UAE introduced Corporate Tax for financial years beginning on or
-          after 1 June 2023. Overnight, a large number of businesses that had
-          never needed a defensible tax computation needed one every year.
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Why</span></div>
+    <h2 class="nt-h2">Where this came from.</h2>
+    <div class="nt-split--even nt-split">
+      <div>
+        <p class="nt-body">
+          The UAE introduced Corporate Tax for financial years beginning on or after 1 June 2023.
+          Overnight, a large number of businesses that had never needed a defensible tax computation
+          needed one every year.
         </p>
-        <p>
-          What most of them had was an accounting system that produced a trial
-          balance, and a workbook that turned that trial balance into whatever
-          was needed. The workbook was built by one capable person, was
-          understood by that person, and was correct — until the person changed,
-          the business grew, or somebody asked how a figure had been derived
-          eighteen months earlier.
+        <p class="nt-small">
+          What most of them had was an accounting system that produced a trial balance, and a
+          workbook that turned that trial balance into whatever was needed. The workbook was built by
+          one capable person, was understood by that person, and was correct — until the person
+          changed, the business grew, or somebody asked how a figure had been derived eighteen months
+          earlier.
         </p>
-        <p>
-          We started NUMARATECH because that pattern does not scale and does not
-          survive scrutiny. The answer is not a bigger workbook or a global ERP
-          with an Emirates module bolted to the side. It is a thin, specific
-          layer that maps the ledger once and derives everything else from it.
+      </div>
+      <div>
+        <p class="nt-small">
+          We started NUMARATECH because that pattern does not scale and does not survive scrutiny.
+          The answer is not a bigger workbook or a global ERP with an Emirates module bolted to the
+          side. It is a thin, specific layer that maps the ledger once and derives everything else
+          from it.
         </p>
-        <p>
-          So the business has two halves, and we keep them separate on purpose. We
-          are a <a href="/advisory/">licensed accounting and tax consultancy</a> —
-          engaged under an engagement letter, forming judgements, accountable for
-          the advice. And we build the <a href="/platform/">platform</a> our own
-          team uses to do that work, which we license to other firms and finance
-          functions.
+        <p class="nt-small">
+          So the business has two halves, and we keep them separate on purpose. We are a
+          <a class="nt-link" href="/advisory/">licensed accounting and tax consultancy</a> — engaged
+          under an engagement letter, forming judgements, accountable for the advice. And we build
+          the <a class="nt-link" href="/platform/">platform</a> our own team uses to do that work,
+          which we license to other firms and finance functions.
         </p>
-        <p>
-          Each half makes the other honest. The software is shaped by people who
-          have to file with it; the advice is faster and more defensible because
-          the tooling underneath it was built for exactly this. Neither is a side
-          project of the other, and you can buy either one alone.
+        <p class="nt-small">
+          Each half makes the other honest. The software is shaped by people who have to file with
+          it; the advice is faster and more defensible because the tooling underneath it was built
+          for exactly this. Neither is a side project of the other, and you can buy either one alone.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Beliefs ------------------------------------------------------------ -->
-  <section class="nt-section nt-wrap nt-divide nt-reveal">
-    <SectionHead
-      index="02"
-      eyebrow="What we believe"
-      title="Six positions that shape the product."
-      lead="Not values on a wall. Each of these has cost us a feature request we chose not to build."
-    />
+  <section class="nt-section nt-dark nt-dark--navy nt-section--flush">
+    <div class="nt-grid--v"></div>
+    <div class="nt-layer">
+      <div class="nt-eyebrow"><b>02</b><span>What we believe</span></div>
+      <h2 class="nt-h2">Six positions that shape the product.</h2>
+      <p class="nt-body">
+        Not values on a wall. Each of these has cost us a feature request we chose not to build.
+      </p>
+      <div class="nt-cells nt-cells--3" style="--nt-cols:3">
+        {
+          beliefs.map((belief, i) => (
+            <div class="nt-cell">
+              <div class="nt-cell__num">{String(i + 1).padStart(2, '0')}</div>
+              <h3 class="nt-h3">{belief.title}</h3>
+              <p>{belief.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-    <div class="nt-cols nt-cols--3 beliefs">
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>03</b><span>Boundaries</span></div>
+    <h2 class="nt-h2">What we are not.</h2>
+    <p class="nt-body">Being explicit about this saves everybody a wasted meeting.</p>
+    <div class="nt-cells" style="--nt-cols:2">
       {
-        beliefs.map((belief) => (
-          <div>
-            <span class="nt-mark" aria-hidden="true"></span>
-            <h3 class="nt-h3 belief__title">{belief.title}</h3>
-            <p class="belief__body">{belief.body}</p>
+        boundaries.map((boundary) => (
+          <div class="nt-cell">
+            <h3 class="nt-h3">{boundary.title}</h3>
+            <p>{boundary.body}</p>
           </div>
         ))
       }
     </div>
   </section>
 
-  <!-- What we are not --------------------------------------------------- -->
-  <section class="nt-section nt-section--inset nt-reveal">
-    <div class="nt-wrap">
-      <div class="nt-split">
-        <SectionHead
-          index="03"
-          eyebrow="Boundaries"
-          title="What we are not."
-          lead="Being explicit about this saves everybody a wasted meeting."
-        />
-
-        <div>
-          <ul class="nt-ruled boundaries">
-            <li>
-              <h3 class="nt-h3 boundary__title">Not your auditor</h3>
-              <p class="boundary__body">
-                We are accounting and tax consultants. A firm that prepares the
-                records cannot independently audit them, so we do not audit
-                clients whose books we keep. We will work alongside your auditor
-                and prepare the year-end file for them.
-              </p>
-            </li>
-            <li>
-              <h3 class="nt-h3 boundary__title">Not a law firm</h3>
-              <p class="boundary__body">
-                Tax has legal edges, and some questions belong with a lawyer. We
-                will say when you have reached one rather than answering outside
-                what we are qualified to answer.
-              </p>
-            </li>
-            <li>
-              <h3 class="nt-h3 boundary__title">
-                Not an advice channel on this website
-              </h3>
-              <p class="boundary__body">
-                We do advise — under a signed engagement letter. Nothing on this
-                site is advice, and no advisory relationship arises from reading
-                it or from using the estimator. That distinction protects you as
-                much as us.
-              </p>
-            </li>
-            <li>
-              <h3 class="nt-h3 boundary__title">
-                Not a replacement for your ledger
-              </h3>
-              <p class="boundary__body">
-                The platform reads your accounting system; it does not replace
-                it. If you are choosing bookkeeping software, that decision comes
-                before us and we are happy to be left out of it.
-              </p>
-            </li>
-            <li>
-              <h3 class="nt-h3 boundary__title">Not a global platform</h3>
-              <p class="boundary__body">
-                We build for the UAE. If you need a multi-jurisdiction tax
-                engine spanning fifteen countries, we are the wrong choice and
-                will tell you so.
-              </p>
-            </li>
-          </ul>
-
-          <p class="boundaries__cta">
-            <a href="/services/" class="nt-arrow-link">
-              What we do instead
-              <Arrow />
-            </a>
-          </p>
-        </div>
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>04</b><span>Working with us</span></div>
+    <h2 class="nt-h2">What the first call is like.</h2>
+    <div class="nt-split--even nt-split">
+      <div>
+        <p class="nt-body">Thirty minutes, your numbers on screen, no deck.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- Working with us --------------------------------------------------- -->
-  <section class="nt-section nt-wrap nt-reveal">
-    <div class="nt-split">
-      <SectionHead
-        index="04"
-        eyebrow="Working with us"
-        title="What the first call is like."
-      />
-
-      <div class="prose">
-        <p class="nt-lead">
-          Thirty minutes, your numbers on screen, no deck.
-        </p>
-        <p>
-          We will ask what your ledger looks like, how last year's computation
-          was produced, and who holds the knowledge. By the end of it you will
-          have a direct answer on whether we can help, roughly what it would
-          take, and what we think the real problem is — which is not always the
+      <div>
+        <p class="nt-small">
+          We will ask what your ledger looks like, how last year's computation was produced, and who
+          holds the knowledge. By the end of it you will have a direct answer on whether we can help,
+          roughly what it would take, and what we think the real problem is — which is not always the
           one you called about.
         </p>
-        <p>
-          If the honest answer is that you do not need us yet, that is the answer
-          you will get.
+        <p class="nt-small">
+          If the honest answer is that you do not need us yet, that is the answer you will get.
         </p>
       </div>
     </div>
   </section>
 
-  <CtaBand
-    eyebrow="Next step"
+  <NextBand
     title="Have the first conversation."
     body="Bring one entity, one period, and the workbook you currently rely on. That is enough for both of us to know whether this is worth continuing."
   />
 </Base>
-
-<style>
-  .prose {
-    max-width: 64ch;
-  }
-
-  .prose > * + * {
-    margin-top: var(--nt-4);
-  }
-
-  .beliefs {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-
-  .belief__title {
-    margin-top: var(--nt-4);
-    max-width: 24ch;
-  }
-
-  .belief__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 46ch;
-  }
-
-  .boundary__title {
-    margin-top: 0;
-  }
-
-  .boundary__body {
-    margin-top: var(--nt-3);
-    font-size: var(--nt-fs-sm);
-    max-width: 60ch;
-  }
-
-  .boundaries__cta {
-    margin-top: var(--nt-6);
-  }
-</style>

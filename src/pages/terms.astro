@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import PageHeader from '../components/PageHeader.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
 import { SITE, UAE_CT } from '../consts';
 
 const updated = '30 July 2026';
@@ -10,27 +11,22 @@ const nf = new Intl.NumberFormat('en-AE');
 <Base
   title="Terms of use"
   description="Terms governing use of the NUMARATECH website, including the limits of the Corporate Tax estimator and the absence of any advisory relationship."
+  ownNav={true}
 >
-  <PageHeader
-    eyebrow="Legal"
-    title="Terms of use"
-    lead="The terms on which you may use this website, and what it does and does not commit us to."
-    meta={[
+  <PageHero
+    kicker="Legal / Terms"
+    title="The terms you are reading this under."
+    lead="These govern the website only. Advisory engagements are governed by the engagement letter we sign with you, and use of the platform by its own licence terms."
+    stats={[
       { label: 'Last updated', value: updated },
-      { label: 'Applies to', value: 'This website' },
-      { label: 'Contact', value: SITE.email },
+      { label: 'Applies to', value: 'this website' },
+      { label: 'Advice', value: 'none given here' },
+      { label: 'Governing law', value: 'United Arab Emirates' },
     ]}
   />
 
-  <section class="nt-section nt-wrap">
+  <section class="nt-section">
     <div class="nt-prose">
-      <p class="nt-lead">
-        By using this website you accept these terms. They govern the website
-        only. Advisory engagements are governed by the engagement letter we sign
-        with you, and use of the platform by its own licence terms; both prevail
-        over this page for the work they cover.
-      </p>
-
       <h2>Nothing on this website is advice</h2>
 
       <p>
@@ -198,4 +194,10 @@ const nf = new Intl.NumberFormat('en-AE');
       </p>
     </div>
   </section>
+  <NextBand
+    title="Need something clarified?"
+    body="If any part of these terms is unclear, or you need them in a form your own counsel can review, ask us."
+    cta="Email us"
+    href="/contact/"
+  />
 </Base>
