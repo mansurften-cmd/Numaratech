@@ -8,6 +8,19 @@ import { UAE_CT, CALCULATOR, hasCalculator } from '../../consts';
 
 const nf = new Intl.NumberFormat('en-AE');
 
+// Default inputs and the pre-JavaScript output table, both from the shared
+// demo dataset. /platform/ showed adjustments of 66,150 for the same
+// accounting profit this page defaulted to 75,000 (A13). The computation
+// itself is untouched; these are only the values it starts from.
+import {
+  DEMO_ACCOUNTING_PROFIT,
+  DEMO_ADJUSTMENTS_TOTAL,
+  DEMO_TAXABLE_INCOME,
+  DEMO_CHARGEABLE,
+  DEMO_TAX,
+  DEMO_EFFECTIVE_RATE,
+} from '../../demo';
+
 const capabilities = [
   {
     title: 'Adjustment library',
@@ -112,7 +125,7 @@ const capabilities = [
                 type="text"
                 inputmode="numeric"
                 autocomplete="off"
-                value="1,250,000"
+                value={nf.format(DEMO_ACCOUNTING_PROFIT)}
                 aria-describedby="est-profit-hint"
               />
             </div>
@@ -135,7 +148,7 @@ const capabilities = [
                 type="text"
                 inputmode="numeric"
                 autocomplete="off"
-                value="75,000"
+                value={nf.format(DEMO_ADJUSTMENTS_TOTAL)}
                 aria-describedby="est-addbacks-hint"
               />
             </div>
@@ -188,15 +201,15 @@ const capabilities = [
             <tbody>
               <tr class="nt-calc__line">
                 <th scope="row">Accounting profit before tax</th>
-                <td class="nt-fig" data-out="profit">1,250,000</td>
+                <td class="nt-fig" data-out="profit">{nf.format(DEMO_ACCOUNTING_PROFIT)}</td>
               </tr>
               <tr class="nt-calc__line">
                 <th scope="row">Net non-deductible adjustments</th>
-                <td class="nt-fig" data-out="addbacks">75,000</td>
+                <td class="nt-fig" data-out="addbacks">{nf.format(DEMO_ADJUSTMENTS_TOTAL)}</td>
               </tr>
               <tr class="nt-calc__line est__subtotal">
                 <th scope="row">Taxable income</th>
-                <td class="nt-fig" data-out="taxable">1,325,000</td>
+                <td class="nt-fig" data-out="taxable">{nf.format(DEMO_TAXABLE_INCOME)}</td>
               </tr>
               <tr class="nt-calc__line">
                 <th scope="row">
@@ -209,7 +222,7 @@ const capabilities = [
               </tr>
               <tr class="nt-calc__line">
                 <th scope="row">Income subject to tax</th>
-                <td class="nt-fig" data-out="chargeable">950,000</td>
+                <td class="nt-fig" data-out="chargeable">{nf.format(DEMO_CHARGEABLE)}</td>
               </tr>
             </tbody>
             <tfoot>
@@ -217,11 +230,11 @@ const capabilities = [
                 <th scope="row">
                   Corporate Tax at {UAE_CT.standardRate * 100}%
                 </th>
-                <td class="nt-fig" data-out="tax">85,500</td>
+                <td class="nt-fig" data-out="tax">{nf.format(Math.round(DEMO_TAX))}</td>
               </tr>
               <tr class="nt-calc__line est__effective">
                 <th scope="row">Effective rate on taxable income</th>
-                <td class="nt-fig" data-out="effective">6.45%</td>
+                <td class="nt-fig" data-out="effective">{(DEMO_EFFECTIVE_RATE * 100).toFixed(2)}%</td>
               </tr>
             </tfoot>
           </table>

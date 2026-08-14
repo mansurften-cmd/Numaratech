@@ -1,6 +1,8 @@
 // NUMARATECH — single source of truth for site metadata and navigation.
 // Note the spelling: NUMARATECH, all caps, one word, with an A.
 
+import { SITE_ORIGIN } from '../site.config.mjs';
+
 export const SITE = {
   name: 'NUMARATECH',
   /**
@@ -16,11 +18,11 @@ export const SITE = {
    * does not resolve, so canonical, og:url and the sitemap must not point at
    * it — doing so attributes ranking signal to a dead host.
    *
-   * When numaratech.com is live: flip this, drop Disallow:/ from robots.txt,
-   * remove the X-Robots-Tag noindex from public/_headers, keep noindex
-   * permanently on *.workers.dev, and 301 workers.dev -> apex.
+   * Defined once in site.config.mjs, because astro.config.mjs and the
+   * generated robots.txt need the same value and cannot import this file.
+   * See LAUNCH.md for the full migration sequence.
    */
-  url: 'https://numaratech.mansurften.workers.dev',
+  url: SITE_ORIGIN,
   locale: 'en_AE',
   email: 'hello@numaratech.com',
   /** Single source of truth. Nothing may hard-code a number. */
@@ -95,7 +97,7 @@ export type NavItem = {
 //
 // The advisory children mirror the practice's own three groups. Each group page
 // carries its services as anchored sections, so the menu stays at three entries
-// rather than listing all seventeen.
+// rather than listing every service line.
 export const NAV: NavItem[] = [
   {
     label: 'Advisory',

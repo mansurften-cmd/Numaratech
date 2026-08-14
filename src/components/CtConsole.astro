@@ -1,6 +1,9 @@
 ---
 /** Corporate Tax Engine — the computation screen, drawn in hairlines.
- *  Illustrative figures; not a live product screenshot. */
+ *  Illustrative figures; not a live product screenshot. The adjustments and
+ *  every total come from src/demo.ts, which /platform/corporate-tax/ also uses
+ *  for its calculator defaults — the two pages used to disagree (A13). */
+import { ADJUSTMENTS, DEMO_ADJUSTMENTS_TOTAL, DEMO_TAXABLE_INCOME, DEMO_TAX, fig } from '../demo';
 ---
 
 <div class="nt-console">
@@ -21,28 +24,23 @@
       <div class="nt-row nt-row--head" style="grid-template-columns:1fr 92px 60px">
         <span>Adjustment</span><span class="nt-num">AED</span><span class="nt-num">Trail</span>
       </div>
-      <div class="nt-row" style="grid-template-columns:1fr 92px 60px">
-        <span>Entertainment — 50% disallowed</span>
-        <span class="nt-num">32,400</span>
-        <span style="text-align:right"><i class="nt-trail">JE-114</i></span>
-      </div>
-      <div class="nt-row" style="grid-template-columns:1fr 92px 60px">
-        <span>Depreciation — accounting vs tax</span>
-        <span class="nt-num">18,750</span>
-        <span style="text-align:right"><i class="nt-trail">JE-207</i></span>
-      </div>
-      <div class="nt-row" style="grid-template-columns:1fr 92px 60px">
-        <span>Provision — not yet incurred</span>
-        <span class="nt-num">15,000</span>
-        <span style="text-align:right"><i class="nt-trail">JE-291</i></span>
-      </div>
-      <div class="nt-row" style="grid-template-columns:1fr 92px 60px">
-        <span>Interest — cap not exceeded</span>
-        <span class="nt-num nt-num--mute">—</span>
-        <span style="text-align:right"><i class="nt-trail nt-trail--off">n/a</i></span>
-      </div>
+      {
+        ADJUSTMENTS.map((adjustment) => (
+          <div class="nt-row" style="grid-template-columns:1fr 92px 60px">
+            <span>{adjustment.label}</span>
+            <span class={`nt-num${adjustment.amount === 0 ? ' nt-num--mute' : ''}`}>
+              {adjustment.amount === 0 ? '—' : fig(adjustment.amount)}
+            </span>
+            <span style="text-align:right">
+              <i class={`nt-trail${adjustment.ref ? '' : ' nt-trail--off'}`}>
+                {adjustment.ref ?? 'n/a'}
+              </i>
+            </span>
+          </div>
+        ))
+      }
       <div class="nt-row nt-row--total" style="grid-template-columns:1fr 92px 60px">
-        <span>Total adjustments</span><span class="nt-num">66,150</span><span></span>
+        <span>Total adjustments</span><span class="nt-num">{fig(DEMO_ADJUSTMENTS_TOTAL)}</span><span></span>
       </div>
     </div>
 
@@ -50,11 +48,11 @@
       <h4>Position</h4>
       <div class="nt-figure">
         <span>Taxable income</span>
-        <span>1,316,150</span>
+        <span>{fig(DEMO_TAXABLE_INCOME)}</span>
       </div>
       <div class="nt-figure nt-figure--lead">
         <span>Corporate Tax at 9%</span>
-        <span>84,704</span>
+        <span>{fig(DEMO_TAX)}</span>
       </div>
       <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px">
         <div style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--nt-navy)">

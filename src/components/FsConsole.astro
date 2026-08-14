@@ -1,6 +1,10 @@
 ---
 /** FS Studio — the statements screen, drawn in hairlines.
- *  Illustrative figures; not a live product screenshot. */
+ *  Illustrative figures; not a live product screenshot. Every figure is
+ *  derived in src/demo.ts, so the subtotals cannot stop footing. */
+import { DEMO_PL, fig, neg } from '../demo';
+
+const { current: c, prior: p } = DEMO_PL;
 ---
 
 <div class="nt-console">
@@ -32,19 +36,25 @@
         <span></span><span class="nt-num">2025</span><span class="nt-num">2024</span>
       </div>
       <div class="nt-row" style="grid-template-columns:1fr 84px 84px">
-        <span>Revenue</span><span class="nt-num">8,420,000</span><span class="nt-num nt-num--mute">7,105,000</span>
+        <span>Revenue</span><span class="nt-num">{fig(c.revenue)}</span><span class="nt-num nt-num--mute">{fig(p.revenue)}</span>
       </div>
       <div class="nt-row" style="grid-template-columns:1fr 84px 84px">
-        <span>Cost of sales</span><span class="nt-num">(5,180,000)</span><span class="nt-num nt-num--mute">(4,466,000)</span>
+        <span>Cost of sales</span><span class="nt-num">{neg(c.costOfSales)}</span><span class="nt-num nt-num--mute">{neg(p.costOfSales)}</span>
       </div>
       <div class="nt-row" style="grid-template-columns:1fr 84px 84px; font-weight:600; color:var(--nt-navy)">
-        <span>Gross profit</span><span class="nt-num">3,240,000</span><span class="nt-num nt-num--mute" style="font-weight:400">2,639,000</span>
+        <span>Gross profit</span><span class="nt-num">{fig(c.grossProfit)}</span><span class="nt-num nt-num--mute" style="font-weight:400">{fig(p.grossProfit)}</span>
       </div>
       <div class="nt-row" style="grid-template-columns:1fr 84px 84px">
-        <span>Administrative expenses</span><span class="nt-num">(1,915,000)</span><span class="nt-num nt-num--mute">(1,702,000)</span>
+        <span>Administrative expenses</span><span class="nt-num">{neg(c.adminExpenses)}</span><span class="nt-num nt-num--mute">{neg(p.adminExpenses)}</span>
+      </div>
+      <div class="nt-row" style="grid-template-columns:1fr 84px 84px; font-weight:600; color:var(--nt-navy)">
+        <span>Profit before tax</span><span class="nt-num">{fig(c.profitBeforeTax)}</span><span class="nt-num nt-num--mute" style="font-weight:400">{fig(p.profitBeforeTax)}</span>
+      </div>
+      <div class="nt-row" style="grid-template-columns:1fr 84px 84px">
+        <span>Income tax expense</span><span class="nt-num">{neg(c.incomeTax)}</span><span class="nt-num nt-num--mute">{neg(p.incomeTax)}</span>
       </div>
       <div class="nt-row nt-row--total" style="grid-template-columns:1fr 84px 84px">
-        <span>Profit for the year</span><span class="nt-num">1,325,000</span><span class="nt-num nt-num--mute" style="font-weight:400">937,000</span>
+        <span>Profit for the year</span><span class="nt-num">{fig(c.profitForTheYear)}</span><span class="nt-num nt-num--mute" style="font-weight:400">{fig(p.profitForTheYear)}</span>
       </div>
     </div>
 

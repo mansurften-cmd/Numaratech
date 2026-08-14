@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config';
+import { SITE_ORIGIN } from './site.config.mjs';
 
-// NUMARATECH — static build, deployed to Cloudflare Pages.
-// Update `site` to the production hostname before the first deploy; it is used
-// for canonical URLs, the sitemap and Open Graph tags.
+// NUMARATECH — static build, deployed to Cloudflare Workers static assets.
+// The origin lives in site.config.mjs and is imported here, in src/consts.ts
+// and in src/pages/robots.txt.ts, so migrating domains is a single edit.
 export default defineConfig({
-  // Must match SITE.url in src/consts.ts — drives canonical and the sitemap.
-  site: 'https://numaratech.mansurften.workers.dev',
+  site: SITE_ORIGIN,
   output: 'static',
   trailingSlash: 'always',
   build: {
