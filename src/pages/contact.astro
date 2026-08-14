@@ -4,6 +4,17 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import { SITE, WEB3FORMS, hasContactForm } from '../consts';
+
+// Surfaced in the build log so a deploy without a key is noticed. Deliberately
+// a warning and not a thrown error: failing the build would take the entire
+// site offline on every Cloudflare deploy over a form that has a working
+// email fallback, which trades a small gap for a total outage.
+if (!hasContactForm()) {
+  console.warn(
+    '[contact] No Web3Forms access key set — /contact/ is shipping the email fallback. ' +
+      'Set WEB3FORMS.accessKey in src/consts.ts to switch the form on.'
+  );
+}
 ---
 
 <Base
@@ -67,13 +78,16 @@ import { SITE, WEB3FORMS, hasContactForm } from '../consts';
             </form>
           ) : (
             <div style="border:1px solid var(--nt-navy); padding:24px 26px; max-width:34em">
-              <div class="nt-kicker" style="margin-bottom:10px">Form not yet live</div>
-              <p class="nt-small" style="margin:0 0 14px">
-                The enquiry form is switched off until a Web3Forms access key is set in
-                <code style="font-family:var(--nt-mono)">src/consts.ts</code>. Until then, email or
-                telephone reaches us directly.
+              <div class="nt-kicker" style="margin-bottom:10px">By email</div>
+              <p class="nt-small" style="margin:0 0 18px">
+                Write to us directly rather than through a form. Tell us your year end, your licence
+                type and what is currently unresolved — that is enough for us to come back with
+                something useful rather than a request for more detail.
               </p>
-              <a class="nt-btn" href={`mailto:${SITE.email}`}>Email us</a>
+              <div class="nt-actions">
+                <a class="nt-btn" href={`mailto:${SITE.email}`}>Email us</a>
+                <a class="nt-link" href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+              </div>
             </div>
           )
         }
