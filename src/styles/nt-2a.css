@@ -193,6 +193,11 @@
 .nt-dark .nt-cell { border-right-color: rgba(255, 255, 255, .16); }
 .nt-cell__head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
 .nt-cell__num { font-family: var(--nt-mono); font-size: 26px; font-weight: 500; color: var(--nt-teal-light); }
+/* On a white ground the light teal is 2.43:1 — below the 3:1 floor for
+   large text. The cell numbers on / and /advisory/ sit on white, so they
+   take the deep teal (5.36:1); the dark-ground rule above still applies
+   inside .nt-dark, where the deep teal would be too dark instead. */
+.nt-section:not(.nt-dark) .nt-cell__num { color: var(--nt-teal); }
 .nt-cell__notes { display: flex; flex-direction: column; gap: 6px; margin-top: 2px; font-size: 13.5px; color: var(--nt-mute); }
 .nt-cell p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--nt-ink); text-wrap: pretty; }
 .nt-dark .nt-cell p { color: var(--nt-paper-text); font-size: 14px; }
@@ -605,4 +610,40 @@
   margin: 20px 0 0;
   font-size: 12.5px;
   color: var(--nt-mute);
+}
+
+/* ==========================================================================
+   Contrast, second pass (A4)
+   ==========================================================================
+   Measured with a browser walking each element's computed colour against its
+   real (walked-up) background, across all 17 routes — not against the token
+   the rule names, which is what let both of these through. */
+
+/* .nt-btn--ghost is white-on-transparent with a translucent white border: it
+   only exists for dark bands. The two print buttons are the only ones that sit
+   on white, and they rendered white-on-white at 1.00:1 — invisible controls on
+   /platform/corporate-tax/ and /business-case/.
+
+   Scoped to those two containers rather than to :not(.nt-dark), because a
+   descendant selector rooted at .nt (which is on <body>) also matches the
+   buttons inside dark bands and out-specifies the .nt-dark rule — that attempt
+   dropped the hero's "See the platform" to 3.25:1. */
+.est__actions .nt-btn--ghost,
+.calc__actions .nt-btn--ghost {
+  border-color: var(--nt-teal);
+  color: var(--nt-teal);
+}
+.est__actions .nt-btn--ghost:hover,
+.calc__actions .nt-btn--ghost:hover {
+  background: var(--nt-teal);
+  border-color: var(--nt-teal);
+  color: #ffffff;
+}
+
+/* --nt-mute is #666666, chosen for white grounds (5.74:1). On the deep navy it
+   is 3.03:1, and .nt-cell__notes is 13.5px body text, so it needs 4.5:1. The
+   dark bands take the paper text colour, which is 11.80:1 there. */
+.nt-dark .nt-cell__notes,
+.nt-next .nt-cell__notes {
+  color: var(--nt-paper-text);
 }
