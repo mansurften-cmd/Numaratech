@@ -4,7 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import CtConsole from '../../components/CtConsole.astro';
 import FsConsole from '../../components/FsConsole.astro';
-import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
+import { BUILT_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 ---
 
 <Base
@@ -27,7 +27,7 @@ import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 
   <section class="nt-section">
     <div class="nt-eyebrow"><b>01</b><span>Live now</span></div>
-    <h2 class="nt-h2">Two products in production.</h2>
+    <h2 class="nt-h2">Two products in private beta.</h2>
     <p class="nt-body">
       Both read the same mapped ledger, so the statements and the tax computation cannot disagree
       with each other.
@@ -35,10 +35,10 @@ import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 
     <div class="nt-split" style="margin-bottom:56px">
       <div style="display:flex; flex-direction:column; gap:14px">
-        <div class="nt-kicker">{LIVE_PRODUCTS[0].strap}</div>
-        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{LIVE_PRODUCTS[0].name}</h3>
-        <p class="nt-small">{LIVE_PRODUCTS[0].body}</p>
-        <ul class="nt-rail">{LIVE_PRODUCTS[0].points.map((point) => <li>{point}</li>)}</ul>
+        <div class="nt-kicker">{BUILT_PRODUCTS[0].strap}</div>
+        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{BUILT_PRODUCTS[0].name}</h3>
+        <p class="nt-small">{BUILT_PRODUCTS[0].body}</p>
+        <ul class="nt-rail">{BUILT_PRODUCTS[0].points.map((point) => <li>{point}</li>)}</ul>
         <a class="nt-link" href="/platform/corporate-tax/" style="margin-top:12px">
           Corporate Tax Engine in full
         </a>
@@ -48,10 +48,10 @@ import { LIVE_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 
     <div class="nt-split">
       <div style="display:flex; flex-direction:column; gap:14px">
-        <div class="nt-kicker">{LIVE_PRODUCTS[1].strap}</div>
-        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{LIVE_PRODUCTS[1].name}</h3>
-        <p class="nt-small">{LIVE_PRODUCTS[1].body}</p>
-        <ul class="nt-rail">{LIVE_PRODUCTS[1].points.map((point) => <li>{point}</li>)}</ul>
+        <div class="nt-kicker">{BUILT_PRODUCTS[1].strap}</div>
+        <h3 class="nt-h2" style="font-size:30px; margin-bottom:0">{BUILT_PRODUCTS[1].name}</h3>
+        <p class="nt-small">{BUILT_PRODUCTS[1].body}</p>
+        <ul class="nt-rail">{BUILT_PRODUCTS[1].points.map((point) => <li>{point}</li>)}</ul>
         <a class="nt-link" href="/platform/fs-studio/" style="margin-top:12px">FS Studio in full</a>
       </div>
       <FsConsole />

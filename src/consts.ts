@@ -102,9 +102,9 @@ export const NAV: NavItem[] = [
     href: '/advisory/',
     children: [
       {
-        label: 'Accounting & Audit',
+        label: 'Accounting & Audit Support',
         href: '/advisory/accounting-audit/',
-        note: 'IFRS, outsourced CFO, statutory audit',
+        note: 'IFRS, outsourced CFO, audit support',
       },
       {
         label: 'Tax & Advisory',
@@ -154,7 +154,7 @@ export const FOOTER_NAV = [
     heading: 'Advisory',
     links: [
       { label: 'Overview', href: '/advisory/' },
-      { label: 'Accounting & Audit', href: '/advisory/accounting-audit/' },
+      { label: 'Accounting & Audit Support', href: '/advisory/accounting-audit/' },
       { label: 'Tax & Advisory', href: '/advisory/tax/' },
       { label: 'Risk & Compliance', href: '/advisory/risk-compliance/' },
     ],

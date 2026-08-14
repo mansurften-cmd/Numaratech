@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
-import { SERVICE_GROUPS, LIVE_PRODUCTS, ALL_SERVICES } from '../services';
+import { SERVICE_GROUPS, BUILT_PRODUCTS, ALL_SERVICES } from '../services';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
 import { SITE, UAE_CT } from '../consts';
 
@@ -19,7 +19,7 @@ const insights = insightsNewestFirst().slice(0, 3);
     stats={[
       { label: 'Advisory groups', value: 'three' },
       { label: 'Service lines', value: String(ALL_SERVICES.length) },
-      { label: 'Products live', value: String(LIVE_PRODUCTS.length) },
+      { label: 'Products built', value: String(BUILT_PRODUCTS.length) },
       { label: 'Roadmap', value: 'four at idea stage', live: true },
     ]}
   />
@@ -54,12 +54,12 @@ const insights = insightsNewestFirst().slice(0, 3);
       <div class="nt-eyebrow"><b>02</b><span>Platform</span></div>
       <h2 class="nt-h2">It computes and it evidences. It does not decide.</h2>
       <p class="nt-body">
-        Two products in production, both reading the same mapped ledger — so the statements and the
-        tax computation cannot disagree with each other.
+        Two products in private beta, both reading the same mapped ledger — so the statements and
+        the tax computation cannot disagree with each other.
       </p>
       <div class="nt-cells" style="--nt-cols:2">
         {
-          LIVE_PRODUCTS.map((product) => (
+          BUILT_PRODUCTS.map((product) => (
             <div class="nt-cell">
               <div class="nt-cell__head">
                 <h3 class="nt-h3">{product.name}</h3>

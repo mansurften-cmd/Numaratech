@@ -24,23 +24,26 @@ export type ServiceGroup = {
 
 export const SERVICE_GROUPS: ServiceGroup[] = [
   {
+    // We are accounting and tax consultants, not registered auditors. Nothing in
+    // this group may claim to perform a statutory audit or issue an opinion —
+    // see /about/ and /terms/, which state the same boundary to clients.
     slug: 'accounting-audit',
-    name: 'Accounting & Audit',
-    strap: 'IFRS, outsourced CFO, statutory audit',
+    name: 'Accounting & Audit Support',
+    strap: 'IFRS, outsourced CFO, audit support',
     lead:
-      'Books that can carry a filing, and the assurance work that tests them. From day-to-day bookkeeping through to a statutory audit opinion.',
+      'Books that can carry a filing, and the work that gets them through someone else’s audit. From day-to-day bookkeeping to the year-end file your auditor asks for.',
     services: [
       {
         slug: 'audit-assurance',
-        name: 'Audit & Assurance',
-        strap: 'MoE-registered statutory & QFZP audit',
+        name: 'Audit File Preparation',
+        strap: 'Year-end file, schedules & evidence',
         body:
-          'Statutory audit performed by an auditor registered with the Ministry of Economy, including the audited financial statements a Qualifying Free Zone Person must hold to keep that status.',
+          'The client side of an audit: the schedules, reconciliations and supporting evidence your appointed auditor will ask for, prepared before they ask rather than during fieldwork. We do not audit — we make the audit short.',
         points: [
-          'MoE-registered statutory audit',
-          'QFZP audit supporting the 0% qualifying income position',
-          'Free zone authority reporting requirements',
-          'Audit of group and consolidated statements',
+          'Year-end audit file assembled and cross-referenced',
+          'Lead schedules and reconciliations for every material balance',
+          'Supporting evidence gathered ahead of fieldwork',
+          'Statements prepared for a Qualifying Free Zone Person audit',
         ],
       },
       {
@@ -58,15 +61,15 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       },
       {
         slug: 'external-audit',
-        name: 'External Audit',
-        strap: 'Statutory ISA audit & IFRS opinion',
+        name: 'Audit Coordination',
+        strap: 'Managing your appointed auditor',
         body:
-          'A full-scope audit under International Standards on Auditing, concluding in an opinion on financial statements prepared under IFRS or IFRS for SMEs.',
+          'Running the audit from your side once it starts: handling queries, tracking open points and closing the management letter. Your auditor forms the opinion; we make sure they get what they need to form it on time.',
         points: [
-          'ISA-compliant audit approach and documentation',
-          'Opinion on IFRS or IFRS for SMEs statements',
-          'Management letter on control observations',
-          'Coordination with group auditors where relevant',
+          'Appointing an auditor and agreeing scope and timetable',
+          'Single point of contact for audit queries',
+          'Group and component auditor coordination',
+          'Management letter points tracked to closure',
         ],
       },
       {
@@ -263,13 +266,18 @@ export const ALL_SERVICES = SERVICE_GROUPS.flatMap((g) => g.services);
    -------------------------------------------------------------------------
    `stage` is shown to visitors verbatim. Nothing marked 'idea' is described as
    though it exists — these are explicitly things we intend to build, and the
-   platform page says so. Do not promote an item to 'live' until it is.        */
+   platform page says so.
+
+   'private beta' means running for real users but not yet a commercial
+   engagement. Do not promote anything to 'live' until it is in production with
+   a paying client: a stage claim on a finance product is a factual claim about
+   the business, not marketing copy.                                           */
 
 export type Product = {
   slug: string;
   name: string;
   strap: string;
-  stage: 'live' | 'idea';
+  stage: 'private beta' | 'live' | 'idea';
   body: string;
   points: string[];
   href?: string;
@@ -280,7 +288,7 @@ export const PRODUCTS: Product[] = [
     slug: 'corporate-tax',
     name: 'Corporate Tax Engine',
     strap: 'Trial balance to filed return',
-    stage: 'live',
+    stage: 'private beta',
     href: '/platform/corporate-tax/',
     body:
       'Reads the trial balance, applies the adjustments you have defined, computes the liability, and keeps the working papers attached to every line.',
@@ -294,7 +302,7 @@ export const PRODUCTS: Product[] = [
     slug: 'fs-studio',
     name: 'FS Studio',
     strap: 'IFRS statements, generated',
-    stage: 'live',
+    stage: 'private beta',
     href: '/platform/fs-studio/',
     body:
       'Financial statements derived from the mapped ledger rather than retyped into a template. Change a mapping and every affected note moves with it.',
@@ -358,5 +366,8 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export const LIVE_PRODUCTS = PRODUCTS.filter((p) => p.stage === 'live');
+/** Products that actually exist, whatever stage they are at. Derived from the
+ *  absence of 'idea' rather than the presence of 'live', so promoting a product
+ *  from private beta to live does not silently empty this list. */
+export const BUILT_PRODUCTS = PRODUCTS.filter((p) => p.stage !== 'idea');
 export const IDEA_PRODUCTS = PRODUCTS.filter((p) => p.stage === 'idea');
