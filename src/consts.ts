@@ -23,8 +23,10 @@ export const SITE = {
   url: 'https://numaratech.mansurften.workers.dev',
   locale: 'en_AE',
   email: 'hello@numaratech.com',
-  phoneDisplay: '+971 4 000 0000',
-  phoneHref: '+97140000000',
+  /** Single source of truth. Nothing may hard-code a number. */
+  phoneDisplay: '+971 52 974 2697',
+  /** E.164, no spaces or dashes, so it dials correctly from mobile. */
+  phoneHref: '+971529742697',
   address: {
     line1: 'Business Bay',
     city: 'Dubai',

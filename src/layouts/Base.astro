@@ -37,6 +37,7 @@ const organisation = {
   url: SITE.url,
   description: SITE.description,
   email: SITE.email,
+  telephone: SITE.phoneHref,
   address: {
     '@type': 'PostalAddress',
     streetAddress: SITE.address.line1,
@@ -71,8 +72,9 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
 
     <!-- Inter and JetBrains Mono are self-hosted from public/fonts and declared
          in global.css. The handoff loaded them from Google's CDN, which this
-         site's Content-Security-Policy blocks (font-src 'self', style-src
-         'self') — and which would be a slower third request for typefaces we
+         site's Content-Security-Policy blocks (font-src 'self'; style-src is
+         'self' 'unsafe-inline', so inline styles are permitted but external
+         stylesheets are not) — and which would be a slower third request for typefaces we
          already ship. Same two families, no external origin. -->
     <link
       rel="preload"
