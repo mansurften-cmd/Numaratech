@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "NUMARATECH corporate website — finance and compliance infrastructure for UAE businesses.",
+  "description": "NUMARATECH corporate website \u2014 finance and compliance infrastructure for UAE businesses.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "deploy": "astro build && wrangler deploy",
-    "deploy:dry": "astro build && wrangler deploy --dry-run"
+    "deploy:dry": "astro build && wrangler deploy --dry-run",
+    "check:headers": "node scripts/check-headers.mjs"
   },
   "dependencies": {
     "astro": "^7.1.6"
