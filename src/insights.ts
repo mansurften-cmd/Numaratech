@@ -10,7 +10,19 @@ export type Insight = {
   date: string;
   readingMinutes: number;
   topic: string;
+  /**
+   * Byline. Rendered on the article and used as schema.org `author` (A10).
+   * Defaults to the practice where no individual is named — an organisation
+   * is a valid author, and attributing to a person who did not write it
+   * would be worse than attributing to the firm that did.
+   */
+  author?: string;
 };
+
+/** Shown when an entry names no individual. */
+export const DEFAULT_AUTHOR = 'The NUMARATECH team';
+
+export const authorOf = (insight: Insight): string => insight.author ?? DEFAULT_AUTHOR;
 
 export const INSIGHTS: Insight[] = [
   {

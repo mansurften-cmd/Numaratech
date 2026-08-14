@@ -3,7 +3,7 @@ import Base from './Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
 import Arrow from '../components/Arrow.astro';
-import { formatInsightDate, insightsNewestFirst, type Insight } from '../insights';
+import { formatInsightDate, insightsNewestFirst, authorOf, type Insight } from '../insights';
 
 interface Props {
   insight: Insight;
@@ -18,7 +18,15 @@ const others = insightsNewestFirst()
   .slice(0, 2);
 ---
 
-<Base title={insight.title} description={insight.summary}>
+<Base
+  title={insight.title}
+  description={insight.summary}
+  article={{
+    datePublished: insight.date,
+    author: authorOf(insight),
+    section: insight.topic,
+  }}
+>
   <article>
     <PageHero
       kicker={`Insights / ${insight.topic}`}
@@ -28,19 +36,29 @@ const others = insightsNewestFirst()
         { label: 'Topic', value: insight.topic },
         { label: 'Published', value: formatInsightDate(insight.date) },
         { label: 'Reading time', value: `${insight.readingMinutes} min` },
-        { label: 'Author', value: 'the NUMARATECH team' },
+        { label: 'Author', value: authorOf(insight) },
       ]}
     />
 
     <div class="nt-section body">
       <div class="nt-prose">
+        <!-- A real byline: the publication date was previously only a
+             formatted string in the hero strip, with no machine-readable
+             date anywhere in the markup (A10). -->
+        <p class="nt-byline">
+          <span class="nt-byline__author">{authorOf(insight)}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={insight.date}>{formatInsightDate(insight.date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{insight.readingMinutes} min read</span>
+        </p>
         <slot />
       </div>
 
       <aside class="aside" aria-label="Article information">
         <p class="nt-micro">Note</p>
         <p class="aside__text nt-sm">
-          Written by the NUMARATECH team. General information about UAE finance
+          Written by {authorOf(insight)}. General information about UAE finance
           and compliance practice — not tax or accounting advice, and not a
           substitute for guidance on your own position.
         </p>

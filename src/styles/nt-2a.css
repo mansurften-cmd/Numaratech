@@ -647,3 +647,20 @@
 .nt-next .nt-cell__notes {
   color: var(--nt-paper-text);
 }
+
+/* Article byline (A10). Carries the machine-readable <time datetime> that the
+   Article schema's datePublished mirrors. */
+.nt-byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+  margin: 0 0 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--nt-line);
+  font-family: var(--nt-mono);
+  font-size: 12px;
+  letter-spacing: .04em;
+  color: var(--nt-mute);
+}
+.nt-byline__author { color: var(--nt-navy); font-weight: 500; }

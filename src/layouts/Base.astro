@@ -8,6 +8,10 @@
  * the nav as its own dark band.
  */
 import { SITE } from '../consts';
+import { ogSlug } from '../og';
+import { NAV } from '../consts';
+import { SERVICE_GROUPS } from '../services';
+import { INSIGHTS } from '../insights';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
@@ -18,17 +22,29 @@ interface Props {
   description?: string;
   /** Set on pages that must not be indexed (404). */
   noindex?: boolean;
+  /** Override the generated Open Graph card. Site-relative path. */
+  ogImage?: string;
+  /** Present on insight pages; emits the Article block. */
+  article?: { datePublished: string; author: string; section: string };
 }
 
 const {
   title,
   description = SITE.description,
   noindex = false,
+  ogImage,
+  article,
 } = Astro.props;
 
+// AccountingService is a subtype of ProfessionalService and of LocalBusiness,
+// which is what this actually is — Organization alone said nothing about what
+// the business does or where it operates (A9). No priceRange is asserted:
+// engagements are quoted individually and inventing a band would be a claim
+// about pricing we do not make anywhere else on the site.
 const organisation = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': 'AccountingService',
+  '@id': `${SITE.url}/#organisation`,
   name: SITE.name,
   legalName: SITE.legalName,
   url: SITE.url,
@@ -41,9 +57,64 @@ const organisation = {
     addressLocality: SITE.address.city,
     addressCountry: 'AE',
   },
+  areaServed: { '@type': 'Country', name: 'United Arab Emirates', identifier: 'AE' },
 };
+
+/* Breadcrumbs, derived from the path so a new page cannot ship without them.
+   Segment labels come from the real content where it exists — a service group
+   is "Tax & Advisory", not "Tax" — and fall back to a title-cased segment. */
+const SEGMENT_LABELS = new Map<string, string>([
+  ...NAV.map((item) => [item.href.replace(/\//g, ''), item.label] as [string, string]),
+  ...SERVICE_GROUPS.map((group) => [group.slug, group.name] as [string, string]),
+  ...INSIGHTS.map((insight) => [insight.slug, insight.title] as [string, string]),
+  ['platform', 'Platform'],
+  ['insights', 'Insights'],
+]);
+
+const titleCase = (segment: string) =>
+  segment.replace(/-/g, ' ').replace(/(^|\s)\w/g, (c) => c.toUpperCase());
+
+const segments = Astro.url.pathname.split('/').filter(Boolean);
+const breadcrumb =
+  segments.length === 0
+    ? null
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { name: 'Home', path: '/' },
+          ...segments.map((segment, i) => ({
+            name: SEGMENT_LABELS.get(segment) ?? titleCase(segment),
+            path: `/${segments.slice(0, i + 1).join('/')}/`,
+          })),
+        ].map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: crumb.name,
+          item: new URL(crumb.path, SITE.url).href,
+        })),
+      };
 const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${title} — ${SITE.name}`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
+
+// Absolute, because Open Graph consumers do not resolve relative URLs.
+const ogImageUrl = new URL(ogImage ?? `/og/${ogSlug(Astro.url.pathname)}.png`, SITE.url).href;
+
+const articleSchema = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: title,
+      description,
+      datePublished: article.datePublished,
+      articleSection: article.section,
+      author: { '@type': 'Organization', name: article.author, url: SITE.url },
+      publisher: { '@id': `${SITE.url}/#organisation` },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+      image: ogImageUrl,
+      inLanguage: 'en-AE',
+    }
+  : null;
 ---
 
 <!doctype html>
@@ -63,9 +134,14 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
     <meta property="og:type" content="website" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#061a34" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${title} — ${SITE.name}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Inter and JetBrains Mono are self-hosted from public/fonts and declared
          in global.css. The handoff loaded them from Google's CDN, which this
@@ -93,6 +169,16 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
       type="application/ld+json"
       set:html={JSON.stringify(organisation)}
     />
+    {
+      breadcrumb && (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+      )
+    }
+    {
+      articleSchema && (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+      )
+    }
   </head>
   <body class="nt">
     <a class="nt-skip" href="#main">Skip to content</a>
