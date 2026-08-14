@@ -16,8 +16,6 @@ import '../styles/nt-2a.css';
 interface Props {
   title: string;
   description?: string;
-  /** Set when the page renders its own dark hero and includes <Nav /> itself. */
-  ownNav?: boolean;
   /** Set on pages that must not be indexed (404). */
   noindex?: boolean;
 }
@@ -25,7 +23,6 @@ interface Props {
 const {
   title,
   description = SITE.description,
-  ownNav = false,
   noindex = false,
 } = Astro.props;
 
@@ -99,14 +96,13 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href;
   </head>
   <body class="nt">
     <a class="nt-skip" href="#main">Skip to content</a>
-    {
-      !ownNav && (
-        <div class="nt-dark">
-          <div class="nt-grid"></div>
-          <Nav />
-        </div>
-      )
-    }
+    <!-- The nav is a banner landmark outside <main>, so the skip link actually
+         bypasses it. Previously PageHero rendered <Nav /> inside its own dark
+         wrapper, which sat inside <main> — the skip link landed the user
+         immediately before the navigation it exists to skip (WCAG 2.4.1). -->
+    <header class="nt-dark nt-header">
+      <Nav />
+    </header>
     <main id="main">
       <slot />
     </main>

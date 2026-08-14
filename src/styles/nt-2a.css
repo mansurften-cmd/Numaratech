@@ -473,3 +473,11 @@
   color: var(--nt-teal-light);
   border-color: var(--nt-teal-light);
 }
+
+/* The banner. Split out of PageHero so the nav is a real <header> outside
+   <main> (T-004). It carries the same deep ground as the hero below it, so
+   the two read as one continuous dark band. */
+.nt-header {
+  position: relative;
+  z-index: 40;
+}

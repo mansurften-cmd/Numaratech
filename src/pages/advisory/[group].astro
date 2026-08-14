@@ -16,7 +16,7 @@ export function getStaticPaths() {
 const { group } = Astro.props;
 ---
 
-<Base title={group.name} description={group.lead} ownNav={true}>
+<Base title={group.name} description={group.lead}>
   <PageHero
     kicker={`Advisory / ${group.name}`}
     title={group.name}
