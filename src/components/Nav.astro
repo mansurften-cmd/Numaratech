@@ -1,6 +1,12 @@
 ---
 /** The dark nav band. Renders NAV from consts.ts, with hover/focus dropdowns
- *  for the two sections that have children. CSS-only — no client JS. */
+ *  for the two sections that have children.
+ *
+ *  Below 721px the same list becomes a drawer behind a toggle. The toggle is
+ *  progressive enhancement: the markup ships with the links stacked and
+ *  reachable, and the script sets data-nav="ready" on the band, which is what
+ *  activates the collapsed drawer styling. If the script never runs the nav
+ *  degrades to a plain stacked list rather than to nothing. */
 import { NAV } from '../consts';
 import Logomark from './Logomark.astro';
 
@@ -17,7 +23,17 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     </span>
   </a>
 
-  <nav class="nt-nav__links" aria-label="Primary">
+  <button
+    class="nt-burger"
+    type="button"
+    aria-expanded="false"
+    aria-controls="nt-menu"
+    aria-label="Open menu"
+  >
+    <span class="nt-burger__bars" aria-hidden="true"></span>
+  </button>
+
+  <nav class="nt-nav__links" id="nt-menu" aria-label="Primary">
     {
       NAV.map((item) =>
         item.children ? (
@@ -41,4 +57,108 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     }
     <a class="nt-btn nt-btn--sm" href="/contact/">Book a walkthrough</a>
   </nav>
+
+  <div class="nt-nav__scrim" hidden></div>
 </div>
+
+<script>
+  // Bundled to an external file (no is:inline), because the site's CSP is
+  // script-src 'self' with no 'unsafe-inline'.
+  const band = document.querySelector<HTMLElement>('.nt-nav');
+  const toggle = band?.querySelector<HTMLButtonElement>('.nt-burger');
+  const menu = band?.querySelector<HTMLElement>('#nt-menu');
+  const scrim = band?.querySelector<HTMLElement>('.nt-nav__scrim');
+
+  if (band && toggle && menu && scrim) {
+    // Only now does the collapsed-drawer CSS apply. Before this line the links
+    // are stacked and reachable, so a failed script leaves a usable nav.
+    band.dataset.nav = 'ready';
+
+    const DESKTOP = window.matchMedia('(min-width: 721px)');
+    const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      band.dataset.open = String(open);
+      scrim.hidden = !open;
+      // Stops the page scrolling behind the drawer. Restored, not cleared, so
+      // we do not stomp on anything else that may set it.
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    const close = (returnFocus = true) => {
+      if (!isOpen()) return;
+      setOpen(false);
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      if (isOpen()) {
+        close();
+      } else {
+        setOpen(true);
+        // Land on the first link rather than leaving focus on the toggle, so
+        // the next Tab continues through the menu instead of leaving it.
+        menu.querySelector<HTMLElement>(FOCUSABLE)?.focus();
+      }
+    });
+
+    scrim.addEventListener('click', () => close());
+
+    // Anything outside the band closes it — the scrim covers the viewport
+    // below the header, this covers the header itself.
+    document.addEventListener('pointerdown', (event) => {
+      if (!isOpen()) return;
+      if (!band.contains(event.target as Node)) close(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!isOpen()) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      // Focus trap. The toggle is part of the cycle: it is the control that
+      // closes the drawer, so it must stay reachable from inside it.
+      const items = [toggle, ...Array.from(menu.querySelectorAll<HTMLElement>(FOCUSABLE))].filter(
+        (el) => el.offsetParent !== null || el === toggle
+      );
+      if (items.length === 0) return;
+
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (!band.contains(active as Node)) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Following a link inside the drawer navigates, but same-page anchors do
+    // not, and a drawer left open over the target is worse than useless.
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) close(false);
+    });
+
+    // Crossing back to the desktop layout must not leave body scroll locked by
+    // a drawer that is no longer rendered.
+    DESKTOP.addEventListener('change', (event) => {
+      if (event.matches) close(false);
+    });
+  }
+</script>

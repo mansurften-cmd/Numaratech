@@ -348,7 +348,6 @@
   .nt-dark .nt-h2 { font-size: 32px; }
   .nt-next h2 { font-size: 34px; }
   .nt-extrude__ghost { display: none; }
-  .nt-nav__links { display: none; }
   .nt-strip { grid-template-columns: 1fr; }
   .nt-strip > div { border-right: 0; border-bottom: 1px solid var(--nt-line-dark); }
   .nt-footer { grid-template-columns: 1fr; }
@@ -480,4 +479,121 @@
 .nt-header {
   position: relative;
   z-index: 40;
+}
+
+/* ==========================================================================
+   Mobile navigation (T-001)
+   ==========================================================================
+   The 720px breakpoint used to carry `.nt-nav__links { display: none }`, which
+   removed every link on the site below that width and left only the wordmark.
+   The links now collapse into a drawer behind a toggle instead. */
+
+.nt-burger {
+  /* Not rendered at all on the desktop layout, and not rendered until the
+     script has claimed it — see the data-nav guard below. */
+  display: none;
+  /* 44x44 is the minimum comfortable touch target (WCAG 2.5.5 / 2.5.8). */
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--nt-line-dark);
+  color: #fff;
+  cursor: pointer;
+}
+.nt-burger:hover { border-color: var(--nt-teal-light); }
+.nt-burger__bars,
+.nt-burger__bars::before,
+.nt-burger__bars::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.nt-burger__bars { position: relative; }
+.nt-burger__bars::before,
+.nt-burger__bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+.nt-burger__bars::before { top: -6px; }
+.nt-burger__bars::after { top: 6px; }
+
+/* Open state: the bars become a cross. */
+.nt-nav[data-open='true'] .nt-burger__bars { background: transparent; }
+.nt-nav[data-open='true'] .nt-burger__bars::before { transform: translateY(6px) rotate(45deg); }
+.nt-nav[data-open='true'] .nt-burger__bars::after { transform: translateY(-6px) rotate(-45deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .nt-burger__bars,
+  .nt-burger__bars::before,
+  .nt-burger__bars::after { transition: none; }
+}
+
+.nt-nav__scrim { display: none; }
+
+@media (max-width: 720px) {
+  /* No-JS / pre-hydration state: the links wrap onto their own row and stay
+     reachable. Tall, but present. */
+  .nt-nav { flex-wrap: wrap; gap: 16px; }
+  .nt-nav__links {
+    order: 3;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding-top: 4px;
+  }
+  .nt-nav__item { width: 100%; }
+
+  /* Submenus cannot rely on hover on a touch device, so they render inline
+     and always open rather than as absolutely-positioned flyouts. */
+  .nt-nav__menu {
+    position: static;
+    display: block;
+    min-width: 0;
+    margin-top: 10px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid var(--nt-line-dark);
+  }
+  .nt-nav__menu a { padding: 9px 0 9px 16px; }
+  .nt-nav__menu a:hover { background: transparent; color: var(--nt-teal-light); }
+
+  /* Once the script is in charge, the same list becomes a drawer. */
+  .nt-nav[data-nav='ready'] .nt-burger { display: inline-flex; }
+  .nt-nav[data-nav='ready'] .nt-nav__links { display: none; }
+  .nt-nav[data-nav='ready'][data-open='true'] .nt-nav__links {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(86vw, 340px);
+    z-index: 60;
+    /* Clears the toggle, which floats above the drawer at z-index 70 so it
+       stays tappable: nav padding (20) + target (44) + breathing room. */
+    padding: 78px 24px 40px;
+    gap: 22px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: var(--nt-deep);
+    border-left: 1px solid var(--nt-line-dark);
+  }
+  .nt-nav[data-nav='ready'][data-open='true'] .nt-nav__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(6, 26, 52, .72);
+  }
+  /* The toggle has to stay above the scrim so it can be tapped to close. */
+  .nt-nav[data-nav='ready'][data-open='true'] .nt-burger { position: relative; z-index: 70; }
+  .nt-nav[data-nav='ready'] .nt-nav__links .nt-btn { align-self: stretch; text-align: center; }
 }
