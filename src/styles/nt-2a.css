@@ -56,7 +56,7 @@
   background-image: linear-gradient(to right, rgba(14, 116, 144, .16) 1px, transparent 1px);
   background-size: 80px 100%;
 }
-@media (prefers-reduced-motion: reduce) { .nt-grid { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .nt-grid, .nt-pulse { animation: none; } }
 .nt-layer { position: relative; }
 
 /* ---------- section scaffolding ---------- */
@@ -212,7 +212,10 @@
   padding: 3px 7px;
   white-space: nowrap;
 }
-.nt-stage--live { color: var(--nt-teal); border-color: var(--nt-teal); }
+/* 'built' rather than 'live': the badge text is whatever the product's stage
+   is, and today that is 'private beta'. A class called --live on a badge
+   reading 'private beta' misled the next reader (AUDIT-LOCAL finding 11). */
+.nt-stage--built { color: var(--nt-teal); border-color: var(--nt-teal); }
 
 /* ---------- service sections (advisory group pages) ---------- */
 .nt-service { display: grid; grid-template-columns: .42fr .58fr; gap: 48px; padding: 44px 0; border-bottom: 1px solid var(--nt-line); align-items: start; scroll-margin-top: 96px; }
@@ -321,7 +324,9 @@
 .nt-footer { background: var(--nt-deep); color: var(--nt-paper-text); padding: 48px var(--nt-pad-x); display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; }
 .nt-footer h2 { font-family: var(--nt-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--nt-teal-light); margin: 0 0 4px; font-weight: 400; }
 .nt-footer__col { display: flex; flex-direction: column; gap: 9px; }
-.nt-footer a { font-size: 13.5px; color: var(--nt-paper-text); }
+/* Padded so each link is at least 24px tall (WCAG 2.2 AA 2.5.8). The
+   column's gap absorbs the padding, so the visual rhythm is unchanged. */
+.nt-footer a { font-size: 13.5px; color: var(--nt-paper-text); padding: 4px 0; margin: -4px 0; display: inline-block; }
 .nt-footer a:hover { color: #fff; }
 .nt-footer__meta { font-family: var(--nt-mono); font-size: 12px; line-height: 1.9; color: var(--nt-mute-dark); }
 .nt-legal {
@@ -472,8 +477,8 @@
 
 /* .nt-stage--live is the deep teal, which is 2.50:1 on navy and 3.25:1 on the
    deep ground. On dark bands it takes the light teal. */
-.nt-dark .nt-stage--live,
-.nt-next .nt-stage--live {
+.nt-dark .nt-stage--built,
+.nt-next .nt-stage--built {
   color: var(--nt-teal-light);
   border-color: var(--nt-teal-light);
 }
@@ -664,3 +669,33 @@
   color: var(--nt-mute);
 }
 .nt-byline__author { color: var(--nt-navy); font-weight: 500; }
+
+
+/* Desktop dropdown open state, mirrored from JS onto data-open so it can also
+   be driven by aria-expanded and by a first tap on a touch device at desktop
+   width, where :hover does not exist (AUDIT-LOCAL finding 4). */
+.nt-nav__item[data-open='true'] .nt-nav__menu { display: block; }
+
+/* The skip link measured 43px — one pixel under the 44px target. */
+.nt a.nt-skip { min-height: 44px; box-sizing: border-box; }
+
+/* Print buttons: the arrow wrapped onto a second line (finding 12). */
+.est__actions .nt-btn,
+.calc__actions .nt-btn { white-space: nowrap; }
+
+/* Legal strip links get the same 24px minimum as the footer. */
+.nt-legal a { padding: 4px 0; margin: -4px 0; display: inline-block; }
+
+/* Reduced motion, placed after every animation declaration it overrides. The
+   earlier copy at the top of the file lost to .nt-pulse's own `animation`
+   by cascade order — same specificity, later rule wins. */
+@media (prefers-reduced-motion: reduce) {
+  .nt-grid,
+  .nt-pulse,
+  .nt-burger__bars,
+  .nt-burger__bars::before,
+  .nt-burger__bars::after {
+    animation: none;
+    transition: none;
+  }
+}

@@ -56,7 +56,7 @@ const levers = [
   <section
     class="nt-section"
     id="calculator"
-    data-print-region
+    data-print-region data-live-scope
   >
     <div class="calc__intro" data-print-hide>
       <SectionHead
@@ -161,6 +161,13 @@ const levers = [
         <p class="nt-micro nt-micro--accent nt-micro-idx calc__out-label">
           Working
         </p>
+        <!-- Spoken summary for screen readers; see src/lib/announce.ts. -->
+        <p
+          class="nt-sr-only"
+          data-live-status
+          data-live-attr="data-bc"
+          data-live-template="Cost of closing AED {cost}. {hoursBack} hours returned {atLabel}, worth AED {costBack} a year."
+        ></p>
 
         <div class="nt-table-scroll">
           <table class="nt-table">
@@ -288,6 +295,10 @@ const levers = [
     title="Test the case on one closed period."
     body="Bring an entity you have already closed and we will rebuild it alongside your existing workpapers. You get a real comparison instead of an estimate — including if it shows the gain is small."
   />
+  <script>
+    // Separate bundle; the working's own script is untouched.
+    import '../lib/announce';
+  </script>
 </Base>
 
 <style>
@@ -567,6 +578,11 @@ const levers = [
       set('weeks', one.format(weeksBack));
       set('costBack', int.format(costBack));
       set('reductionLabel', String(Math.round(reduction * 100)));
+      // Announce the slider as words, not as a bare integer.
+      fields.reduction.setAttribute(
+        'aria-valuetext',
+        `${Math.round(reduction * 100)} percent of close hours removed`
+      );
       set('atLabel', `at ${Math.round(reduction * 100)}%`);
 
       const flag = out('flag');

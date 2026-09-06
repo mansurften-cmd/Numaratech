@@ -1176,14 +1176,41 @@ hr {
     overflow: visible;
   }
 
-  /* Chrome, not content. */
-  .nt-site-header,
-  .nt-site-footer,
-  .nt-field__rules,
+  /* Chrome, not content.
+     This list once named .nt-site-header, .nt-site-footer and .nt-nav-toggle —
+     System A classes the 2a rebuild renamed. None existed in any built page,
+     so both "Print this…" buttons emitted the full site navigation and footer
+     into the printed document (AUDIT-LOCAL finding 1). The scoped-printing
+     rule below only prunes inside <main>; the banner and footer sit outside
+     it and must be hidden here by name. */
+  .nt-header,
+  .nt-footer,
+  .nt-legal,
+  .nt-burger,
+  .nt-nav__scrim,
   .nt-skip,
   .nt-no-print,
   .nt-btn,
-  .nt-nav-toggle {
+  .nt-field__rules {
+    display: none !important;
+  }
+
+  /* 2a's dark bands and the drifting grid are screen-only. On paper every
+     surface is white and every heading is black. */
+  .nt-dark,
+  .nt-dark--navy,
+  .nt-next {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .nt-dark :is(h1, h2, h3, h4, p, dt, dd, span),
+  .nt-next :is(h1, h2, h3, h4, p, span) {
+    color: #000 !important;
+  }
+  .nt-grid,
+  .nt-grid--v,
+  .nt-extrude__ghost,
+  .nt-pulse {
     display: none !important;
   }
 

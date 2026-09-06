@@ -74,7 +74,7 @@ const capabilities = [
   />
 
   <!-- Estimator --------------------------------------------------------- -->
-  <section class="nt-section" id="estimator" data-print-region>
+  <section class="nt-section" id="estimator" data-print-region data-live-scope>
     <div class="est__intro" data-print-hide>
       <SectionHead
         index="01"
@@ -192,6 +192,16 @@ const capabilities = [
         <p class="nt-micro nt-micro--accent nt-micro-idx est__out-label">
           Computation
         </p>
+        <!-- Spoken summary for screen readers; see src/lib/announce.ts. The
+             visible table is not a live region on purpose — seven unlabeled
+             numbers per keystroke is noise, one sentence after typing settles
+             is not. -->
+        <p
+          class="nt-sr-only"
+          data-live-status
+          data-live-attr="data-out"
+          data-live-template="Taxable income AED {taxable}. Corporate Tax AED {tax}. Effective rate {effective}."
+        ></p>
 
         <div class="nt-table-scroll">
           <table class="nt-table est__table">
@@ -743,4 +753,10 @@ const capabilities = [
 
     compute();
   }
+</script>
+
+<script>
+  // Separate bundle, so the tested computation script above is untouched.
+  // See src/lib/announce.ts.
+  import '../../lib/announce';
 </script>

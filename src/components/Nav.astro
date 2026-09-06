@@ -35,11 +35,18 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 
   <nav class="nt-nav__links" id="nt-menu" aria-label="Primary">
     {
-      NAV.map((item) =>
+      NAV.map((item, i) =>
         item.children ? (
           <span class={`nt-nav__item${isCurrent(item.href) ? ' nt-nav__item--current' : ''}`}>
-            <a href={item.href}>{item.label}</a>
-            <span class="nt-nav__menu">
+            <a
+              href={item.href}
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls={`nt-submenu-${i}`}
+            >
+              {item.label}
+            </a>
+            <span class="nt-nav__menu" id={`nt-submenu-${i}`}>
               {item.children.map((child) => (
                 <a href={child.href}>
                   {child.label}
@@ -161,4 +168,56 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       if (event.matches) close(false);
     });
   }
+
+  // Desktop dropdowns. CSS opens them on :hover and :focus-within, which
+  // works for mouse and keyboard but tells a screen reader nothing. Mirror
+  // the open state onto aria-expanded, and on a touch device at desktop
+  // width — where :hover does not exist — let the first tap open the menu
+  // and the second follow the link.
+  const desktopQuery = window.matchMedia('(min-width: 721px)');
+  const coarsePointer = window.matchMedia('(hover: none)');
+
+  document.querySelectorAll<HTMLElement>('.nt-nav__item').forEach((item) => {
+    const link = item.querySelector<HTMLAnchorElement>(':scope > a[aria-haspopup]');
+    if (!link) return;
+
+    const setOpen = (open: boolean) => {
+      link.setAttribute('aria-expanded', String(open));
+      item.dataset.open = String(open);
+    };
+
+    // Below 721px the submenus render inline and permanently open, so the
+    // honest state there is "expanded". Re-evaluated when the layout changes.
+    const syncLayout = () => setOpen(!desktopQuery.matches);
+    syncLayout();
+    desktopQuery.addEventListener('change', syncLayout);
+
+    // Pointer, not mouse: on a touch device the tap sequence fires
+    // mouseenter before click, which would mark the menu open before the
+    // click handler could act on the first tap.
+    item.addEventListener('pointerenter', (event) => {
+      if (event.pointerType !== 'touch' && desktopQuery.matches) setOpen(true);
+    });
+    item.addEventListener('pointerleave', (event) => {
+      if (event.pointerType !== 'touch' && desktopQuery.matches) setOpen(false);
+    });
+    item.addEventListener('focusin', () => {
+      if (desktopQuery.matches) setOpen(true);
+    });
+    item.addEventListener('focusout', (event) => {
+      if (desktopQuery.matches && !item.contains(event.relatedTarget as Node | null)) setOpen(false);
+    });
+    item.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && desktopQuery.matches) {
+        setOpen(false);
+        link.focus();
+      }
+    });
+    link.addEventListener('click', (event) => {
+      if (coarsePointer.matches && desktopQuery.matches && item.dataset.open !== 'true') {
+        event.preventDefault();
+        setOpen(true);
+      }
+    });
+  });
 </script>

@@ -63,7 +63,7 @@ const insights = insightsNewestFirst().slice(0, 3);
             <div class="nt-cell">
               <div class="nt-cell__head">
                 <h3 class="nt-h3">{product.name}</h3>
-                <span class="nt-stage nt-stage--live">{product.stage}</span>
+                <span class="nt-stage nt-stage--built">{product.stage}</span>
               </div>
               <div class="nt-kicker">{product.strap}</div>
               <p>{product.body}</p>
@@ -185,6 +185,12 @@ const insights = insightsNewestFirst().slice(0, 3);
         if (out.zero) out.zero.textContent = fmt(zero);
         if (out.taxed) out.taxed.textContent = fmt(taxed);
         if (out.tax) out.tax.textContent = fmt(taxed * rate);
+        // A screen reader otherwise announces "1500000" — a bare integer in a
+        // currency field. Give it the same words a sighted user reads.
+        slider.setAttribute(
+          'aria-valuetext',
+          `AED ${fmt(income)} taxable income, Corporate Tax AED ${fmt(taxed * rate)}`
+        );
       };
 
       slider.addEventListener('input', update);
