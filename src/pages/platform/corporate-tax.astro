@@ -412,8 +412,9 @@ const capabilities = [
   /* Square checkbox — no rounding, teal when checked. */
   .est__check input[type='checkbox'] {
     appearance: none;
-    width: 1.25rem;
-    height: 1.25rem;
+    /* 24px: the WCAG 2.2 AA minimum target (2.5.8). Was 20px. */
+    width: 1.5rem;
+    height: 1.5rem;
     flex: none;
     margin: 0;
     border: var(--nt-hair) solid var(--nt-hairline);
@@ -430,8 +431,8 @@ const capabilities = [
   .est__check input[type='checkbox']:checked::after {
     content: '';
     position: absolute;
-    left: 3px;
-    top: 6px;
+    left: 5px;
+    top: 7px;
     width: 12px;
     height: 5px;
     border-left: 2px solid var(--nt-teal-700);

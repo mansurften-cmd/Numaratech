@@ -3,6 +3,18 @@
 
 import { SITE_ORIGIN } from '../site.config.mjs';
 
+/**
+ * Small counts read as words in running copy — "three groups", "Four we
+ * intend to build" — the way an editor would set them, and the way the
+ * hero strip already did by hand. Above ten, digits. `sentence` capitalises
+ * for a heading that opens with the number.
+ */
+export function spell(n: number, sentence = false): string {
+  const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  const w = words[n] ?? String(n);
+  return sentence ? w.charAt(0).toUpperCase() + w.slice(1) : w;
+}
+
 export const SITE = {
   name: 'NUMARATECH',
   /**

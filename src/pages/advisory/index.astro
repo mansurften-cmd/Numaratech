@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
+import { spell } from '../../consts';
 ---
 
 <Base
@@ -16,7 +17,7 @@ import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
     primary={{ label: 'Book a walkthrough', href: '/contact/' }}
     secondary={{ label: 'See the platform', href: '/platform/' }}
     stats={[
-      { label: 'Practice groups', value: 'three' },
+      { label: 'Practice groups', value: spell(SERVICE_GROUPS.length) },
       { label: 'Service lines', value: String(ALL_SERVICES.length) },
       { label: 'Licence', value: 'Dubai DET e-Trader' },
       { label: 'Jurisdiction', value: 'United Arab Emirates' },

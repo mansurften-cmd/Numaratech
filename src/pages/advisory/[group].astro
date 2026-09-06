@@ -2,6 +2,7 @@
 /** The three advisory group pages: /advisory/accounting-audit/, /tax/,
  *  /risk-compliance/. Each carries its services as anchored sections. */
 import Base from '../../layouts/Base.astro';
+import { spell } from '../../consts';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS } from '../../services';
@@ -33,7 +34,7 @@ const { group } = Astro.props;
 
   <section class="nt-section">
     <div class="nt-eyebrow"><b>01</b><span>In this group</span></div>
-    <h2 class="nt-h2">{group.services.length} service lines.</h2>
+    <h2 class="nt-h2">{spell(group.services.length, true)} service lines.</h2>
     <ul class="nt-jump">
       {
         group.services.map((service) => (

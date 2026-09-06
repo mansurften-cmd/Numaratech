@@ -15,7 +15,7 @@ Status by finding:
 | 5 `aria-valuetext` | **Fixed.** Both range inputs announce as words. | `b312260` |
 | 6 npm audit | **Fixed.** 0 vulnerabilities. | `98a2041` |
 | 7 Outdated | **Astro 7.3.1, Wrangler 4.129.0.** TypeScript 7 deliberately not taken (major). | `98a2041` |
-| 8 Tap targets | **Partly.** Footer and legal links padded to 24px. Range inputs (16px) and `button.nt-arrow-link` (23px) remain. | `b312260` |
+| 8 Tap targets | **Fixed.** Footer/legal links, desktop nav links (17→33px), closing-band and contact links, both range sliders (min 40px), the SBR checkbox (24px), the reset control. Scan finds no interactive element under 24×24 on any route at 1280 or 390. | `b312260`, this commit |
 | 9 Skip link | **Fixed.** 44px. | `b312260` |
 | 10 CSP web3forms | **Left deliberately** — needed the moment the form's key is added. | — |
 | 11 Class name | **Fixed.** `.nt-stage--built`. | `b312260` |

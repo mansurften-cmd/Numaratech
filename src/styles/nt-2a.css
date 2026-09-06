@@ -259,7 +259,10 @@
 .nt-console__main { border-right: 1px solid var(--nt-line); padding: 14px 18px; display: flex; flex-direction: column; }
 .nt-console__side { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; background: var(--nt-tint-2); }
 .nt-console__side h4 { margin: 0; font-family: var(--nt-mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--nt-mute); font-weight: 400; }
-.nt-console__cta { margin-top: auto; background: var(--nt-navy); color: #fff; text-align: center; padding: 9px 0; font-size: 12px; font-weight: 500; }
+/* Teal, not navy: the console bar is already the one solid navy element in
+   each mockup, and the site's own primary action is teal — the product's
+   primary action should match it. */
+.nt-console__cta { margin-top: auto; background: var(--nt-teal); color: #fff; text-align: center; padding: 9px 0; font-size: 12px; font-weight: 500; }
 .nt-row { display: grid; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--nt-line-2); font-size: 12.5px; color: var(--nt-ink); }
 .nt-row--head { padding: 0 0 9px; border-bottom: 1px solid var(--nt-navy); font-family: var(--nt-mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--nt-mute); }
 .nt-row--total { padding: 11px 0 0; border-top: 2px solid var(--nt-navy); border-bottom: 0; margin-top: auto; font-weight: 600; color: var(--nt-navy); }
@@ -299,9 +302,13 @@
 .nt-brand__name { font-size: 19px; font-weight: 700; letter-spacing: .05em; color: #fff; }
 .nt-brand__strap { font-family: var(--nt-mono); font-size: 9px; letter-spacing: .26em; color: var(--nt-teal-light); }
 .nt-nav__links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 500; }
-.nt-nav__links > a, .nt-nav__item > a { color: #DCE6F0; }
+/* 8px of vertical padding lifts the 17px links to 33px targets. The bar's
+   height is set by the 44px toggle/button, so nothing moves. */
+.nt-nav__links > a, .nt-nav__item > a { color: #DCE6F0; padding: 8px 0; display: inline-block; }
 .nt-nav__links > a:hover, .nt-nav__item > a:hover { color: var(--nt-teal-light); }
-.nt-nav__links a[aria-current='page'], .nt-nav__item--current > a { color: #fff; border-bottom: 1px solid var(--nt-teal-light); padding-bottom: 2px; }
+/* Underline via text-decoration rather than border-bottom, so it hugs the
+   text instead of sitting at the bottom of the padded target box. */
+.nt-nav__links a[aria-current='page'], .nt-nav__item--current > a { color: #fff; text-decoration: underline; text-decoration-color: var(--nt-teal-light); text-decoration-thickness: 1px; text-underline-offset: 5px; }
 .nt-nav__item { position: relative; }
 .nt-nav__menu {
   position: absolute;
@@ -679,9 +686,11 @@
 /* The skip link measured 43px — one pixel under the 44px target. */
 .nt a.nt-skip { min-height: 44px; box-sizing: border-box; }
 
-/* Print buttons: the arrow wrapped onto a second line (finding 12). */
+/* Print buttons: the arrow wrapped onto a second line (finding 12).
+   nowrap alone did nothing — the arrow is a block-level SVG. Lay the button
+   out as a row. */
 .est__actions .nt-btn,
-.calc__actions .nt-btn { white-space: nowrap; }
+.calc__actions .nt-btn { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
 
 /* Legal strip links get the same 24px minimum as the footer. */
 .nt-legal a { padding: 4px 0; margin: -4px 0; display: inline-block; }
@@ -699,3 +708,14 @@
     transition: none;
   }
 }
+
+
+/* ---------- remaining sub-24px targets (AUDIT-LOCAL finding 8) ---------- */
+/* Inline links in the closing band and on the contact page's direct block. */
+.nt-next__side a:not(.nt-btn),
+.nt-footer__meta a { padding: 4px 0; margin: -4px 0; display: inline-block; }
+/* Range sliders: a 16px-tall control is hard to grab. min-height so the
+   business-case slider, which already sets 2.5rem, is unaffected. */
+.nt input[type='range'] { min-height: 40px; }
+/* The reset control on the estimator measured 23px. */
+.nt-arrow-link { min-height: 24px; }

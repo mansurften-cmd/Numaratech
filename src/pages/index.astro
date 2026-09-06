@@ -2,9 +2,9 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
-import { SERVICE_GROUPS, BUILT_PRODUCTS, ALL_SERVICES } from '../services';
+import { SERVICE_GROUPS, BUILT_PRODUCTS, IDEA_PRODUCTS, ALL_SERVICES } from '../services';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
-import { SITE, UAE_CT } from '../consts';
+import { SITE, UAE_CT, spell } from '../consts';
 
 const insights = insightsNewestFirst().slice(0, 3);
 ---
@@ -17,10 +17,10 @@ const insights = insightsNewestFirst().slice(0, 3);
     primary={{ label: 'Book a walkthrough', href: '/contact/' }}
     secondary={{ label: 'See the platform', href: '/platform/' }}
     stats={[
-      { label: 'Advisory groups', value: 'three' },
+      { label: 'Advisory groups', value: spell(SERVICE_GROUPS.length) },
       { label: 'Service lines', value: String(ALL_SERVICES.length) },
-      { label: 'Products built', value: String(BUILT_PRODUCTS.length) },
-      { label: 'Roadmap', value: 'four at idea stage', live: true },
+      { label: 'In private beta', value: spell(BUILT_PRODUCTS.length) },
+      { label: 'Roadmap', value: `${spell(IDEA_PRODUCTS.length)} at idea stage`, live: true },
     ]}
   />
 

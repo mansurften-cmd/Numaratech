@@ -5,8 +5,8 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
-import { SITE } from '../consts';
-import { ALL_SERVICES } from '../services';
+import { SITE, spell } from '../consts';
+import { ALL_SERVICES, BUILT_PRODUCTS, IDEA_PRODUCTS } from '../services';
 
 const beliefs = [
   {
@@ -79,7 +79,7 @@ const boundaries = [
       { label: 'Practice', value: 'accounting and tax consultants' },
       { label: 'Service lines', value: String(ALL_SERVICES.length) },
       { label: 'Base', value: `${SITE.address.city}, ${SITE.address.country}` },
-      { label: 'Platform', value: 'two live, four at idea stage' },
+      { label: 'Platform', value: `${spell(BUILT_PRODUCTS.length)} in private beta, ${spell(IDEA_PRODUCTS.length)} at idea stage` },
     ]}
   />
 

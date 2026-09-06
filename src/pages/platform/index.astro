@@ -5,6 +5,7 @@ import NextBand from '../../components/NextBand.astro';
 import CtConsole from '../../components/CtConsole.astro';
 import FsConsole from '../../components/FsConsole.astro';
 import { BUILT_PRODUCTS, IDEA_PRODUCTS } from '../../services';
+import { spell } from '../../consts';
 ---
 
 <Base
@@ -18,15 +19,15 @@ import { BUILT_PRODUCTS, IDEA_PRODUCTS } from '../../services';
     primary={{ label: 'Book a walkthrough', href: '/contact/' }}
     secondary={{ label: 'See what is next', href: '#roadmap' }}
     stats={[
-      { label: 'Live products', value: 'two' },
+      { label: 'In private beta', value: spell(BUILT_PRODUCTS.length) },
       { label: 'Shared model', value: 'one mapped ledger' },
       { label: 'Ledger access', value: 'read-only' },
-      { label: 'Roadmap', value: `${IDEA_PRODUCTS.length} at idea stage`, live: true },
+      { label: 'Roadmap', value: `${spell(IDEA_PRODUCTS.length)} at idea stage`, live: true },
     ]}
   />
 
   <section class="nt-section">
-    <div class="nt-eyebrow"><b>01</b><span>Live now</span></div>
+    <div class="nt-eyebrow"><b>01</b><span>In private beta</span></div>
     <h2 class="nt-h2">Two products in private beta.</h2>
     <p class="nt-body">
       Both read the same mapped ledger, so the statements and the tax computation cannot disagree
@@ -103,7 +104,7 @@ import { BUILT_PRODUCTS, IDEA_PRODUCTS } from '../../services';
 
   <section class="nt-section" id="roadmap">
     <div class="nt-eyebrow"><b>03</b><span>Roadmap · idea stage</span></div>
-    <h2 class="nt-h2">{IDEA_PRODUCTS.length} we intend to build.</h2>
+    <h2 class="nt-h2">{spell(IDEA_PRODUCTS.length, true)} we intend to build.</h2>
     <p class="nt-body">
       These do not exist yet and are not available to buy. We list them so the direction is arguable.
     </p>
