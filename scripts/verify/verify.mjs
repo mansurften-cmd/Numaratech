@@ -46,6 +46,50 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   t('dropdown: Escape collapses and returns focus to the link', e.exp==='false'&&e.focusOnLink, JSON.stringify(e));
   await p.close(); }
 
+// DROPDOWN IS ACTUALLY ON SCREEN: hit-test the first submenu link. Checking
+// display/aria alone passed while the whole menu was clipped by the header.
+{ const p = await b.newPage({ viewport:{width:1280,height:900} }); await p.goto(B+'/',{waitUntil:'networkidle'});
+  await p.hover('.nt-nav__item > a[aria-haspopup]'); await p.waitForTimeout(200);
+  const h = await p.evaluate(() => { const a=document.querySelector('.nt-nav__menu a'); const r=a.getBoundingClientRect();
+    const hit=document.elementFromPoint(r.left+12, r.top+r.height/2); return { ok: hit===a || a.contains(hit), got: hit? hit.tagName+'.'+(hit.className+'').split(' ')[0] : 'none' }; });
+  t('dropdown: first submenu link is hit-testable when open (not clipped)', h.ok, h.got); await p.close(); }
+
+// HERO EXTRUDE: ghost layers must break lines exactly where the headline does.
+{ for (const w of [1280, 1528, 1920]) { const p = await b.newPage({ viewport:{width:w,height:900} });
+    for (const r of ['/','/business-case/','/platform/']) { await p.goto(B+r,{waitUntil:'networkidle'});
+      const m = await p.evaluate(() => { const rects=el=>{const rg=document.createRange(); rg.selectNodeContents(el); return [...rg.getClientRects()].map(x=>Math.round(x.width)).join(',');};
+        return { solid: rects(document.querySelector('.nt-extrude__solid')), ghost: rects(document.querySelector('.nt-extrude__ghost')) }; });
+      t(`extrude ${w}px ${r}: ghost line boxes == headline line boxes`, m.solid===m.ghost, `solid[${m.solid}] ghost[${m.ghost}]`); }
+    await p.close(); } }
+
+// PRIMARY BUTTON HOVER stays visible on a white ground.
+{ const p = await b.newPage({ viewport:{width:1280,height:900} }); await p.goto(B+'/contact/',{waitUntil:'networkidle'});
+  // `main` scope: the first a.nt-btn on the page is the nav CTA, which sits on the dark header and inverts.
+  const btn = p.locator('main a.nt-btn:not(.nt-btn--ghost)').first(); await btn.scrollIntoViewIfNeeded(); await btn.hover(); await p.waitForTimeout(400);
+  const c = await p.evaluate(() => { const a=document.querySelector('main a.nt-btn:not(.nt-btn--ghost)'); const cs=getComputedStyle(a), pb=getComputedStyle(a,'::before');
+    return { color: cs.color, border: cs.borderTopColor, wipe: pb.transform, wipeBg: pb.backgroundColor }; });
+  t('button hover on white: white text over navy wipe, navy border', c.color==='rgb(255, 255, 255)' && /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/.test(c.wipe) && c.wipeBg==='rgb(11, 47, 90)' && c.border==='rgb(11, 47, 90)', JSON.stringify(c));
+  await p.close(); }
+
+// PRIMARY BUTTON HOVER on a dark band inverts to white, so it does not sink
+// into the navy ground.
+{ const p = await b.newPage({ viewport:{width:1280,height:900} }); await p.goto(B+'/',{waitUntil:'networkidle'});
+  const btn = p.locator('.nt-hero a.nt-btn:not(.nt-btn--ghost)').first(); await btn.hover(); await p.waitForTimeout(400);
+  const c = await p.evaluate(() => { const a=document.querySelector('.nt-hero a.nt-btn:not(.nt-btn--ghost)'); const cs=getComputedStyle(a), pb=getComputedStyle(a,'::before');
+    return { color: cs.color, wipeBg: pb.backgroundColor, border: cs.borderTopColor }; });
+  t('button hover on dark: navy text over white wipe, white border', c.color==='rgb(11, 47, 90)' && c.wipeBg==='rgb(255, 255, 255)' && c.border==='rgb(255, 255, 255)', JSON.stringify(c));
+  await p.close(); }
+
+// NO BUTTON CLIPS ITS OWN CONTENT (the wipe relies on overflow:hidden).
+{ for (const w of [1280, 900]) { const p = await b.newPage({ viewport:{width:w,height:900} });
+    const clipped = [];
+    for (const r of ['/','/contact/','/platform/corporate-tax/']) { await p.goto(B+r,{waitUntil:'networkidle'});
+      for (const sel of ['.nt-nav a.nt-btn', '.nt-hero a.nt-btn', 'main a.nt-btn']) { const el = p.locator(sel).first(); if (!(await el.count())) continue;
+        await el.hover(); await p.waitForTimeout(350);
+        const c = await el.evaluate(e => ({ sw: e.scrollWidth, cw: e.clientWidth, sh: e.scrollHeight, ch: e.clientHeight }));
+        if (c.sw > c.cw + 1 || c.sh > c.ch + 1) clipped.push(`${w}px ${r} ${sel} ${JSON.stringify(c)}`); } }
+    t(`buttons: none clip their content on hover at ${w}px`, clipped.length===0, clipped.join(' | ')); await p.close(); } }
+
 // LIVE STATUS + VALUETEXT on both calculators
 { const p = await b.newPage({ viewport:{width:1280,height:900} });
   await p.goto(B+'/platform/corporate-tax/',{waitUntil:'networkidle'}); await p.waitForTimeout(150);

@@ -304,8 +304,13 @@
 .nt-nav__links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 500; }
 /* 8px of vertical padding lifts the 17px links to 33px targets. The bar's
    height is set by the 44px toggle/button, so nothing moves. */
-.nt-nav__links > a, .nt-nav__item > a { color: #DCE6F0; padding: 8px 0; display: inline-block; }
-.nt-nav__links > a:hover, .nt-nav__item > a:hover { color: var(--nt-teal-light); }
+/* :not(.nt-btn) — the CTA is also a direct child of this list, and at
+   (0,1,1) this rule beat .nt-btn--sm's padding, leaving the button with
+   no side padding at all and clipping its arrow on hover. */
+/* Both selectors at (0,2,1) so they beat .nt-dark a equally — otherwise the
+   dropdown parents render teal while the plain links render near-white. */
+.nt-nav__links > a:not(.nt-btn), .nt-nav__links .nt-nav__item > a { color: #DCE6F0; padding: 8px 0; display: inline-block; }
+.nt-nav__links > a:not(.nt-btn):hover, .nt-nav__links .nt-nav__item > a:hover { color: var(--nt-teal-light); }
 /* Underline via text-decoration rather than border-bottom, so it hugs the
    text instead of sitting at the bottom of the padded target box. */
 .nt-nav__links a[aria-current='page'], .nt-nav__item--current > a { color: #fff; text-decoration: underline; text-decoration-color: var(--nt-teal-light); text-decoration-thickness: 1px; text-underline-offset: 5px; }
@@ -719,3 +724,93 @@
 .nt input[type='range'] { min-height: 40px; }
 /* The reset control on the estimator measured 23px. */
 .nt-arrow-link { min-height: 24px; }
+
+/* ==========================================================================
+   Live-site fixes, 6 September 2026
+   ========================================================================== */
+
+/* 1. Dropdowns were invisible on the live site. T-004 moved the nav into its
+   own <header class="nt-dark">, and .nt-dark clips overflow (it needs to, for
+   the drifting grid in the hero). The submenu hangs below the 91px header
+   box, so it was clipped — open, expanded, and unreachable. The header has
+   no grid of its own and does not need the clip. */
+.nt-header { overflow: visible; }
+
+/* 2. The hero's extruded ghosts wrapped differently from the headline. The
+   solid is an <h1> and balances its lines; the ghosts are <div>s and wrapped
+   greedily, so at the same line count they broke in different places and the
+   outline drifted out from under the text. All three layers now share one
+   wrapping mode, set on the wrapper and inherited. */
+.nt-extrude { text-wrap: balance; }
+.nt-extrude > * { text-wrap: inherit; }
+
+/* 3. Primary buttons. The base was a flat teal block whose hover state was a
+   white fill with a white border — on the contact page that made "Email us"
+   vanish on hover. Now: a navy wipe that sweeps in from the left, an arrow
+   that steps forward, and a hairline teal ring offset from the edge — the
+   drafting-table idiom the rest of the site uses. No radius, no shadow, no
+   gradient. Links only: <button class="nt-btn"> elements carry their own
+   inline arrow and keep the base style. */
+a.nt-btn:not(.nt-btn--ghost) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color .22s ease, outline-color .22s ease;
+}
+a.nt-btn:not(.nt-btn--ghost)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--nt-navy);
+  transform: translateX(-101%);
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+a.nt-btn:not(.nt-btn--ghost)::after {
+  content: '\2192';
+  font-family: var(--nt-mono);
+  font-size: 1.05em;
+  line-height: 1;
+  transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+a.nt-btn:not(.nt-btn--ghost):hover {
+  background: var(--nt-teal);   /* stays under the wipe so the sweep is seen */
+  color: #ffffff;
+  border-color: var(--nt-navy);
+}
+a.nt-btn:not(.nt-btn--ghost):hover:not(:focus-visible) {
+  outline: 1px solid var(--nt-teal-light);
+  outline-offset: 3px;
+}
+a.nt-btn:not(.nt-btn--ghost):hover::before { transform: translateX(0); }
+a.nt-btn:not(.nt-btn--ghost):hover::after { transform: translateX(4px); }
+a.nt-btn:not(.nt-btn--ghost):active::before { background: var(--nt-deep); }
+
+/* Any remaining <button class="nt-btn"> gets an honest hover on either ground. */
+.nt-btn:hover { background: var(--nt-navy); color: #ffffff; border-color: var(--nt-navy); }
+
+@media (prefers-reduced-motion: reduce) {
+  a.nt-btn:not(.nt-btn--ghost),
+  a.nt-btn:not(.nt-btn--ghost)::before,
+  a.nt-btn:not(.nt-btn--ghost)::after { transition: none; }
+}
+
+/* On dark bands the navy wipe is navy-on-navy and the hovered button nearly
+   disappears — the ghost button beside it reads stronger. Invert there: a
+   white wipe with navy text, ringed in the light teal. The same gesture, the
+   opposite polarity, so the hover is emphatic on either ground. */
+.nt-dark a.nt-btn:not(.nt-btn--ghost)::before,
+.nt-next a.nt-btn:not(.nt-btn--ghost)::before { background: #ffffff; }
+.nt-dark a.nt-btn:not(.nt-btn--ghost):hover,
+.nt-next a.nt-btn:not(.nt-btn--ghost):hover { color: var(--nt-navy); border-color: #ffffff; }
+.nt-dark a.nt-btn:not(.nt-btn--ghost):active::before,
+.nt-next a.nt-btn:not(.nt-btn--ghost):active::before { background: var(--nt-teal-light); }
+
+/* The wipe needs overflow:hidden on the button, which means the button must
+   never be narrower than its content. In the nav row flex was shrinking the
+   small CTA at 1280px and clipping the arrow on hover. */
+a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
+.nt-nav__links .nt-btn { flex-shrink: 0; }
