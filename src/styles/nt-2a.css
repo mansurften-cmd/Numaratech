@@ -814,3 +814,16 @@ a.nt-btn:not(.nt-btn--ghost):active::before { background: var(--nt-deep); }
    small CTA at 1280px and clipping the arrow on hover. */
 a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
 .nt-nav__links .nt-btn { flex-shrink: 0; }
+
+/* Hover intent. The submenu sits 18px below its parent link (top: calc(100%
+   + 18px)). Crossing that gap left the pointer over neither, the :hover ended
+   and the menu closed before it could be reached. This invisible strip is
+   part of the menu, so moving down through the gap keeps the item hovered. */
+.nt-nav__menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -18px;
+  height: 18px;
+}

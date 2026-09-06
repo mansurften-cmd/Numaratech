@@ -54,6 +54,24 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
     const hit=document.elementFromPoint(r.left+12, r.top+r.height/2); return { ok: hit===a || a.contains(hit), got: hit? hit.tagName+'.'+(hit.className+'').split(' ')[0] : 'none' }; });
   t('dropdown: first submenu link is hit-testable when open (not clipped)', h.ok, h.got); await p.close(); }
 
+// DROPDOWN SURVIVES THE JOURNEY: hover the parent, then move the mouse in
+// small steps down through the gap and diagonally to a submenu link, and
+// click it. This is the path a hand takes; the menu used to close en route.
+{ const p = await b.newPage({ viewport:{width:1280,height:900} }); await p.goto(B+'/',{waitUntil:'networkidle'});
+  const link = p.locator('.nt-nav__item > a[aria-haspopup]').first(); const lb = await link.boundingBox();
+  await p.mouse.move(lb.x + lb.width/2, lb.y + lb.height/2); await p.waitForTimeout(150);
+  const target = p.locator('.nt-nav__menu a').nth(2); const tb = await target.boundingBox();
+  // straight down out of the link, then diagonally across to the third item
+  await p.mouse.move(lb.x + lb.width/2, lb.y + lb.height + 10, { steps: 6 });
+  await p.mouse.move(tb.x + 40, tb.y + tb.height/2, { steps: 14 });
+  await p.waitForTimeout(80);
+  const stillOpen = await p.evaluate(() => getComputedStyle(document.querySelector('.nt-nav__menu')).display !== 'none');
+  const href = await target.getAttribute('href');
+  await p.mouse.down(); await p.mouse.up(); await p.waitForLoadState('domcontentloaded').catch(()=>{}); await p.waitForTimeout(300);
+  const landed = new URL(p.url()).pathname;
+  t('dropdown: stays open while the mouse travels to a submenu item, and the click lands', stillOpen && landed === href, `open=${stillOpen} landed=${landed} wanted=${href}`);
+  await p.close(); }
+
 // HERO EXTRUDE: ghost layers must break lines exactly where the headline does.
 { for (const w of [1280, 1528, 1920]) { const p = await b.newPage({ viewport:{width:w,height:900} });
     for (const r of ['/','/business-case/','/platform/']) { await p.goto(B+r,{waitUntil:'networkidle'});

@@ -195,11 +195,23 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     // Pointer, not mouse: on a touch device the tap sequence fires
     // mouseenter before click, which would mark the menu open before the
     // click handler could act on the first tap.
+    //
+    // Closing is deferred. A pointer heading diagonally for a submenu link
+    // often leaves the item's box for a moment; closing instantly made the
+    // menu vanish under the cursor. 220ms is short enough to feel immediate
+    // when you really do leave, long enough to survive the crossing. The CSS
+    // bridge on .nt-nav__menu::before covers the vertical gap; this covers
+    // the diagonal.
+    let closeTimer: number | undefined;
     item.addEventListener('pointerenter', (event) => {
-      if (event.pointerType !== 'touch' && desktopQuery.matches) setOpen(true);
+      if (event.pointerType === 'touch' || !desktopQuery.matches) return;
+      window.clearTimeout(closeTimer);
+      setOpen(true);
     });
     item.addEventListener('pointerleave', (event) => {
-      if (event.pointerType !== 'touch' && desktopQuery.matches) setOpen(false);
+      if (event.pointerType === 'touch' || !desktopQuery.matches) return;
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(() => setOpen(false), 220);
     });
     item.addEventListener('focusin', () => {
       if (desktopQuery.matches) setOpen(true);
