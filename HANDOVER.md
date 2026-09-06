@@ -143,7 +143,12 @@ migration) are in the repo root.
    proved *emitted*. Owner runs:
    `curl -sI https://numaratech.mansurften.workers.dev/ | grep -iE 'content-security|strict-transport|x-frame|cache-control'`
 
-### Recommended next, from `AUDIT-LOCAL.md`
+### Done since this was written (6 September 2026)
+AUDIT-LOCAL findings 1–7, 9, 11, 12 fixed; 8 and 13 partly — see the status
+table at the top of `AUDIT-LOCAL.md`. The verification harness now lives in
+`scripts/verify/` (`npm run verify`) and is no longer ephemeral.
+
+### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
    `.nt-site-header`, `.nt-site-footer`, `.nt-nav-toggle` — **System A class
    names the 2a rebuild renamed; none exist in any built page.** Both "Print
@@ -212,8 +217,13 @@ migration) are in the repo root.
 **In the repo:** `npm run build`, `npx astro check` (0 errors / 0 warnings
 across 40 files), `npm run check:headers`.
 
-**Lost.** Six one-off verification scripts lived in an ephemeral scratchpad
-that has since been cleared. They are worth rebuilding if you change the
+**Now in the repo:** `scripts/verify/` — see its README. `npm run verify`
+(22 browser checks under the production CSP) and `npm run verify:snapshot`
+(computed-style fingerprint for proving a CSS change is a no-op).
+
+**Historical note.** Six one-off scripts originally lived in an ephemeral
+scratchpad that was cleared; the table below records what they caught. The
+persisted harness above covers the same ground. They are worth rebuilding if you change the
 relevant areas — each found at least one real bug:
 
 | What it did | Found |

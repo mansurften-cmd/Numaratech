@@ -3,8 +3,26 @@
 Completed 14 August 2026 against commit `bc6ace5`, after the Part A fixes.
 Every check was run; nothing here is estimated or inferred from reading.
 
-**Nothing in this file has been fixed.** Part B was scoped as report-only.
-Findings 1 and 2 are the two I would fix first.
+**Update, 6 September 2026.** The owner asked for the findings to be fixed.
+Status by finding:
+
+| # | Status | Commit |
+|---|---|---|
+| 1 Print | **Fixed.** Chrome list names the live classes; dark bands print white. | `b312260` |
+| 2 aria-live | **Fixed.** One atomic sentence per calculator via `src/lib/announce.ts`, decoupled from the computation. | `b312260` |
+| 3 `.nt-pulse` motion | **Fixed.** Rule moved after the animation it overrides. | `b312260` |
+| 4 Dropdown ARIA | **Fixed.** `aria-haspopup`/`expanded`/`controls`; Escape; touch first-tap-opens. | `b312260` |
+| 5 `aria-valuetext` | **Fixed.** Both range inputs announce as words. | `b312260` |
+| 6 npm audit | **Fixed.** 0 vulnerabilities. | `98a2041` |
+| 7 Outdated | **Astro 7.3.1, Wrangler 4.129.0.** TypeScript 7 deliberately not taken (major). | `98a2041` |
+| 8 Tap targets | **Partly.** Footer and legal links padded to 24px. Range inputs (16px) and `button.nt-arrow-link` (23px) remain. | `b312260` |
+| 9 Skip link | **Fixed.** 44px. | `b312260` |
+| 10 CSP web3forms | **Left deliberately** — needed the moment the form's key is added. | — |
+| 11 Class name | **Fixed.** `.nt-stage--built`. | `b312260` |
+| 12 Arrow wrap | **Fixed.** `white-space: nowrap`. | `b312260` |
+| 13 Two design systems | **Partly.** 41 dead rules / 25 dead classes removed from `global.css` (7 KB), verified by a 0-difference computed-style diff over 14,756 elements. `global.css` is still loaded — the calculator pages need its forms, tables, prose and print block — so full consolidation remains. | `f61fc85` |
+
+The original findings follow, unchanged, as the record of what was found.
 
 ---
 
