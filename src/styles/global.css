@@ -284,10 +284,6 @@ hr {
   padding-block: var(--nt-section-y);
 }
 
-.nt-section--tight {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
-}
-
 .nt-section--invert {
   background: var(--nt-bg-invert);
   color: var(--nt-line-200);
@@ -307,18 +303,6 @@ hr {
 /* Full-width hairline dividing sections. */
 .nt-divide {
   border-top: var(--nt-hair) solid var(--nt-hairline);
-}
-
-.nt-divide--soft {
-  border-top: var(--nt-hair) solid var(--nt-hairline-soft);
-}
-
-.nt-divide--teal {
-  border-top: var(--nt-hair) solid var(--nt-accent-rule);
-}
-
-.nt-measure {
-  max-width: var(--nt-measure-text);
 }
 
 /* -- Micro-label: the mono, uppercase, letter-spaced tag ---------------- */
@@ -357,15 +341,6 @@ hr {
   flex: none;
 }
 
-/* -- Display / heading helpers ------------------------------------------ */
-.nt-display {
-  font-size: var(--nt-fs-display);
-  font-weight: 600;
-  letter-spacing: var(--nt-tr-display);
-  line-height: var(--nt-lh-tight);
-  text-wrap: balance;
-}
-
 .nt-h1 {
   font-size: var(--nt-fs-h1);
 }
@@ -396,20 +371,6 @@ hr {
   font-feature-settings: 'tnum' 1, 'zero' 1;
   text-align: right;
   white-space: nowrap;
-}
-
-.nt-fig--display {
-  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
-  font-weight: 600;
-  letter-spacing: var(--nt-tr-heading);
-  color: var(--nt-text);
-  line-height: 1.05;
-}
-
-.nt-fig--lead {
-  font-size: var(--nt-fs-lead);
-  font-weight: 600;
-  color: var(--nt-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -456,37 +417,9 @@ hr {
   }
 }
 
-.nt-btn--primary {
-  background: var(--nt-navy-700);
-  color: var(--nt-white);
-}
-
-.nt-btn--primary:hover {
-  background: var(--nt-navy-900);
-  border-color: var(--nt-navy-900);
-  color: var(--nt-white);
-}
-
 .nt-btn--ghost:hover {
   border-color: var(--nt-accent);
   color: var(--nt-accent);
-}
-
-.nt-btn--invert {
-  border-color: var(--nt-teal-500);
-  color: var(--nt-white);
-}
-
-.nt-btn--invert:hover {
-  background: var(--nt-teal-500);
-  border-color: var(--nt-teal-500);
-  color: var(--nt-navy-900);
-}
-
-.nt-btn-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--nt-3);
 }
 
 /* -- Standalone text link with arrow ----------------------------------- */
@@ -519,152 +452,6 @@ hr {
   border-color: var(--nt-teal-500);
 }
 
-/* -- The drafting field: a hairline grid with crosshair intersections ---
-   This is the site's "futuristic" device. It is built entirely from
-   1px rules, so it does not violate the no-shadow/no-gradient rule.      */
-.nt-field {
-  position: relative;
-  isolation: isolate;
-}
-
-.nt-field__rules {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  /* Constrained to the content field and centred, so the rules land on the
-     same column edges as the text. A grid that does not align to the type
-     reads as noise rather than as a drafting sheet. */
-  width: 100%;
-  max-width: var(--nt-measure);
-  margin-inline: auto;
-}
-
-.nt-field__rules::before {
-  content: '';
-  position: absolute;
-  /* Inset to the gutter so the first and last rules sit exactly on the
-     content edges. */
-  inset: 0 var(--nt-gutter);
-  /* Vertical hairlines every 1/6th of the field. repeating-linear-gradient
-     draws flat 1px rules — no colour transition, so this reads as a rule,
-     not a gradient. */
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--nt-line-200) 0,
-    var(--nt-line-200) 1px,
-    transparent 1px,
-    transparent calc(100% / 6)
-  );
-  background-position: left top;
-}
-
-/* A closing rule on the right edge, so the field reads as bounded. */
-.nt-field__rules::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: var(--nt-gutter);
-  width: var(--nt-hair);
-  background: var(--nt-line-200);
-}
-
-/* -- Ruler ticks: a measured edge along a section boundary --------------
-   Hard-stop repeating gradients. There is no colour transition anywhere in
-   them, so they render as a row of 1px rules — a ruler edge, not a gradient. */
-.nt-ticks {
-  height: 9px;
-  border-bottom: var(--nt-hair) solid var(--nt-hairline);
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--nt-line-300) 0,
-    var(--nt-line-300) 1px,
-    transparent 1px,
-    transparent 12px
-  );
-  background-position: left bottom;
-  background-size: 100% 4px;
-  background-repeat: repeat-x;
-}
-
-/* Every tenth tick runs full height, as on a real rule. Navy rather than teal:
-   teal is the accent and stays sparing — a row of twenty teal marks would
-   spend the page's whole accent budget on a decorative edge. */
-.nt-ticks::after {
-  content: '';
-  display: block;
-  height: 9px;
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--nt-navy-500) 0,
-    var(--nt-navy-500) 1px,
-    transparent 1px,
-    transparent 120px
-  );
-  opacity: 0.45;
-}
-
-/* -- Corner registration brackets -------------------------------------- */
-.nt-bracket {
-  position: relative;
-}
-
-.nt-bracket::before,
-.nt-bracket::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-style: solid;
-  border-color: var(--nt-accent-rule);
-  pointer-events: none;
-}
-
-.nt-bracket::before {
-  top: 0;
-  left: 0;
-  border-width: var(--nt-hair) 0 0 var(--nt-hair);
-}
-
-.nt-bracket::after {
-  right: 0;
-  bottom: 0;
-  border-width: 0 var(--nt-hair) var(--nt-hair) 0;
-}
-
-/* -- Scroll progress rail — CSS only, decorative ------------------------
-   Hidden entirely unless the browser supports scroll-driven animations, so it
-   can never sit at zero width and read as a stray rule. */
-.nt-progress {
-  display: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    .nt-progress {
-      display: block;
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: 2px;
-      z-index: 60;
-      pointer-events: none;
-    }
-
-    .nt-progress::before {
-      content: '';
-      display: block;
-      height: 100%;
-      background: var(--nt-accent-rule);
-      transform: scaleX(0);
-      transform-origin: 0 50%;
-      animation: nt-progress linear both;
-      animation-timeline: scroll(root);
-    }
-  }
-}
-
 @keyframes nt-progress {
   to {
     transform: scaleX(1);
@@ -678,24 +465,6 @@ hr {
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .nt-trace {
-    stroke-dasharray: 5 195;
-    stroke-dashoffset: 200;
-    animation: nt-trace 3.6s linear infinite;
-  }
-
-  .nt-trace--b {
-    animation-duration: 4.8s;
-    animation-delay: -1.2s;
-  }
-
-  .nt-trace--c {
-    animation-duration: 5.6s;
-    animation-delay: -2.6s;
-  }
-}
-
 /* -- Terminal caret ----------------------------------------------------- */
 @keyframes nt-blink {
   0%,
@@ -705,22 +474,6 @@ hr {
   50%,
   100% {
     opacity: 0;
-  }
-}
-
-.nt-caret::after {
-  content: '';
-  display: inline-block;
-  width: 0.5em;
-  height: 0.95em;
-  margin-left: 0.35em;
-  vertical-align: -0.12em;
-  background: var(--nt-accent-rule);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .nt-caret::after {
-    animation: nt-blink 1.15s steps(1) infinite;
   }
 }
 
@@ -778,9 +531,7 @@ hr {
 }
 
 @media (min-width: 48rem) {
-  .nt-cols--2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  
   .nt-cols--3 {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -791,9 +542,8 @@ hr {
     padding: var(--nt-6) var(--nt-6) var(--nt-7) 0;
     border-right: var(--nt-hair) solid var(--nt-hairline-soft);
   }
-  .nt-cols--2 > *:nth-child(2n),
   .nt-cols--3 > *:nth-child(3n),
-  .nt-cols--4 > *:nth-child(2n) {
+.nt-cols--4 > *:nth-child(2n) {
     border-right: 0;
     padding-right: 0;
   }
@@ -954,9 +704,7 @@ hr {
   font-size: var(--nt-fs-sm);
 }
 
-.nt-input,
-.nt-select,
-.nt-textarea {
+.nt-input {
   width: 100%;
   min-height: 3rem;
   padding: var(--nt-3) var(--nt-4);
@@ -971,15 +719,11 @@ hr {
   appearance: none;
 }
 
-.nt-input:hover,
-.nt-select:hover,
-.nt-textarea:hover {
+.nt-input:hover {
   border-color: var(--nt-ink-400);
 }
 
-.nt-input:focus-visible,
-.nt-select:focus-visible,
-.nt-textarea:focus-visible {
+.nt-input:focus-visible {
   border-color: var(--nt-accent);
   outline: 2px solid var(--nt-focus);
   outline-offset: 1px;
@@ -988,26 +732,6 @@ hr {
 .nt-input--fig {
   font-variant-numeric: tabular-nums;
   text-align: right;
-}
-
-.nt-textarea {
-  min-height: 8rem;
-  resize: vertical;
-}
-
-.nt-select {
-  /* Chevron drawn as two 1px strokes — no image asset, no rounding. */
-  background-image: linear-gradient(
-      45deg,
-      transparent 50%,
-      var(--nt-navy-700) 50%
-    ),
-    linear-gradient(135deg, var(--nt-navy-700) 50%, transparent 50%);
-  background-position: calc(100% - 20px) calc(50% + 2px),
-    calc(100% - 14px) calc(50% + 2px);
-  background-size: 6px 6px, 6px 6px;
-  background-repeat: no-repeat;
-  padding-right: var(--nt-8);
 }
 
 /* Input with a leading unit affix (AED, %). */
@@ -1044,13 +768,6 @@ hr {
   outline: 0;
 }
 
-.nt-error {
-  color: var(--nt-navy-700);
-  font-size: var(--nt-fs-sm);
-  border-left: 2px solid var(--nt-teal-700);
-  padding-left: var(--nt-3);
-}
-
 /* -- Prose (legal pages, articles) ------------------------------------- */
 .nt-prose {
   max-width: var(--nt-measure-text);
@@ -1085,28 +802,6 @@ hr {
 .nt-prose strong {
   color: var(--nt-text);
   font-weight: 600;
-}
-
-/* -- Checklist: teal tick built from rules ----------------------------- */
-.nt-checks {
-  list-style: none;
-  display: grid;
-  gap: var(--nt-3);
-}
-
-.nt-checks > li {
-  position: relative;
-  padding-left: var(--nt-5);
-}
-
-.nt-checks > li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.62em;
-  width: 12px;
-  height: var(--nt-hair);
-  background: var(--nt-accent-rule);
 }
 
 /* -- Scroll reveal — CSS only, and fail-safe --------------------------------
@@ -1184,14 +879,13 @@ hr {
      rule below only prunes inside <main>; the banner and footer sit outside
      it and must be hidden here by name. */
   .nt-header,
-  .nt-footer,
-  .nt-legal,
-  .nt-burger,
-  .nt-nav__scrim,
-  .nt-skip,
-  .nt-no-print,
-  .nt-btn,
-  .nt-field__rules {
+.nt-footer,
+.nt-legal,
+.nt-burger,
+.nt-nav__scrim,
+.nt-skip,
+.nt-no-print,
+.nt-btn {
     display: none !important;
   }
 
@@ -1251,9 +945,8 @@ hr {
   }
 
   tr,
-  li,
-  .nt-stat,
-  .nt-calc__line {
+li,
+.nt-calc__line {
     break-inside: avoid;
     page-break-inside: avoid;
   }
