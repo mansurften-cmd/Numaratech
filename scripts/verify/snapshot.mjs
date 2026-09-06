@@ -1,8 +1,11 @@
 // Computed-style fingerprint of every element on every route, screen + print.
 // Usage: node snapshot.mjs out.json
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
 import { writeFileSync } from 'node:fs';
-const { chromium } = pw;
+import { createRequire } from 'node:module';
+// require() resolves a directory through its package.json; ESM import() does
+// not, so a global install path must go through require.
+const pw = process.env.PLAYWRIGHT_PKG ? createRequire(import.meta.url)(process.env.PLAYWRIGHT_PKG) : await import('playwright');
+const chromium = pw.chromium ?? pw.default?.chromium;
 const B = process.env.VERIFY_BASE ?? 'http://127.0.0.1:4322';
 const ROUTES=['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/advisory/risk-compliance/','/platform/',
  '/platform/corporate-tax/','/platform/fs-studio/','/services/','/business-case/','/about/','/insights/',
@@ -11,7 +14,7 @@ const ROUTES=['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/
 const PROPS=['display','position','color','background-color','font-family','font-size','font-weight','line-height','letter-spacing',
  'text-transform','padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-bottom','border-top-width',
  'border-bottom-width','border-color','visibility','opacity','width','height','gap','grid-template-columns','outline-style','white-space','animation-name'];
-const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b=await chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined});
 const out={};
 for (const w of [1280, 390]) {
   const p=await b.newPage({viewport:{width:w,height:900}});
