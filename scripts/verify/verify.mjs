@@ -102,7 +102,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 { for (const w of [1280, 900]) { const p = await b.newPage({ viewport:{width:w,height:900} });
     const clipped = [];
     for (const r of ['/','/contact/','/platform/corporate-tax/']) { await p.goto(B+r,{waitUntil:'networkidle'});
-      for (const sel of ['.nt-nav a.nt-btn', '.nt-hero a.nt-btn', 'main a.nt-btn']) { const el = p.locator(sel).first(); if (!(await el.count())) continue;
+      for (const sel of ['.nt-nav a.nt-btn', '.nt-hero a.nt-btn', 'main a.nt-btn']) { const el = p.locator(sel).first(); if (!(await el.count()) || !(await el.isVisible())) continue; // below 1000px the nav CTA lives in the closed drawer
         await el.hover(); await p.waitForTimeout(350);
         const c = await el.evaluate(e => ({ sw: e.scrollWidth, cw: e.clientWidth, sh: e.scrollHeight, ch: e.clientHeight }));
         if (c.sw > c.cw + 1 || c.sh > c.ch + 1) clipped.push(`${w}px ${r} ${sel} ${JSON.stringify(c)}`); } }

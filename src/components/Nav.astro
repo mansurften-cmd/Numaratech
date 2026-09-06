@@ -2,7 +2,8 @@
 /** The dark nav band. Renders NAV from consts.ts, with hover/focus dropdowns
  *  for the two sections that have children.
  *
- *  Below 721px the same list becomes a drawer behind a toggle. The toggle is
+ *  Below 1000px the same list becomes a drawer behind a toggle (the desktop
+ *  row needs about that much to fit on one line — see nt-2a.css). The toggle is
  *  progressive enhancement: the markup ships with the links stacked and
  *  reachable, and the script sets data-nav="ready" on the band, which is what
  *  activates the collapsed drawer styling. If the script never runs the nav
@@ -81,7 +82,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     // are stacked and reachable, so a failed script leaves a usable nav.
     band.dataset.nav = 'ready';
 
-    const DESKTOP = window.matchMedia('(min-width: 721px)');
+    const DESKTOP = window.matchMedia('(min-width: 1000px)');
     const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
@@ -174,7 +175,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   // the open state onto aria-expanded, and on a touch device at desktop
   // width — where :hover does not exist — let the first tap open the menu
   // and the second follow the link.
-  const desktopQuery = window.matchMedia('(min-width: 721px)');
+  const desktopQuery = window.matchMedia('(min-width: 1000px)');
   const coarsePointer = window.matchMedia('(hover: none)');
 
   document.querySelectorAll<HTMLElement>('.nt-nav__item').forEach((item) => {
@@ -186,7 +187,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
       item.dataset.open = String(open);
     };
 
-    // Below 721px the submenus render inline and permanently open, so the
+    // Below 1000px the submenus render inline and permanently open, so the
     // honest state there is "expanded". Re-evaluated when the layout changes.
     const syncLayout = () => setOpen(!desktopQuery.matches);
     syncLayout();

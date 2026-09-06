@@ -15,7 +15,9 @@
     "check:headers": "node scripts/check-headers.mjs",
     "verify:serve": "python3 scripts/verify/serve-with-csp.py 4322",
     "verify": "node scripts/verify/verify.mjs",
-    "verify:snapshot": "node scripts/verify/snapshot.mjs"
+    "verify:snapshot": "node scripts/verify/snapshot.mjs",
+    "verify:mobile": "node scripts/verify/mobile-sweep.mjs /tmp/nt-mobile-shots",
+    "verify:nav": "node scripts/verify/nav-breakpoint.mjs /tmp/nt-mobile-shots"
   },
   "dependencies": {
     "astro": "^7.3.1"

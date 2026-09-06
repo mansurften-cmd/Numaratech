@@ -508,7 +508,14 @@
    ==========================================================================
    The 720px breakpoint used to carry `.nt-nav__links { display: none }`, which
    removed every link on the site below that width and left only the wordmark.
-   The links now collapse into a drawer behind a toggle instead. */
+   The links now collapse into a drawer behind a toggle instead.
+
+   Breakpoint: 999px, not 720px. The desktop row — wordmark, five links, the
+   CTA — needs about 1,000px to sit on one line. Between 721 and 999px (an
+   iPad in portrait, a phone in landscape) it wrapped and pushed the page 64px
+   wider than the screen, so every page scrolled sideways. The rest of the
+   layout keeps its 720px rules; only the nav collapses earlier. The JS in
+   Nav.astro uses the matching (min-width: 1000px). */
 
 .nt-burger {
   /* Not rendered at all on the desktop layout, and not rendered until the
@@ -559,7 +566,7 @@
 
 .nt-nav__scrim { display: none; }
 
-@media (max-width: 720px) {
+@media (max-width: 999px) {
   /* No-JS / pre-hydration state: the links wrap onto their own row and stay
      reachable. Tall, but present. */
   .nt-nav { flex-wrap: wrap; gap: 16px; }
@@ -827,3 +834,7 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
   top: -18px;
   height: 18px;
 }
+
+/* The close control floats over the drawer's scrolling list. Transparent, it
+   let text pass visibly behind the X once the list scrolled; opaque, it masks. */
+.nt-nav[data-nav='ready'][data-open='true'] .nt-burger { background: var(--nt-deep); }
