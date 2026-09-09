@@ -23,3 +23,7 @@ pnpm-debug.log*
 .vscode/
 .idea/
 *.swp
+
+# Seeded design-canvas pages are generated from design/**/*.dc.html; keep only the sources.
+design/**/*.html
+!design/**/*.dc.html

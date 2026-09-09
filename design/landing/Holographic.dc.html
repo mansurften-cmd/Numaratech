@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #040F1F; }
+    a { color: #7FC3D4; text-decoration: none; } a:hover { color: #ffffff; }
+    @keyframes floatA { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -10px, 0); } }
+    @keyframes floatB { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, 8px, 0); } }
+    @keyframes sweep { from { transform: translateX(-30%); } to { transform: translateX(30%); } }
+    .floatA { animation: floatA 7s ease-in-out infinite; } .floatB { animation: floatB 9s ease-in-out infinite; }
+    .sweep { animation: sweep 14s ease-in-out infinite alternate; }
+  </style>
+</helmet>
+<div style="width: 1440px; min-height: 1600px; background: #040F1F; color: #ffffff; font-family: Inter, system-ui, -apple-system, sans-serif; position: relative; overflow: hidden;">
+
+  <!-- atmosphere: one soft teal field and two light beams -->
+  <div style="position: absolute; inset: 0; pointer-events: none; background: radial-gradient(900px 520px at 78% 38%, rgba(14,116,144,.42), transparent 62%), radial-gradient(600px 400px at 12% 92%, rgba(11,47,90,.7), transparent 60%);"></div>
+  <div class="sweep" style="position: absolute; left: 30%; top: -10%; width: 2px; height: 130%; background: rgba(79,179,204,.22); transform: rotate(18deg); transform-origin: top; pointer-events: none;"></div>
+  <div style="position: absolute; left: 62%; top: -10%; width: 1px; height: 130%; background: rgba(79,179,204,.12); transform: rotate(18deg); transform-origin: top; pointer-events: none;"></div>
+
+  <!-- nav on glass -->
+  <div style="position: relative; margin: 20px 56px 0; display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(14px);">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><rect x="29.5" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><path d="M8.75 7 L31.25 33" stroke="#4FB3CC" stroke-width="3.5" fill="none"></path></svg>
+      <span style="font-size: 18px; font-weight: 700; letter-spacing: .05em;">NUMARATECH</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 28px; font-size: 14px; font-weight: 500; color: #DCE6F0;">
+      <span>Advisory</span><span>Platform</span><span>Business case</span><span>Insights</span><span>About</span>
+      <span style="display: inline-flex; align-items: center; gap: 12px; background: rgba(79,179,204,.16); color: #ffffff; padding: 11px 20px; font-size: 13px; border: 1px solid rgba(79,179,204,.6); box-shadow: 0 0 24px rgba(79,179,204,.25);">Book a walkthrough →</span>
+    </div>
+  </div>
+
+  <!-- hero: type left, layered planes right -->
+  <div style="position: relative; padding: 110px 56px 80px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: center;">
+    <div style="grid-column: 1 / span 6;">
+      <div style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px; border: 1px solid rgba(79,179,204,.5); background: rgba(79,179,204,.08); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #4FB3CC; margin-bottom: 30px;"><i style="display: inline-block; width: 6px; height: 6px; background: #4FB3CC; box-shadow: 0 0 10px #4FB3CC;"></i>Advisory and platform · UAE</div>
+      <h1 style="margin: 0 0 28px; font-size: 80px; line-height: .96; letter-spacing: -.045em; font-weight: 700; color: #ffffff; text-shadow: 0 0 40px rgba(79,179,204,.25);">Finance that can be defended.</h1>
+      <p style="margin: 0 0 36px; max-width: 30em; font-size: 17.5px; line-height: 1.6; color: #C9D6E4;">A licensed UAE accounting and tax practice, and the platform our own filings run through. Advisory when you need judgement; software when you need it repeatable.</p>
+      <div style="display: flex; gap: 14px; align-items: center;">
+        <span style="display: inline-flex; align-items: center; gap: 12px; background: #0E7490; color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid #4FB3CC; box-shadow: 0 0 30px rgba(14,116,144,.55);">Book a walkthrough <span style="font-family: 'JetBrains Mono', monospace;">→</span></span>
+        <span style="display: inline-flex; align-items: center; background: rgba(255,255,255,.04); color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid rgba(255,255,255,.28); backdrop-filter: blur(8px);">See the platform</span>
+      </div>
+    </div>
+
+    <div style="grid-column: 7 / span 6; position: relative; height: 420px;">
+      <!-- back plane -->
+      <div class="floatB" style="position: absolute; left: 70px; top: 10px; width: 520px; height: 300px; background: rgba(79,179,204,.05); border: 1px solid rgba(79,179,204,.22); transform-origin: center;"></div>
+      <!-- mid plane -->
+      <div class="floatA" style="position: absolute; left: 35px; top: 55px; width: 520px; height: 300px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(6px);"></div>
+      <!-- front glass panel: the computation -->
+      <div style="position: absolute; left: 0; top: 100px; width: 520px; background: rgba(6,26,52,.72); border: 1px solid rgba(79,179,204,.5); backdrop-filter: blur(18px); box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(79,179,204,.12) inset;">
+        <div style="display: flex; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid rgba(79,179,204,.3); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #4FB3CC;"><span>Corporate Tax Engine</span><span>FY 2025 · Entity 01</span></div>
+        <div style="padding: 18px 18px 6px; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+          <div style="display: flex; justify-content: space-between; color: #C9D6E4;"><span>Accounting profit before tax</span><span style="font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;">1,250,000</span></div>
+          <div style="display: flex; justify-content: space-between; color: #C9D6E4;"><span>Net non-deductible adjustments</span><span style="font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;">66,150</span></div>
+          <div style="display: flex; justify-content: space-between; color: #ffffff; font-weight: 600; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.14);"><span>Taxable income</span><span style="font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;">1,316,150</span></div>
+          <div style="display: flex; justify-content: space-between; color: #C9D6E4;"><span>Less zero band</span><span style="font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums;">(375,000)</span></div>
+        </div>
+        <div style="margin: 12px 18px 18px; padding: 14px 16px; background: rgba(79,179,204,.10); border: 1px solid rgba(79,179,204,.4); display: flex; justify-content: space-between; align-items: baseline;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #4FB3CC;">Corporate Tax at 9%</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 28px; color: #ffffff; text-shadow: 0 0 18px rgba(79,179,204,.6); font-variant-numeric: tabular-nums;">84,704</span></div>
+      </div>
+      <div style="position: absolute; left: 0; bottom: -18px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em; color: #7C97B5;">Illustrative figures.</div>
+    </div>
+  </div>
+
+  <!-- floating stat chips -->
+  <div style="position: relative; padding: 0 56px 40px; display: flex; gap: 16px;">
+    <div style="flex: 1; padding: 18px 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5;">Advisory groups</span><span style="font-size: 15px; font-weight: 600;">three</span></div>
+    <div style="flex: 1; padding: 18px 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5;">Service lines</span><span style="font-size: 15px; font-weight: 600;">15</span></div>
+    <div style="flex: 1; padding: 18px 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5;">In private beta</span><span style="font-size: 15px; font-weight: 600;">two</span></div>
+    <div style="flex: 1; padding: 18px 22px; background: rgba(79,179,204,.08); border: 1px solid rgba(79,179,204,.4); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 6px;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">Roadmap</span><span style="font-size: 15px; font-weight: 600; color: #4FB3CC;">four at idea stage</span></div>
+  </div>
+
+  <!-- section: advisory as glass cards over the field -->
+  <div style="position: relative; padding: 72px 56px 80px;">
+    <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5;"><b style="font-weight: 400; letter-spacing: 0; color: #4FB3CC;">01</b><span>Advisory</span></div>
+    <h2 style="margin: 0 0 18px; font-size: 44px; line-height: 1.08; letter-spacing: -.025em; font-weight: 700;">Three groups, one team.</h2>
+    <p style="margin: 0 0 36px; max-width: 44em; font-size: 16px; line-height: 1.65; color: #C9D6E4;">Books and audit support, tax positions, and the obligations that carry real penalties.</p>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+      <div style="padding: 28px 26px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.35);">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: #4FB3CC; text-shadow: 0 0 14px rgba(79,179,204,.5);">01</div>
+        <h3 style="margin: 0; font-size: 22px; letter-spacing: -.01em; font-weight: 700;">Accounting &amp; Audit Support</h3>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">IFRS, outsourced CFO, audit support</div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #C9D6E4;">Books that can carry a filing, and the work that gets them through someone else's audit.</p>
+      </div>
+      <div style="padding: 28px 26px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.35);">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: #4FB3CC; text-shadow: 0 0 14px rgba(79,179,204,.5);">02</div>
+        <h3 style="margin: 0; font-size: 22px; letter-spacing: -.01em; font-weight: 700;">Tax &amp; Advisory</h3>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">Corporate Tax, VAT &amp; Transfer Pricing</div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #C9D6E4;">Positions taken deliberately and documented as they are taken.</p>
+      </div>
+      <div style="padding: 28px 26px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.35);">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: #4FB3CC; text-shadow: 0 0 14px rgba(79,179,204,.5);">03</div>
+        <h3 style="margin: 0; font-size: 22px; letter-spacing: -.01em; font-weight: 700;">Risk &amp; Compliance</h3>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">AML, ESR, UBO, goAML</div>
+        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #C9D6E4;">The obligations that carry real penalties and are most often treated as paperwork.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

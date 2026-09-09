@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #061A34; }
+    a { color: #7FC3D4; text-decoration: none; } a:hover { color: #ffffff; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    @keyframes typeIn { from { width: 0; } to { width: 100%; } }
+    .cursor { animation: blink 1s steps(1) infinite; }
+    .line { overflow: hidden; white-space: nowrap; animation: typeIn .5s steps(40) both; }
+    .line:nth-child(2) { animation-delay: .2s; } .line:nth-child(3) { animation-delay: .4s; } .line:nth-child(4) { animation-delay: .6s; } .line:nth-child(5) { animation-delay: .8s; } .line:nth-child(6) { animation-delay: 1s; }
+  </style>
+</helmet>
+<div style="width: 1440px; min-height: 1600px; background: #061A34; color: #ffffff; font-family: Inter, system-ui, -apple-system, sans-serif; position: relative; overflow: hidden;">
+
+  <!-- scanline field -->
+  <div style="position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(to bottom, rgba(79,179,204,.05) 1px, transparent 1px); background-size: 100% 4px;"></div>
+
+  <!-- nav as a status bar -->
+  <div style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 14px 56px; border-bottom: 1px solid rgba(255,255,255,.14); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .1em;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><rect x="29.5" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><path d="M8.75 7 L31.25 33" stroke="#4FB3CC" stroke-width="3.5" fill="none"></path></svg>
+      <span style="font-family: Inter, sans-serif; font-size: 17px; font-weight: 700; letter-spacing: .05em;">NUMARATECH</span>
+      <span style="color: #7C97B5;">~/advisory</span><span style="color: #7C97B5;">~/platform</span><span style="color: #7C97B5;">~/business-case</span><span style="color: #7C97B5;">~/insights</span><span style="color: #7C97B5;">~/about</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 24px; color: #7C97B5;">
+      <span>AE · GST+4</span><span style="color: #4FB3CC;">● private beta</span>
+      <span style="display: inline-flex; align-items: center; gap: 10px; background: #0E7490; color: #ffffff; padding: 10px 18px; font-family: Inter, sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0;">Book a walkthrough →</span>
+    </div>
+  </div>
+
+  <!-- hero: copy left, live console right -->
+  <div style="position: relative; padding: 96px 56px 72px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: center;">
+    <div style="grid-column: 1 / span 6;">
+      <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC; margin-bottom: 28px;">$ numaratech --advisory --platform --region AE</div>
+      <h1 style="margin: 0 0 28px; font-size: 72px; line-height: .98; letter-spacing: -.04em; font-weight: 700; color: #ffffff;">Finance that can be defended.</h1>
+      <p style="margin: 0 0 36px; max-width: 30em; font-size: 17px; line-height: 1.6; color: #C9D6E4;">A licensed UAE accounting and tax practice, and the platform our own filings run through. Advisory when you need judgement; software when you need it repeatable.</p>
+      <div style="display: flex; gap: 14px; align-items: center;">
+        <span style="display: inline-flex; align-items: center; gap: 12px; background: #0E7490; color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid #0E7490;">Book a walkthrough <span style="font-family: 'JetBrains Mono', monospace;">→</span></span>
+        <span style="display: inline-flex; align-items: center; background: transparent; color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid rgba(255,255,255,.4);">See the platform</span>
+      </div>
+    </div>
+
+    <div style="grid-column: 7 / span 6; border: 1px solid rgba(255,255,255,.18); background: #041124; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.9;">
+      <div style="display: flex; justify-content: space-between; padding: 10px 16px; background: #0B2F5A; font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #ffffff;"><span>corporate-tax — computation</span><span style="color: #4FB3CC;">FY 2025 · Entity 01</span></div>
+      <div style="padding: 22px 20px 26px; display: flex; flex-direction: column; gap: 2px; color: #C9D6E4;">
+        <div class="line"><span style="color: #4FB3CC;">›</span> read trial_balance <span style="color: #7C97B5;">………………</span> <span style="color: #ffffff;">412 accounts, 412 mapped</span></div>
+        <div class="line"><span style="color: #4FB3CC;">›</span> apply adjustments <span style="color: #7C97B5;">……………</span> <span style="color: #ffffff;">+66,150</span> <span style="color: #7C97B5;">(JE-114, JE-207, JE-291)</span></div>
+        <div class="line"><span style="color: #4FB3CC;">›</span> taxable income <span style="color: #7C97B5;">…………………</span> <span style="color: #ffffff;">1,316,150</span></div>
+        <div class="line"><span style="color: #4FB3CC;">›</span> zero band <span style="color: #7C97B5;">………………………</span> <span style="color: #ffffff;">(375,000)</span></div>
+        <div class="line"><span style="color: #4FB3CC;">›</span> corporate tax @ 9% <span style="color: #7C97B5;">…………</span> <span style="color: #4FB3CC; font-weight: 500;">84,704</span> <span style="color: #7C97B5;">eff. 6.44%</span></div>
+        <div class="line"><span style="color: #4FB3CC;">›</span> working papers attached <span style="color: #7C97B5;">……</span> <span style="color: #ffffff;">4 / 4 lines evidenced</span></div>
+        <div style="margin-top: 10px; color: #ffffff;"><span style="color: #4FB3CC;">›</span> <span class="cursor" style="display: inline-block; width: 8px; height: 16px; background: #4FB3CC; vertical-align: -2px;"></span></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; padding: 10px 16px; border-top: 1px solid rgba(255,255,255,.12); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #7C97B5;"><span>illustrative figures</span><span>read-only · no data leaves your browser</span></div>
+    </div>
+  </div>
+
+  <!-- status strip -->
+  <div style="position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgba(255,255,255,.14); border-bottom: 1px solid rgba(255,255,255,.14); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em;">
+    <div style="padding: 18px 24px; border-right: 1px solid rgba(255,255,255,.14); display: flex; justify-content: space-between;"><span style="color: #7C97B5;">ADVISORY GROUPS</span><span>03</span></div>
+    <div style="padding: 18px 24px; border-right: 1px solid rgba(255,255,255,.14); display: flex; justify-content: space-between;"><span style="color: #7C97B5;">SERVICE LINES</span><span>15</span></div>
+    <div style="padding: 18px 24px; border-right: 1px solid rgba(255,255,255,.14); display: flex; justify-content: space-between;"><span style="color: #7C97B5;">IN PRIVATE BETA</span><span>02</span></div>
+    <div style="padding: 18px 24px; display: flex; justify-content: space-between;"><span style="color: #7C97B5;">ROADMAP</span><span style="color: #4FB3CC;">04 idea</span></div>
+  </div>
+
+  <!-- section: products as panes -->
+  <div style="position: relative; padding: 72px 56px 80px;">
+    <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5;"><b style="font-weight: 400; letter-spacing: 0; color: #4FB3CC;">02</b><span>Platform</span></div>
+    <h2 style="margin: 0 0 18px; font-size: 44px; line-height: 1.08; letter-spacing: -.025em; font-weight: 700;">It computes and it evidences. It does not decide.</h2>
+    <p style="margin: 0 0 36px; max-width: 44em; font-size: 16px; line-height: 1.65; color: #C9D6E4;">Two products in private beta, both reading the same mapped ledger — so the statements and the tax computation cannot disagree with each other.</p>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
+      <div style="border: 1px solid rgba(255,255,255,.18); background: #041124;">
+        <div style="display: flex; justify-content: space-between; padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.12); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;"><span>corporate-tax-engine</span><span style="color: #4FB3CC;">private beta</span></div>
+        <div style="padding: 22px 20px; display: flex; flex-direction: column; gap: 12px;">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700;">Corporate Tax Engine</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">Trial balance to filed return</div>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #C9D6E4;">Reads the trial balance, applies the adjustments you have defined, computes the liability, and keeps the working papers attached to every line.</p>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; color: #7C97B5;">› adjustment library, versioned by period<br>› zero band, reliefs, instalments<br>› printable computation with references</div>
+        </div>
+      </div>
+      <div style="border: 1px solid rgba(255,255,255,.18); background: #041124;">
+        <div style="display: flex; justify-content: space-between; padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.12); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;"><span>fs-studio</span><span style="color: #4FB3CC;">private beta</span></div>
+        <div style="padding: 22px 20px; display: flex; flex-direction: column; gap: 12px;">
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700;">FS Studio</h3>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC;">IFRS statements, generated</div>
+          <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #C9D6E4;">Financial statements derived from the mapped ledger rather than retyped into a template. Change a mapping and every affected note moves with it.</p>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; color: #7C97B5;">› IFRS and IFRS for SMEs presentation sets<br>› notes that recompute when the mapping changes<br>› comparatives locked to the prior filed position</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

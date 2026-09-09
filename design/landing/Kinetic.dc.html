@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #061A34; }
+    a { color: #7FC3D4; text-decoration: none; } a:hover { color: #ffffff; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes rise { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .ticker { animation: ticker 38s linear infinite; }
+    .rise { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; }
+    .rise-2 { animation-delay: .15s; } .rise-3 { animation-delay: .3s; } .rise-4 { animation-delay: .45s; }
+  </style>
+</helmet>
+<div style="width: 1440px; min-height: 1720px; background: #061A34; color: #ffffff; font-family: Inter, system-ui, -apple-system, sans-serif; position: relative; overflow: hidden;">
+
+  <!-- one vertical rule, off-centre: the page's spine -->
+  <div style="position: absolute; left: 1040px; top: 0; bottom: 0; width: 1px; background: rgba(79,179,204,.28); pointer-events: none;"></div>
+
+  <!-- nav: minimal -->
+  <div style="position: relative; display: flex; align-items: center; justify-content: space-between; padding: 22px 56px;">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <svg width="32" height="32" viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><rect x="29.5" y="7" width="3.5" height="26" fill="#FFFFFF"></rect><path d="M8.75 7 L31.25 33" stroke="#4FB3CC" stroke-width="3.5" fill="none"></path></svg>
+      <span style="font-size: 19px; font-weight: 700; letter-spacing: .05em;">NUMARATECH</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 30px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #C9D6E4;">
+      <span>Advisory</span><span>Platform</span><span>Business case</span><span>Insights</span><span>About</span><span style="color: #4FB3CC; border-bottom: 1px solid #4FB3CC; padding-bottom: 2px;">Book a walkthrough →</span>
+    </div>
+  </div>
+
+  <!-- hero: type as the whole composition -->
+  <div style="position: relative; padding: 96px 56px 56px;">
+    <div class="rise" style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #4FB3CC; margin-bottom: 40px;">Advisory and platform / United Arab Emirates</div>
+    <h1 style="margin: 0; font-weight: 800; letter-spacing: -.055em; line-height: .86; color: #ffffff;">
+      <span class="rise rise-2" style="display: block; font-size: 168px;">Finance</span>
+      <span class="rise rise-3" style="display: block; font-size: 168px; padding-left: 190px;">that can be</span>
+      <span class="rise rise-4" style="display: block; font-size: 168px; color: transparent; -webkit-text-stroke: 2px #4FB3CC;">defended.</span>
+    </h1>
+    <div style="display: flex; align-items: center; gap: 14px; margin-top: 44px;">
+      <span style="display: inline-flex; align-items: center; gap: 12px; background: #0E7490; color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid #0E7490;">Book a walkthrough <span style="font-family: 'JetBrains Mono', monospace;">→</span></span>
+      <span style="display: inline-flex; align-items: center; background: transparent; color: #ffffff; padding: 15px 26px; font-size: 14px; font-weight: 500; border: 1px solid rgba(255,255,255,.4);">See the platform</span>
+    </div>
+    <div style="position: absolute; right: 56px; top: 118px; width: 330px;">
+      <p style="margin: 0; font-size: 16px; line-height: 1.6; color: #C9D6E4;">A licensed UAE accounting and tax practice, and the platform our own filings run through. Advisory when you need judgement; software when you need it repeatable.</p>
+    </div>
+  </div>
+
+  <!-- ticker cutting across the page -->
+  <div style="position: relative; overflow: hidden; border-top: 1px solid rgba(79,179,204,.4); border-bottom: 1px solid rgba(79,179,204,.4); padding: 14px 0; white-space: nowrap; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #C9D6E4;">
+    <div class="ticker" style="display: inline-flex; gap: 56px; width: max-content;">
+      <span>Corporate Tax 9% above AED 375,000</span><span style="color: #4FB3CC;">·</span><span>Small Business Relief to AED 3,000,000</span><span style="color: #4FB3CC;">·</span><span>Regime from FY beginning 1 June 2023</span><span style="color: #4FB3CC;">·</span><span>15 service lines · three groups</span><span style="color: #4FB3CC;">·</span><span>Two products in private beta</span><span style="color: #4FB3CC;">·</span><span>One mapped ledger, read by everything</span><span style="color: #4FB3CC;">·</span>
+      <span>Corporate Tax 9% above AED 375,000</span><span style="color: #4FB3CC;">·</span><span>Small Business Relief to AED 3,000,000</span><span style="color: #4FB3CC;">·</span><span>Regime from FY beginning 1 June 2023</span><span style="color: #4FB3CC;">·</span><span>15 service lines · three groups</span><span style="color: #4FB3CC;">·</span><span>Two products in private beta</span><span style="color: #4FB3CC;">·</span><span>One mapped ledger, read by everything</span><span style="color: #4FB3CC;">·</span>
+    </div>
+  </div>
+
+  <!-- one big number, then the index -->
+  <div style="position: relative; padding: 72px 56px 80px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+    <div style="grid-column: 1 / span 5;">
+      <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #7C97B5; margin-bottom: 18px;">01 · Advisory</div>
+      <div style="font-size: 240px; line-height: .8; font-weight: 800; letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1px rgba(79,179,204,.5);">15</div>
+      <div style="margin-top: 22px; font-size: 22px; font-weight: 700; letter-spacing: -.01em;">service lines, three groups, one team.</div>
+    </div>
+    <div style="grid-column: 6 / span 7; display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,.3);">
+      <div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.12);"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #4FB3CC;">01</span><span style="font-size: 26px; font-weight: 700; letter-spacing: -.02em;">Accounting &amp; Audit Support</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #7C97B5;">6 lines</span></div>
+      <div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.12);"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #4FB3CC;">02</span><span style="font-size: 26px; font-weight: 700; letter-spacing: -.02em;">Tax &amp; Advisory</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #7C97B5;">4 lines</span></div>
+      <div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.12);"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #4FB3CC;">03</span><span style="font-size: 26px; font-weight: 700; letter-spacing: -.02em;">Risk &amp; Compliance</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #7C97B5;">5 lines</span></div>
+      <div style="display: grid; grid-template-columns: 64px 1fr auto; gap: 24px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,.12); color: #7C97B5;"><span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #4FB3CC;">→</span><span style="font-size: 26px; font-weight: 700; letter-spacing: -.02em; color: #4FB3CC;">Platform: two products in private beta</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">CT Engine · FS Studio</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
