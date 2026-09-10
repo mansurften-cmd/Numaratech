@@ -148,6 +148,29 @@ AUDIT-LOCAL findings 1–7, 9, 11, 12 fixed; 8 and 13 partly — see the status
 table at the top of `AUDIT-LOCAL.md`. The verification harness now lives in
 `scripts/verify/` (`npm run verify`) and is no longer ephemeral.
 
+### Done since (10 September 2026) — the drawing
+The owner chose a direction on the design canvas (`design/landing/`, A + B:
+drafting language plus a live computation console) and it is now built:
+- `PageHero.astro` draws a registration frame around the headline (four
+  corners that animate in, a dimension line) and takes an optional `aside`
+  slot for a console. Every page gets the frame; two pages use the slot.
+- `HeroConsole.astro` (home): the demo entity's Corporate Tax run, typed out,
+  with the taxable-income line drawn as a slider. It and the estimator in
+  section 03 are **one computation in one script** (`index.astro`): move
+  either and both re-run. On load both show the demo entity (1,316,150 /
+  84,704 — the same figures `/platform/corporate-tax/` starts on). Once a
+  slider moves the console switches to `data-mode="estimate"` and its
+  demo-only lines say so. The first run is seeded from `data-value`, because
+  the browser snaps the input's own value to the 25,000 step.
+- `PeriodConsole.astro` (`/platform/corporate-tax/` hero): static, typed.
+  The page's computation logic is untouched; only its hero call changed and
+  its revenue default now reads `DEMO_REVENUE` from `src/demo.ts`.
+- `src/demo.ts` gained `DEMO_LEDGER_ACCOUNTS` (412) and `DEMO_REVENUE`
+  (4,200,000), so those figures are no longer typed in two places.
+- `nt-2a.css`: `.nt-frame*`, `.nt-run*`, `.nt-pane*`, `.nt-dim*`, `+` marks on
+  every `.nt-cells .nt-cell`, all reduced-motion and print safe.
+- `npm run verify` is now 45 checks; mobile and nav sweeps clean.
+
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
    `.nt-site-header`, `.nt-site-footer`, `.nt-nav-toggle` — **System A class
@@ -218,7 +241,7 @@ table at the top of `AUDIT-LOCAL.md`. The verification harness now lives in
 across 40 files), `npm run check:headers`.
 
 **Now in the repo:** `scripts/verify/` — see its README. `npm run verify`
-(22 browser checks under the production CSP) and `npm run verify:snapshot`
+(45 browser checks under the production CSP) and `npm run verify:snapshot`
 (computed-style fingerprint for proving a CSS change is a no-op).
 
 **Historical note.** Six one-off scripts originally lived in an ephemeral

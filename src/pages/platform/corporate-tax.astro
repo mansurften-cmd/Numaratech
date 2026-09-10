@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import SectionHead from '../../components/SectionHead.astro';
+import PeriodConsole from '../../components/PeriodConsole.astro';
 import Arrow from '../../components/Arrow.astro';
 import { UAE_CT, CALCULATOR, hasCalculator } from '../../consts';
 
@@ -13,6 +14,7 @@ const nf = new Intl.NumberFormat('en-AE');
 // accounting profit this page defaulted to 75,000 (A13). The computation
 // itself is untouched; these are only the values it starts from.
 import {
+  DEMO_REVENUE,
   DEMO_ACCOUNTING_PROFIT,
   DEMO_ADJUSTMENTS_TOTAL,
   DEMO_TAXABLE_INCOME,
@@ -71,7 +73,9 @@ const capabilities = [
       { label: 'Regime in force', value: `FY from ${UAE_CT.effectiveFrom}` },
       { label: 'Starting point', value: 'your trial balance' },
     ]}
-  />
+  >
+    <PeriodConsole slot="aside" />
+  </PageHero>
 
   <!-- Estimator --------------------------------------------------------- -->
   <section class="nt-section" id="estimator" data-print-region data-live-scope>
@@ -103,7 +107,7 @@ const capabilities = [
                 type="text"
                 inputmode="numeric"
                 autocomplete="off"
-                value="4,200,000"
+                value={nf.format(DEMO_REVENUE)}
                 aria-describedby="est-revenue-hint"
               />
             </div>

@@ -1,7 +1,17 @@
 ---
-/** The dark opening band: nav, eyebrow, extruded outline headline, lead,
- *  actions, and an optional four-cell measurement strip.
- *  `stats` is [{ label, value, live? }]. */
+/** The dark opening band: eyebrow, extruded outline headline, lead, actions,
+ *  and an optional four-cell measurement strip. `stats` is
+ *  [{ label, value, live? }].
+ *
+ *  The headline block sits inside a registration frame — four corner marks
+ *  that draw themselves on load, and a dimension line beneath the type. The
+ *  drafting-table idiom the rest of the site uses, applied to the one place
+ *  every page opens on.
+ *
+ *  A page can hand in an `aside` slot (the landing page's computation console,
+ *  the Corporate Tax Engine's period console). With it the hero becomes a
+ *  two-column drawing: the copy on the left, the console on the right, both
+ *  on the same drifting grid. Without it the hero is a single column. */
 
 interface Props {
   kicker: string;
@@ -13,27 +23,52 @@ interface Props {
 }
 
 const { kicker, title, lead, stats = [], primary, secondary } = Astro.props;
+const hasAside = Astro.slots.has('aside');
 ---
 
 <div class="nt-dark">
   <div class="nt-grid"></div>
 
-  <div class="nt-layer nt-hero">
-    <div class="nt-kicker" style="margin-bottom:36px">{kicker}</div>
+  <div class:list={['nt-layer', 'nt-hero', { 'nt-hero--split': hasAside }]}>
+    <div class="nt-hero__copy">
+      <div class="nt-frame">
+        <i class="nt-frame__edge nt-frame__edge--top" aria-hidden="true"></i>
+        <i class="nt-frame__edge nt-frame__edge--bottom" aria-hidden="true"></i>
 
-    <div class="nt-extrude">
-      <div class="nt-h1 nt-extrude__ghost nt-extrude__ghost--near" aria-hidden="true">{title}</div>
-      <div class="nt-h1 nt-extrude__ghost" aria-hidden="true">{title}</div>
-      <h1 class="nt-h1 nt-extrude__solid">{title}</h1>
+        <div class="nt-kicker nt-hero__kicker">{kicker}</div>
+
+        <div class="nt-extrude">
+          <div class="nt-h1 nt-extrude__ghost nt-extrude__ghost--near" aria-hidden="true">{title}</div>
+          <div class="nt-h1 nt-extrude__ghost" aria-hidden="true">{title}</div>
+          <h1 class="nt-h1 nt-extrude__solid">{title}</h1>
+        </div>
+
+        <!-- The dimension line: the headline's own drawing parameters (the
+             extrude's max-width, stroke and ghost offsets), set out the way a
+             plan annotates a measurement. Decorative, so hidden from AT. -->
+        <div class="nt-frame__dim" aria-hidden="true">
+          <span>DIM · 16em</span>
+          <span>STROKE · 1px</span>
+          <span>OFFSET · 7 / 14 px</span>
+        </div>
+      </div>
+
+      <p class="nt-lead">{lead}</p>
+
+      {
+        (primary || secondary) && (
+          <div class="nt-actions">
+            {primary && <a class="nt-btn" href={primary.href}>{primary.label}</a>}
+            {secondary && <a class="nt-btn nt-btn--ghost" href={secondary.href}>{secondary.label}</a>}
+          </div>
+        )
+      }
     </div>
 
-    <p class="nt-lead">{lead}</p>
-
     {
-      (primary || secondary) && (
-        <div class="nt-actions">
-          {primary && <a class="nt-btn" href={primary.href}>{primary.label}</a>}
-          {secondary && <a class="nt-btn nt-btn--ghost" href={secondary.href}>{secondary.label}</a>}
+      hasAside && (
+        <div class="nt-hero__aside">
+          <slot name="aside" />
         </div>
       )
     }

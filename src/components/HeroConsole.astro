@@ -1,0 +1,99 @@
+---
+/** The landing page's hero console: the demo entity's Corporate Tax run,
+ *  typed out line by line, with the taxable-income line drawn as a dimension
+ *  slider. Drag it and the run re-executes with your number — the same
+ *  arithmetic the estimator further down the page uses, in the same script
+ *  (src/pages/index.astro), so the two surfaces cannot disagree.
+ *
+ *  Two states, carried on data-mode and set by that script:
+ *  - "demo": the fictional entity from src/demo.ts — a trial balance, named
+ *    adjustments with journal references, working papers.
+ *  - "estimate": once either slider has moved. Taxable income is now the
+ *    visitor's number, so the lines that only make sense for the demo entity
+ *    (the ledger read, the adjustments, the working papers) say so instead of
+ *    pretending the figures still come from a ledger.
+ *  Both states are captioned as what they are. Nothing leaves the browser. */
+import {
+  ADJUSTMENTS,
+  DEMO_ADJUSTMENTS_TOTAL,
+  DEMO_LEDGER_ACCOUNTS,
+  DEMO_TAXABLE_INCOME,
+  DEMO_ZERO_BAND,
+  DEMO_TAX,
+  DEMO_EFFECTIVE_RATE,
+  fig,
+} from '../demo';
+import { UAE_CT } from '../consts';
+
+// "JE-114 ·207 ·291": the journal references behind the adjustments.
+const refs = ADJUSTMENTS.filter((a) => a.ref)
+  .map((a, i) => (i === 0 ? a.ref : a.ref!.replace(/^JE-/, '·')))
+  .join(' ');
+
+const MAX = 5_000_000;
+const fill = `${((DEMO_TAXABLE_INCOME / MAX) * 100).toFixed(2)}%`;
+---
+
+<div class="nt-run nt-run--live" id="nt-run" data-mode="demo">
+  <div class="nt-run__bar">
+    <span>corporate-tax — computation</span>
+    <span data-run="period">FY 2025 · Entity 01</span>
+  </div>
+
+  <div class="nt-run__body">
+    <div class="nt-run__line">
+      <b>›</b><span class="nt-run__label">read trial_balance</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val" data-run="source">{DEMO_LEDGER_ACCOUNTS} / {DEMO_LEDGER_ACCOUNTS} mapped</span>
+    </div>
+    <div class="nt-run__line">
+      <b>›</b><span class="nt-run__label">apply adjustments</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val" data-run="adjust">+{fig(DEMO_ADJUSTMENTS_TOTAL)}</span>
+      <span class="nt-run__note" data-run="adjust-note">{refs}</span>
+    </div>
+    <div class="nt-run__line nt-run__line--input" data-recompute>
+      <b>›</b>
+      <label class="nt-run__label" for="nt-hero-income">taxable income</label>
+      <!-- The statutory parameters travel on data attributes: define:vars
+           would force an inline script, which this site's CSP refuses. -->
+      <span class="nt-dim-wrap nt-dim-wrap--dark">
+        <input
+          id="nt-hero-income"
+          class="nt-dim"
+          type="range"
+          min="0"
+          max={String(MAX)}
+          step="25000"
+          value={String(DEMO_TAXABLE_INCOME)}
+          data-value={String(DEMO_TAXABLE_INCOME)}
+          data-rate={String(UAE_CT.standardRate)}
+          data-band={String(UAE_CT.zeroBandCeiling)}
+          style={`--nt-dim-fill:${fill}`}
+        />
+      </span>
+      <span class="nt-run__val" data-run="taxable">{fig(DEMO_TAXABLE_INCOME)}</span>
+    </div>
+    <div class="nt-run__line" data-recompute>
+      <b>›</b><span class="nt-run__label">zero band</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val" data-run="zero">({fig(DEMO_ZERO_BAND)})</span>
+    </div>
+    <div class="nt-run__line" data-recompute>
+      <b>›</b><span class="nt-run__label">corporate tax @ {UAE_CT.standardRate * 100}%</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val nt-run__val--lead" data-run="tax">{fig(DEMO_TAX)}</span>
+      <span class="nt-run__note" data-run="eff">eff. {(DEMO_EFFECTIVE_RATE * 100).toFixed(2)}%</span>
+    </div>
+    <div class="nt-run__line">
+      <b>›</b><span class="nt-run__label">working papers</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val" data-run="papers">{ADJUSTMENTS.length} / {ADJUSTMENTS.length} lines evidenced</span>
+    </div>
+    <div class="nt-run__prompt" aria-hidden="true"><b>›</b><i class="nt-run__cursor"></i></div>
+  </div>
+
+  <div class="nt-run__foot">
+    <span data-run="caption">illustrative figures</span>
+    <span class="nt-run__beta"><i class="nt-pulse"></i>private beta</span>
+  </div>
+</div>
+<div class="nt-run__meta">
+  <span>runs in your browser · nothing sent</span>
+  <a href="#estimator">same run as the estimator ↓</a>
+</div>

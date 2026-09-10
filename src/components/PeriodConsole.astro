@@ -1,0 +1,47 @@
+---
+/** The Corporate Tax Engine page's hero console: one period of the demo
+ *  entity, day by day, typed out. Illustrative — the counts and the closing
+ *  figure come from src/demo.ts, the same dataset the page's estimator
+ *  starts from, so the hero and the computation below it agree. */
+import { ADJUSTMENTS, DEMO_LEDGER_ACCOUNTS, DEMO_REVENUE, DEMO_TAX, fig } from '../demo';
+import { UAE_CT } from '../consts';
+
+// Adjustments with an amount are proposed by the engine and confirmed by a
+// person. "It computes and it evidences. It does not decide."
+const proposed = ADJUSTMENTS.filter((a) => a.amount !== 0).length;
+
+// Small Business Relief turns on revenue; the demo entity is over the cap.
+const sbr = DEMO_REVENUE <= UAE_CT.smallBusinessReliefRevenueCap ? 'available' : 'ineligible';
+---
+
+<div class="nt-run">
+  <div class="nt-run__bar">
+    <span>period · end to end</span>
+    <span>FY 2025 · Entity 01</span>
+  </div>
+
+  <div class="nt-run__body">
+    <div class="nt-run__line">
+      <b>day 1</b><span class="nt-run__label">trial balance lands</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val">{DEMO_LEDGER_ACCOUNTS} accounts</span>
+    </div>
+    <div class="nt-run__line">
+      <b>day 2</b><span class="nt-run__label">adjustments proposed</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val">{proposed} for a person to confirm</span>
+    </div>
+    <div class="nt-run__line">
+      <b>day 3</b><span class="nt-run__label">review and elect</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val">SBR: {sbr} · QFZP: n/a</span>
+    </div>
+    <div class="nt-run__line">
+      <b>day 4</b><span class="nt-run__label">file, then freeze</span><i class="nt-run__leader"></i>
+      <span class="nt-run__val nt-run__val--lead">{fig(DEMO_TAX)} · locked</span>
+    </div>
+    <div class="nt-run__prompt" aria-hidden="true"><b>›</b><i class="nt-run__cursor"></i></div>
+  </div>
+
+  <div class="nt-run__foot">
+    <span>illustrative figures</span>
+    <span class="nt-run__beta"><i class="nt-pulse"></i>private beta</span>
+  </div>
+</div>

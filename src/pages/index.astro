@@ -1,12 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
+import HeroConsole from '../components/HeroConsole.astro';
 import NextBand from '../components/NextBand.astro';
 import { SERVICE_GROUPS, BUILT_PRODUCTS, IDEA_PRODUCTS, ALL_SERVICES } from '../services';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
 import { SITE, UAE_CT, spell } from '../consts';
+import { DEMO_TAXABLE_INCOME, DEMO_ZERO_BAND, DEMO_CHARGEABLE, DEMO_TAX, fig } from '../demo';
 
 const insights = insightsNewestFirst().slice(0, 3);
+
+// The estimator starts on the demo entity's taxable income — the same number
+// the hero console types out — so the two surfaces show one computation from
+// the first paint. Both sliders share the range; the fill is the slider's
+// position as a percentage, set here for the no-JS paint and by the script
+// after every move.
+const MAX = 5_000_000;
+const fill = `${((DEMO_TAXABLE_INCOME / MAX) * 100).toFixed(2)}%`;
+
+// The pane bar names each product the way its console would: lower-case,
+// hyphenated, derived from the name so a rename cannot leave it stale.
+const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 ---
 
 <Base title={SITE.name} description={SITE.description}>
@@ -22,14 +36,16 @@ const insights = insightsNewestFirst().slice(0, 3);
       { label: 'In private beta', value: spell(BUILT_PRODUCTS.length) },
       { label: 'Roadmap', value: `${spell(IDEA_PRODUCTS.length)} at idea stage`, live: true },
     ]}
-  />
+  >
+    <HeroConsole slot="aside" />
+  </PageHero>
 
   <section class="nt-section">
     <div class="nt-eyebrow"><b>01</b><span>Advisory</span></div>
     <h2 class="nt-h2">Three groups, one team.</h2>
     <p class="nt-body">
-      Books and assurance, tax positions, and the obligations that carry real penalties. Each group
-      page carries its services in full.
+      Books and audit support, tax positions, and the obligations that carry real penalties. Each
+      group page carries its services in full.
     </p>
     <div class="nt-cells nt-cells--3" style="--nt-cols:3">
       {
@@ -57,24 +73,27 @@ const insights = insightsNewestFirst().slice(0, 3);
         Two products in private beta, both reading the same mapped ledger — so the statements and
         the tax computation cannot disagree with each other.
       </p>
-      <div class="nt-cells" style="--nt-cols:2">
+      <div class="nt-panes">
         {
           BUILT_PRODUCTS.map((product) => (
-            <div class="nt-cell">
-              <div class="nt-cell__head">
+            <div class="nt-pane">
+              <div class="nt-pane__bar">
+                <span>{machineName(product.name)}</span>
+                <span>{product.stage}</span>
+              </div>
+              <div class="nt-pane__body">
                 <h3 class="nt-h3">{product.name}</h3>
-                <span class="nt-stage nt-stage--built">{product.stage}</span>
+                <div class="nt-kicker">{product.strap}</div>
+                <p>{product.body}</p>
+                <div class="nt-pane__notes">
+                  {product.points.map((point) => <div>{point}</div>)}
+                </div>
+                {product.href && (
+                  <a class="nt-link" href={product.href} style="margin-top:auto; padding-top:8px; border-bottom-color:var(--nt-teal-light)">
+                    {product.name}
+                  </a>
+                )}
               </div>
-              <div class="nt-kicker">{product.strap}</div>
-              <p>{product.body}</p>
-              <div class="nt-cell__notes">
-                {product.points.map((point) => <div>{point}</div>)}
-              </div>
-              {product.href && (
-                <a class="nt-link" href={product.href} style="margin-top:8px; border-bottom-color:var(--nt-teal-light)">
-                  {product.name}
-                </a>
-              )}
             </div>
           ))
         }
@@ -93,7 +112,7 @@ const insights = insightsNewestFirst().slice(0, 3);
 
     <div class="nt-split--even nt-split">
       <div>
-        <label for="nt-income" class="nt-kicker" style="display:block; margin-bottom:14px">
+        <label for="nt-income" class="nt-kicker" style="display:block; margin-bottom:18px">
           Taxable income · {UAE_CT.currency}
         </label>
         <!-- The statutory parameters travel on data attributes rather than via
@@ -101,34 +120,42 @@ const insights = insightsNewestFirst().slice(0, 3);
              site's CSP is script-src 'self' with no 'unsafe-inline'. An inline
              script here would be refused by the browser and the estimator would
              sit dead on the page. -->
-        <input
-          id="nt-income"
-          type="range"
-          min="0"
-          max="5000000"
-          step="25000"
-          value="1500000"
-          data-rate={String(UAE_CT.standardRate)}
-          data-band={String(UAE_CT.zeroBandCeiling)}
-          style="width:100%; accent-color:var(--nt-teal)"
-        />
-        <div style="display:flex; justify-content:space-between; font-family:var(--nt-mono); font-size:11px; color:var(--nt-mute); margin-top:8px">
-          <span>0</span><span>5,000,000</span>
+        <div class="nt-dim-wrap nt-dim-wrap--ticks">
+          <input
+            id="nt-income"
+            class="nt-dim"
+            type="range"
+            min="0"
+            max={String(MAX)}
+            step="25000"
+            value={String(DEMO_TAXABLE_INCOME)}
+            data-value={String(DEMO_TAXABLE_INCOME)}
+            data-rate={String(UAE_CT.standardRate)}
+            data-band={String(UAE_CT.zeroBandCeiling)}
+            style={`--nt-dim-fill:${fill}`}
+          />
         </div>
+        <div class="nt-dim-scale">
+          <span>0</span><span id="nt-out-current">{fig(DEMO_TAXABLE_INCOME)}</span><span>{fig(MAX)}</span>
+        </div>
+        <p class="nt-small" style="margin:28px 0 0; max-width:30em">
+          Every move re-runs the console at the top of the page. The two are one computation, so
+          the number up there follows the slider down here — and the other way round.
+        </p>
       </div>
 
-      <div style="border:1px solid var(--nt-navy); padding:0">
+      <div class="nt-est">
         <div class="nt-console__bar">
           <span>Estimate</span>
           <span>{UAE_CT.standardRate * 100}% above {UAE_CT.currency} {UAE_CT.zeroBandCeiling.toLocaleString('en-AE')}</span>
         </div>
         <div style="padding:20px 22px; display:flex; flex-direction:column; gap:14px">
-          <div class="nt-meter"><span>Taxable income</span><span id="nt-out-income">1,500,000</span></div>
-          <div class="nt-meter"><span>Taxed at 0%</span><span id="nt-out-zero">375,000</span></div>
-          <div class="nt-meter"><span>Taxed at 9%</span><span id="nt-out-taxed">1,125,000</span></div>
+          <div class="nt-meter"><span>Taxable income</span><span id="nt-out-income">{fig(DEMO_TAXABLE_INCOME)}</span></div>
+          <div class="nt-meter"><span>Taxed at 0%</span><span id="nt-out-zero">{fig(DEMO_ZERO_BAND)}</span></div>
+          <div class="nt-meter"><span>Taxed at {UAE_CT.standardRate * 100}%</span><span id="nt-out-taxed">{fig(DEMO_CHARGEABLE)}</span></div>
           <div class="nt-figure nt-figure--lead" style="border-top:2px solid var(--nt-navy); padding-top:12px">
             <span>Corporate Tax</span>
-            <span id="nt-out-tax">101,250</span>
+            <span id="nt-out-tax">{fig(DEMO_TAX)}</span>
           </div>
         </div>
       </div>
@@ -162,39 +189,108 @@ const insights = insightsNewestFirst().slice(0, 3);
 
   <script>
     // Bundled to an external file (no is:inline), so script-src 'self' allows
-    // it. Parameters come off the input's data attributes.
-    const slider = document.getElementById('nt-income') as HTMLInputElement | null;
+    // it. Parameters come off the inputs' data attributes.
+    //
+    // One computation, two controls. The hero console's taxable-income line
+    // and the estimator's dimension slider are the same number: moving either
+    // re-runs everything — the console lines, the estimate box, both sliders'
+    // positions and their spoken values. The arithmetic is the estimator's
+    // original: the zero band first, the flat rate on what is left.
+    const sliders = Array.from(document.querySelectorAll<HTMLInputElement>('input.nt-dim[data-rate]'));
 
-    if (slider) {
-      const rate = Number(slider.dataset.rate);
-      const band = Number(slider.dataset.band);
+    if (sliders.length > 0) {
+      const rate = Number(sliders[0].dataset.rate);
+      const band = Number(sliders[0].dataset.band);
       const fmt = (n: number) => Math.round(n).toLocaleString('en-AE');
-
-      const out = {
-        income: document.getElementById('nt-out-income'),
-        zero: document.getElementById('nt-out-zero'),
-        taxed: document.getElementById('nt-out-taxed'),
-        tax: document.getElementById('nt-out-tax'),
+      const byId = (id: string) => document.getElementById(id);
+      const run = (key: string) => document.querySelector<HTMLElement>(`[data-run="${key}"]`);
+      const set = (el: HTMLElement | null, text: string) => {
+        if (el && el.textContent !== text) el.textContent = text;
       };
 
-      const update = () => {
-        const income = Number(slider.value);
+      const console_ = byId('nt-run');
+      const out = {
+        income: byId('nt-out-income'),
+        zero: byId('nt-out-zero'),
+        taxed: byId('nt-out-taxed'),
+        tax: byId('nt-out-tax'),
+        current: byId('nt-out-current'),
+      };
+
+      // Once the visitor has moved a slider the figure is theirs, not the demo
+      // entity's. The lines that only exist for the demo say so.
+      const ESTIMATE: Record<string, string> = {
+        period: 'estimate · your number',
+        source: 'n/a · income from the slider',
+        adjust: 'none',
+        'adjust-note': 'taxable income given',
+        papers: 'n/a · estimate only',
+        caption: 'indicative only · not advice',
+      };
+
+      const update = (income: number, moved: boolean) => {
         const zero = Math.min(income, band);
         const taxed = Math.max(0, income - band);
-        if (out.income) out.income.textContent = fmt(income);
-        if (out.zero) out.zero.textContent = fmt(zero);
-        if (out.taxed) out.taxed.textContent = fmt(taxed);
-        if (out.tax) out.tax.textContent = fmt(taxed * rate);
-        // A screen reader otherwise announces "1500000" — a bare integer in a
+        const tax = taxed * rate;
+        const effective = income > 0 ? (tax / income) * 100 : 0;
+        // A screen reader otherwise announces "1316150" — a bare integer in a
         // currency field. Give it the same words a sighted user reads.
-        slider.setAttribute(
-          'aria-valuetext',
-          `AED ${fmt(income)} taxable income, Corporate Tax AED ${fmt(taxed * rate)}`
-        );
+        const valuetext = `AED ${fmt(income)} taxable income, Corporate Tax AED ${fmt(tax)}`;
+
+        for (const slider of sliders) {
+          // Only once a hand has moved something. The demo figure is not on
+          // the 25,000 step grid, and assigning it would make the browser
+          // snap it — which is how the first paint once drifted to 1,325,000.
+          if (moved && Number(slider.value) !== income) slider.value = String(income);
+          slider.style.setProperty('--nt-dim-fill', `${(income / Number(slider.max)) * 100}%`);
+          slider.setAttribute('aria-valuetext', valuetext);
+        }
+
+        set(out.income, fmt(income));
+        set(out.zero, fmt(zero));
+        set(out.taxed, fmt(taxed));
+        set(out.tax, fmt(tax));
+        set(out.current, fmt(income));
+
+        set(run('taxable'), fmt(income));
+        set(run('zero'), `(${fmt(zero)})`);
+        set(run('tax'), fmt(tax));
+        set(run('eff'), `eff. ${effective.toFixed(2)}%`);
+
+        if (moved && console_ && console_.dataset.mode !== 'estimate') {
+          console_.dataset.mode = 'estimate';
+          for (const key of Object.keys(ESTIMATE)) set(run(key), ESTIMATE[key]);
+        }
       };
 
-      slider.addEventListener('input', update);
-      update();
+      // Re-type the computed lines once the hand stops, so the console visibly
+      // re-runs rather than merely changing its numbers under the pointer.
+      // Web Animations rather than a class toggle, so it composes with the
+      // load-time typing without restarting it. Off under reduced motion.
+      const stillMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const recompute = console_ ? Array.from(console_.querySelectorAll<HTMLElement>('[data-recompute]')) : [];
+      const retype = () => {
+        if (stillMotion.matches) return;
+        recompute.forEach((line, i) => {
+          line.animate(
+            [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+            { duration: 360, delay: i * 90, easing: 'steps(24)' }
+          );
+        });
+      };
+
+      let settle: number | undefined;
+      for (const slider of sliders) {
+        slider.addEventListener('input', () => {
+          update(Number(slider.value), true);
+          window.clearTimeout(settle);
+          settle = window.setTimeout(retype, 220);
+        });
+      }
+
+      // The first run is the demo entity's own figure, carried on data-value:
+      // the input's .value has already been snapped to the step grid by now.
+      update(Number(sliders[0].dataset.value ?? sliders[0].value), false);
     }
   </script>
 </Base>

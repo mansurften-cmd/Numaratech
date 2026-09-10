@@ -121,8 +121,48 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   t('BC live status populated + range aria-valuetext', /Cost of closing AED [\d,]+\. \d+ hours returned at \d+%/.test(b0.txt||'')&&/35 percent/.test(b0.vt||''), JSON.stringify(b0));
   await p.goto(B+'/',{waitUntil:'networkidle'});
   const h = await p.evaluate(() => document.querySelector('#nt-income')?.getAttribute('aria-valuetext'));
-  t('home estimator range aria-valuetext', /AED 1,500,000 taxable income, Corporate Tax AED 101,250/.test(h||''), h);
+  t('home estimator range aria-valuetext (demo entity on load)', /AED 1,316,150 taxable income, Corporate Tax AED 84,704/.test(h||''), h);
   await p.close(); }
+
+// HOME: the hero console and the estimator are one computation. On load both
+// show the demo entity (the same figures /platform/corporate-tax/ starts on);
+// moving either slider re-runs the other, and the console says whose number
+// it is now showing.
+{ const nojs = await b.newContext({ javaScriptEnabled:false }); const p1 = await nojs.newPage();
+  await p1.goto(B+'/',{waitUntil:'load'});
+  const grab = () => ({ run: Object.fromEntries([...document.querySelectorAll('[data-run]')].map(e=>[e.dataset.run,e.textContent.trim()])),
+    est: ['income','zero','taxed','tax','current'].map(k=>document.getElementById('nt-out-'+k)?.textContent.trim()).join('/'), mode: document.getElementById('nt-run')?.dataset.mode });
+  const ssr = await p1.evaluate(grab); await nojs.close();
+  const p = await b.newPage({ viewport:{width:1440,height:900} }); await p.goto(B+'/',{waitUntil:'networkidle'}); await p.waitForTimeout(150);
+  const csr = await p.evaluate(grab);
+  t('home: hero console + estimate box server-rendered == post-JS (demo entity, 1,316,150 / 84,704)', JSON.stringify(ssr)===JSON.stringify(csr) && csr.run.tax==='84,704' && csr.est==='1,316,150/375,000/941,150/84,704/1,316,150' && csr.mode==='demo', JSON.stringify({ssr,csr}));
+  const drive = (id, v) => p.evaluate(([id,v]) => { const s=document.getElementById(id); s.value=String(v); s.dispatchEvent(new Event('input',{bubbles:true})); }, [id, v]);
+  await drive('nt-hero-income', 2000000); await p.waitForTimeout(100);
+  const a = await p.evaluate(() => ({ ...(()=>{const g={}; for (const e of document.querySelectorAll('[data-run]')) g[e.dataset.run]=e.textContent.trim(); return g;})(), est: document.getElementById('nt-out-tax').textContent.trim(), other: document.getElementById('nt-income').value, mode: document.getElementById('nt-run').dataset.mode, vt: document.getElementById('nt-income').getAttribute('aria-valuetext'), fill: document.getElementById('nt-income').style.getPropertyValue('--nt-dim-fill') }));
+  t('home: hero slider -> 2,000,000 re-runs console (146,250, eff. 7.31%), estimate box, estimator slider, and flips to estimate mode', a.taxable==='2,000,000' && a.tax==='146,250' && a.eff==='eff. 7.31%' && a.zero==='(375,000)' && a.est==='146,250' && a.other==='2000000' && a.mode==='estimate' && /income from the slider/.test(a.source) && /AED 2,000,000.*AED 146,250/.test(a.vt) && a.fill==='40%', JSON.stringify(a));
+  await drive('nt-income', 300000); await p.waitForTimeout(100);
+  const c = await p.evaluate(() => ({ tax: document.querySelector('[data-run=tax]').textContent.trim(), zero: document.querySelector('[data-run=zero]').textContent.trim(), hero: document.getElementById('nt-hero-income').value, est: document.getElementById('nt-out-tax').textContent.trim() }));
+  t('home: estimator slider -> 300,000 drives the hero slider back (tax 0, zero band 300,000)', c.tax==='0' && c.zero==='(300,000)' && c.hero==='300000' && c.est==='0', JSON.stringify(c));
+  await p.close(); }
+
+// THE DRAWING: frame corners finish drawn (24px) on a single-column hero and
+// on the split hero; typed console lines end fully revealed; nothing in the
+// hero overflows or overlaps at the widths the split layout spans.
+{ for (const [w, r] of [[1440,'/'],[1101,'/'],[1280,'/platform/corporate-tax/'],[1440,'/about/']]) { const p = await b.newPage({ viewport:{width:w,height:900} });
+    await p.goto(B+r,{waitUntil:'networkidle'}); await p.waitForTimeout(2200);
+    const m = await p.evaluate(() => { const e=document.querySelector('.nt-frame__edge--bottom'); const cs=getComputedStyle(e,'::before');
+      const copy=document.querySelector('.nt-hero__copy')?.getBoundingClientRect(); const aside=document.querySelector('.nt-hero__aside')?.getBoundingClientRect();
+      const body=document.querySelector('.nt-run__body'); const lines=[...document.querySelectorAll('.nt-run__line')].map(l=>getComputedStyle(l).clipPath);
+      return { corner: cs.width+'x'+cs.height, overlap: copy&&aside ? copy.right > aside.left+1 : false, asideRight: aside ? Math.round(aside.right) : null, vw: document.documentElement.clientWidth,
+        scroll: document.documentElement.scrollWidth > document.documentElement.clientWidth, runClip: body ? body.scrollWidth > body.clientWidth+1 : false, lines: [...new Set(lines)].join('|') }; });
+    t(`drawing ${w}px ${r}: corners drawn 24x24, no copy/console overlap, no overflow, console lines fully revealed`, m.corner==='24px x 24px'.replace(' x ','x') && !m.overlap && !m.scroll && !m.runClip && (m.asideRight===null || m.asideRight <= m.vw) && (!m.lines || /^(none|inset\((0(px|%)\s*){1,4}\))$/.test(m.lines)), JSON.stringify(m));
+    await p.close(); } }
+
+// REDUCED MOTION on the drawing
+{ const c = await b.newContext({ reducedMotion:'reduce' }); const p = await c.newPage(); await p.goto(B+'/',{waitUntil:'networkidle'});
+  const m = await p.evaluate(() => ({ corner:getComputedStyle(document.querySelector('.nt-frame__edge--top'),'::before').animationName, dim:getComputedStyle(document.querySelector('.nt-frame__dim'),'::before').animationName,
+    line:getComputedStyle(document.querySelector('.nt-run__line')).animationName, cursor:getComputedStyle(document.querySelector('.nt-run__cursor')).animationName }));
+  t('reduced motion: frame, dimension line, typed lines and cursor all static', Object.values(m).every(v=>v==='none'), JSON.stringify(m)); await c.close(); }
 
 // CALCULATOR: SSR == CSR and still correct
 { const nojs = await b.newContext({ javaScriptEnabled:false }); const p1 = await nojs.newPage();

@@ -2,7 +2,7 @@
 /** FS Studio — the statements screen, drawn in hairlines.
  *  Illustrative figures; not a live product screenshot. Every figure is
  *  derived in src/demo.ts, so the subtotals cannot stop footing. */
-import { DEMO_PL, fig, neg } from '../demo';
+import { DEMO_PL, DEMO_LEDGER_ACCOUNTS, fig, neg } from '../demo';
 
 const { current: c, prior: p } = DEMO_PL;
 ---
@@ -65,8 +65,8 @@ const { current: c, prior: p } = DEMO_PL;
         <span style="font-size:12px; line-height:1.5; color:var(--nt-navy)">4 notes updated with it.</span>
       </div>
       <div style="display:flex; flex-direction:column; gap:7px">
-        <div class="nt-meter"><span>Ledger accounts</span><span>412</span></div>
-        <div class="nt-meter"><span>Mapped</span><span>412</span></div>
+        <div class="nt-meter"><span>Ledger accounts</span><span>{DEMO_LEDGER_ACCOUNTS}</span></div>
+        <div class="nt-meter"><span>Mapped</span><span>{DEMO_LEDGER_ACCOUNTS}</span></div>
         <div class="nt-meter"><span>Unmapped</span><span style="color:var(--nt-teal)">0</span></div>
       </div>
       <div class="nt-console__cta">Export signed set</div>

@@ -29,6 +29,16 @@ export function corporateTax(taxableIncome: number): number {
 
 export const DEMO_ACCOUNTING_PROFIT = 1_250_000;
 
+/** Revenue for the period. Above the Small Business Relief cap, so the demo
+ *  entity is ineligible — the calculator's default and the period console on
+ *  /platform/corporate-tax/ both read it from here. */
+export const DEMO_REVENUE = 4_200_000;
+
+/** Size of the demo entity's chart of accounts. Every account is mapped, so
+ *  the same number is both the ledger count and the mapped count wherever a
+ *  console reports them (FS Studio side panel, the hero consoles). */
+export const DEMO_LEDGER_ACCOUNTS = 412;
+
 /** Named adjustments with their journal references. The total is summed. */
 export const ADJUSTMENTS = [
   { label: 'Entertainment — 50% disallowed', amount: 32_400, ref: 'JE-114' },
