@@ -1,33 +1,65 @@
 {
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Landing \u00b7 A + B"
+    },
+    {
+      "id": "page-2",
+      "name": "Directions (for reference)"
+    }
+  ],
   "artboards": [
     {
       "file": "Main.dc.html",
-      "title": "A \u00b7 Blueprint",
+      "title": "Landing page \u00b7 desktop",
+      "page": "page-1",
       "x": 0,
       "y": 0,
       "w": 1440,
-      "h": 1600
+      "h": 3860
+    },
+    {
+      "file": "Platform.dc.html",
+      "title": "Inner page \u00b7 Corporate Tax Engine",
+      "page": "page-1",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 1560
+    },
+    {
+      "file": "Mobile.dc.html",
+      "title": "Landing page \u00b7 phone",
+      "page": "page-1",
+      "x": 1560,
+      "y": 1720,
+      "w": 390,
+      "h": 1960
     },
     {
       "file": "Console.dc.html",
-      "title": "B \u00b7 Console",
-      "x": 1560,
+      "title": "B \u00b7 Console (merged into A)",
+      "page": "page-2",
+      "x": 0,
       "y": 0,
       "w": 1440,
       "h": 1600
     },
     {
       "file": "Holographic.dc.html",
-      "title": "C \u00b7 Holographic",
-      "x": 0,
-      "y": 1760,
+      "title": "C \u00b7 Holographic (not chosen)",
+      "page": "page-2",
+      "x": 1560,
+      "y": 0,
       "w": 1440,
       "h": 1600
     },
     {
       "file": "Kinetic.dc.html",
-      "title": "D \u00b7 Kinetic",
-      "x": 1560,
+      "title": "D \u00b7 Kinetic (not chosen)",
+      "page": "page-2",
+      "x": 0,
       "y": 1760,
       "w": 1440,
       "h": 1720
@@ -35,14 +67,24 @@
   ],
   "annotations": [
     {
-      "id": "how-to-choose",
+      "id": "ab-brief",
+      "page": "page-1",
       "x": 0,
-      "y": -220,
-      "w": 720,
-      "text": "Four directions for the landing page, each shown as the hero plus one inner section so you can see how it carries to the other pages.\n\nA \u00b7 Blueprint \u2014 evolves what you have: drafting grid, registration marks, dimension lines, extruded type, a mono coordinate readout. Stays inside every brand rule. Trade-off: the least dramatic change.\n\nB \u00b7 Console \u2014 the platform leads: a live-looking computation console in the hero, terminal-style status bar, products as panes. Trade-off: monospace-heavy, can read cold for advisory clients.\n\nC \u00b7 Holographic \u2014 glass panels, layered planes, teal glow and light beams. The most 'futuristic' in the mainstream sense. Trade-off: uses glow, shadow and a soft gradient, which the brand rules currently forbid.\n\nD \u00b7 Kinetic \u2014 type is the whole composition: 168px staggered headline, an outlined 'defended.', a ticker of statutory facts cutting across, one huge outlined number. Trade-off: brand statement over product; less to look at in the hero.\n\nPick one, or tell me which parts of two to combine, and I'll build the full landing page and the inner pages in that direction."
+      "y": -240,
+      "w": 760,
+      "text": "A + B, combined.\n\nFrom A: the drafting grid, the registration frame that draws itself around the headline, the dimension line, the extruded type, and the + marks at every cell corner \u2014 carried through the advisory, platform, estimator and insights sections.\n\nFrom B: the computation console, now sitting on A's grid at the right of the hero, typing out the run. The product panes in the platform section keep B's title bars.\n\nThe estimator's slider is drawn as a dimension line. On the built site the hero console and the estimator are one computation: drag the slider and the console re-runs with your number \u2014 that is the 'live' you asked for, and it is what I will build next.\n\nRight: the same direction on an inner page (Corporate Tax Engine) and on a phone."
+    },
+    {
+      "id": "ref-note",
+      "page": "page-2",
+      "x": 0,
+      "y": -140,
+      "w": 520,
+      "text": "Kept for reference only. B was merged into A; C and D were not chosen."
     }
   ],
   "launch": {
-    "view": "canvas"
+    "view": "canvas",
+    "page": "page-1"
   }
 }
