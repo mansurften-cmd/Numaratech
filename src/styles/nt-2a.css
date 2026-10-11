@@ -1211,3 +1211,7 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
 textarea.nt-form__input { resize: vertical; }
 .nt-form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .nt-form__note { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--nt-mute); }
+
+/* A two-column cell grid with an odd count: the last cell otherwise sits
+   alone with a divider on its right and nothing beyond it. */
+.nt-cells:not(.nt-cells--3):not(.nt-cells--4) > .nt-cell:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: 0; padding-right: 0; }

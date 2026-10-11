@@ -317,56 +317,101 @@ export const PRODUCTS: Product[] = [
       'Comparatives locked to the prior filed position',
     ],
   },
+  /* Roadmap, revised 11 October 2026. The earlier four (e-invoicing bridge,
+     VAT engine, transfer pricing studio, obligation console) were dropped by
+     the owner. These seven share one shape: bring your own data, get a
+     derived answer, nothing leaves the browser unless you choose to send it.
+     The first three are a sequence — score the ledger, open the workbook,
+     propose the mapping — and each creates the need for the next. */
   {
-    slug: 'e-invoicing-bridge',
-    name: 'e-Invoicing Bridge',
-    strap: 'Ledger to the UAE mandate',
+    slug: 'trial-balance-readiness',
+    name: 'Trial Balance Readiness Score',
+    strap: 'Can your ledger carry a computation?',
     stage: 'idea',
     body:
-      'Middleware between your accounting system and the UAE e-invoicing regime — validating, formatting and transmitting, with a durable record of what was sent and acknowledged.',
+      'Upload a trial balance and get a scored report on whether it can support a Corporate Tax computation — mixed accounts, entertainment not split, no related-party tagging, provisions missing. Most implementations stall on the ledger, not the software; this says so before anyone is engaged.',
     points: [
-      'Connects existing ledgers without replacing them',
-      'Validation before transmission, not after rejection',
-      'Acknowledgement and exception tracking',
+      'Runs in the browser; the trial balance is never uploaded to us',
+      'Each finding names the account and the rule it fails',
+      'The same checks our own implementation starts with',
     ],
   },
   {
-    slug: 'vat-engine',
-    name: 'VAT Engine',
-    strap: 'Returns from the mapped ledger',
+    slug: 'workbook-autopsy',
+    name: 'Workbook Autopsy',
+    strap: 'How the year-end file actually derives its figure',
     stage: 'idea',
     body:
-      'VAT returns computed from the same mapped ledger the tax engine reads, with input tax recovery and apportionment handled as a position you take rather than a number you type.',
+      'Open the workbook the computation currently lives in and map how the final figure is really produced: formula dependencies, numbers typed inside formulas, circular logic, links to files nobody can find, sheets nothing reads. The result is a picture of the dependency, not a verdict on the person who built it.',
     points: [
-      'Return computed from source transactions',
-      'Input tax recovery and apportionment workings',
-      'Reconciliation between the return and the ledger',
+      'Dependency map from the filed figure back to every input',
+      'Hard-coded values and overrides listed with their cell',
+      'Hand-over document generated from the map',
     ],
   },
   {
-    slug: 'transfer-pricing-studio',
-    name: 'Transfer Pricing Studio',
-    strap: 'Master and Local File, reconciled',
+    slug: 'chart-of-accounts-mapper',
+    name: 'Chart of Accounts Mapper',
+    strap: 'One structure for the statements and the return',
     stage: 'idea',
     body:
-      'Transfer pricing documentation generated from related party data already in the ledger, so the file agrees with the accounts instead of being built alongside them.',
+      'The step after the readiness score. Upload the chart; get a proposed mapping to a structure that carries both statutory presentation and the tax computation, the accounts that have to be split, and an exportable new chart. What you change, before anything is connected.',
     points: [
-      'Related party transactions pulled from the ledger',
-      'Master File and Local File structure maintained',
-      'Documentation that reconciles to the filed return',
+      'Proposed mapping for every account, with the reason',
+      'Split list: the accounts that mix deductible and non-deductible',
+      'Exports to the ledger formats SMEs actually use',
     ],
   },
   {
-    slug: 'compliance-console',
-    name: 'Compliance & Obligation Console',
-    strap: 'Every deadline, derived',
+    slug: 'bank-statement-health-check',
+    name: 'Bank Statement Health Check',
+    strap: 'Does the bank agree with the books?',
     stage: 'idea',
     body:
-      'One console for ESR, UBO, AML and filing obligations across a portfolio, with each deadline generated from the entity record rather than maintained by hand.',
+      'Bring a statement export and a ledger export. The check reconciles them and flags what a year end would otherwise find in December: unmatched items, round-sum cash movements, entries outstanding for months, gaps in the sequence. A reconciliation report, not a judgement.',
     points: [
-      'Obligations derived from year end and licence data',
-      'Portfolio view across every entity you manage',
-      'Evidence of what was filed, when, and by whom',
+      'Statement-to-ledger matching with the exceptions listed',
+      'Ageing of every unmatched item',
+      'Repeatable each month, so December holds no surprises',
+    ],
+  },
+  {
+    slug: 'vat-return-sanity-check',
+    name: 'VAT Return Sanity Check',
+    strap: 'Recompute the boxes before you file',
+    stage: 'idea',
+    body:
+      'Upload the period’s sales and purchase listings. The check recomputes each box of the return, tests the reverse charge, zero-rating and blocked input tax patterns, and shows where your figure and the recomputed one differ — with the transactions behind the difference.',
+    points: [
+      'Box-by-box recomputation from the listings',
+      'Pattern tests for the errors that FTA audits find',
+      'Differences traced to the transactions that cause them',
+    ],
+  },
+  {
+    slug: 'registration-deadline-finder',
+    name: 'Registration & Deadline Finder',
+    strap: 'Your first tax period, derived from your licence',
+    stage: 'idea',
+    body:
+      'Licence date, year end and entity type in; registration position, first tax period, filing date and payment date out — each with the published rule it comes from. Built for the businesses that set their first period wrong, or registered late and paid for it.',
+    points: [
+      'Dates derived from the rules, with the source cited',
+      'What to check against your EmaraTax record',
+      'Re-run when the year end or licence changes',
+    ],
+  },
+  {
+    slug: 'small-business-relief-check',
+    name: 'Small Business Relief Check',
+    strap: 'Whether to elect, and what it costs you',
+    stage: 'idea',
+    body:
+      'Revenue, group membership, free zone status and entity type in; eligibility out, together with the consequence most people miss — the losses and interest you give up by electing. An extension of the estimator on this site, and still not advice.',
+    points: [
+      'Eligibility tested against every published condition',
+      'The election’s cost shown, not just its saving',
+      'Carries into the Corporate Tax Engine as a position you took',
     ],
   },
 ];
