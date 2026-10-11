@@ -175,7 +175,7 @@ const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, 
             <div class="nt-cell__notes">
               <div>{formatInsightDate(insight.date)} · {insight.readingMinutes} min read</div>
             </div>
-            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it</a>
+            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it<span class="nt-sr-only">: {insight.title}</span></a>
           </div>
         ))
       }

@@ -1,8 +1,11 @@
 # Privacy notice — proposed revisions (A12)
 
-**Status: draft. Not applied to `src/pages/privacy.astro`.** Legal text should
-not be published without you reading it. Approve, amend or reject each block
-below and I will apply it.
+**Status: applied to `src/pages/privacy.astro` on 11 October 2026** (see
+`AUDIT-2026-10.md` R4–R6), with one deliberate difference: §2 is published
+*without* the "Article 4" citation, because the article number could not be
+verified from the build environment. Legal text should not stay published
+without you reading it — please read `/privacy/` once. The original proposals
+follow for the record.
 
 ---
 

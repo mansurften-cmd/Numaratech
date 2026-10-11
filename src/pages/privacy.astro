@@ -2,9 +2,13 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
-import { SITE } from '../consts';
+import { SITE, hasContactForm } from '../consts';
 
-const updated = '14 August 2026';
+// Revised 11 October 2026: names the PDPL and the supervisory authority,
+// describes the contact form's processor when the form is live, and no longer
+// asserts a hosting region for a system this website does not contain.
+const updated = '11 October 2026';
+const formLive = hasContactForm();
 ---
 
 <Base
@@ -30,12 +34,26 @@ const updated = '14 August 2026';
       <p>There are two ways personal data reaches us from this site.</p>
 
       <h3>Information you send us</h3>
-      <p>
-        This site has no contact form. If you email or telephone us, we receive
-        what you chose to provide — typically your name, email address, company,
-        and the substance of your enquiry. We use it to answer you and to keep a
-        record of the conversation.
-      </p>
+      {
+        formLive ? (
+          <p>
+            If you write to us through the enquiry form, email us or telephone
+            us, we receive what you chose to provide — typically your name,
+            email address, company, and the substance of your enquiry. The form
+            is delivered by Web3Forms, a form-handling service that passes your
+            message to our mailbox and does not use it for anything else. We
+            use what you send to answer you and to keep a record of the
+            conversation.
+          </p>
+        ) : (
+          <p>
+            This site has no contact form. If you email or telephone us, we
+            receive what you chose to provide — typically your name, email
+            address, company, and the substance of your enquiry. We use it to
+            answer you and to keep a record of the conversation.
+          </p>
+        )
+      }
 
       <h3>Technical information</h3>
       <p>
@@ -57,10 +75,15 @@ const updated = '14 August 2026';
       <h2>Why we are allowed to hold it</h2>
 
       <p>
-        Where you contact us, we rely on your consent and on our legitimate
-        interest in responding to enquiries about our services. Where we keep
-        records of a commercial relationship, we rely on legitimate interest and
-        on legal obligations that require us to retain certain records.
+        We process personal data on the bases the PDPL permits — principally
+        your consent, the performance of a contract with you, and our
+        legitimate interests in responding to enquiries and running the
+        practice. Where you contact us, we rely on your consent and on that
+        legitimate interest. Where we keep records of a commercial
+        relationship, we rely on legitimate interest and on legal obligations
+        that require us to retain certain records. Where we rely on consent you
+        may withdraw it at any time, and we will stop unless another basis
+        applies.
       </p>
 
       <h2>Who else sees it</h2>
@@ -79,6 +102,14 @@ const updated = '14 August 2026';
           <strong>Email mailbox.</strong> Carries and stores the messages you
           send us.
         </li>
+        {
+          formLive && (
+            <li>
+              <strong>Form delivery.</strong> Web3Forms receives what you type
+              into the enquiry form and forwards it to our mailbox.
+            </li>
+          )
+        }
       </ul>
 
       <p>
@@ -90,11 +121,18 @@ const updated = '14 August 2026';
       <h2>Where it is held</h2>
 
       <p>
-        Client data processed under a services agreement is hosted in the United
-        Arab Emirates region unless we have agreed otherwise with you in
-        writing. Website enquiry data may be processed outside the UAE by the
-        providers above; where that happens we rely on their contractual data
-        protection commitments.
+        This website holds no client data. It is a static site with no database
+        and no server-side processing, and the Corporate Tax estimator runs
+        entirely in your browser.
+      </p>
+
+      <p>
+        Data you send us is held in our mailbox and may be processed outside
+        the United Arab Emirates by the providers above; where that happens we
+        rely on their contractual data protection commitments. Where we process
+        client data under a signed services agreement, the hosting location is
+        set out in that agreement — ask us before you sign if the location
+        matters to you, and we will confirm it in writing.
       </p>
 
       <h2>How long we keep it</h2>
@@ -109,16 +147,27 @@ const updated = '14 August 2026';
       <h2>Your rights</h2>
 
       <p>
-        You may ask us to give you a copy of the personal data we hold about
-        you, correct it if it is wrong, delete it where we have no continuing
-        basis to keep it, or stop using it for a particular purpose. Write to
-        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and we will respond
-        within 30 days.
+        This notice is written to meet UAE Federal Decree-Law No. 45 of 2021 on
+        the Protection of Personal Data (the PDPL) and its implementing
+        decisions. Where the PDPL gives you a right that this notice does not
+        mention, you still have it.
       </p>
 
       <p>
-        If we cannot resolve a concern to your satisfaction, you may raise it
-        with the relevant data protection authority in your jurisdiction.
+        You may ask us to give you a copy of the personal data we hold about
+        you, correct it if it is wrong, delete it where we have no continuing
+        basis to keep it, or stop using it for a particular purpose. Data
+        protection questions and requests are handled by the practice owner.
+        Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, marked
+        "Data protection", and we will respond within 30 days.
+      </p>
+
+      <p>
+        If we cannot resolve a concern to your satisfaction, you may complain
+        to the UAE Data Office, the federal authority responsible for personal
+        data protection in the United Arab Emirates. If you are outside the
+        UAE, you may also complain to the data protection authority where you
+        live.
       </p>
 
       <h2>Security</h2>

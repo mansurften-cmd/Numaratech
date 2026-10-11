@@ -54,26 +54,32 @@ if (!hasContactForm()) {
         <div class="nt-eyebrow"><b>02</b><span>Enquiry</span></div>
         {
           hasContactForm() ? (
-            <form action={WEB3FORMS.endpoint} method="POST" style="display:flex; flex-direction:column; gap:16px; max-width:34em">
+            <form class="nt-form" action={WEB3FORMS.endpoint} method="POST">
               <input type="hidden" name="access_key" value={WEB3FORMS.accessKey} />
               <input type="hidden" name="subject" value={WEB3FORMS.subject} />
-              <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" />
+              <!-- Web3Forms otherwise lands the visitor on its own success
+                   page, off-site. This brings them back to ours. -->
+              <input type="hidden" name="redirect" value={`${SITE.url}/contact/sent/`} />
+              <!-- Honeypot: a field people never see and bots fill in. -->
+              <input type="checkbox" name="botcheck" class="nt-form__trap" tabindex="-1" aria-hidden="true" />
 
-              <label style="display:flex; flex-direction:column; gap:7px">
+              <label class="nt-form__field">
                 <span class="nt-kicker">Name</span>
-                <input required name="name" type="text" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px" />
+                <input class="nt-form__input" required name="name" type="text" autocomplete="name" />
               </label>
-              <label style="display:flex; flex-direction:column; gap:7px">
+              <label class="nt-form__field">
                 <span class="nt-kicker">Email</span>
-                <input required name="email" type="email" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px" />
+                <input class="nt-form__input" required name="email" type="email" autocomplete="email" inputmode="email" />
               </label>
-              <label style="display:flex; flex-direction:column; gap:7px">
+              <label class="nt-form__field">
                 <span class="nt-kicker">What do you need?</span>
-                <textarea required name="message" rows="5" style="border:1px solid #D8DEE6; padding:12px 14px; font-family:var(--nt-sans); font-size:15px; resize:vertical"></textarea>
+                <textarea class="nt-form__input" required name="message" rows="5"></textarea>
               </label>
               <button class="nt-btn" type="submit" style="align-self:flex-start">Send enquiry</button>
-              <p style="margin:0; font-size:12.5px; color:var(--nt-mute)">
-                Delivered by Web3Forms to our mailbox. We do not add you to a list.
+              <p class="nt-form__note">
+                Delivered by Web3Forms to our mailbox and used only to answer you. We do not add
+                you to a list. How we handle what you send is in the
+                <a href="/privacy/">privacy notice</a>.
               </p>
             </form>
           ) : (

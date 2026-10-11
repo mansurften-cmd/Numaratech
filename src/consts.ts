@@ -23,8 +23,13 @@ export const SITE = {
    */
   legalName: 'NUMARATECH FOR ACCOUNTING AND TAX CONSULTANTS',
   tagline: 'Finance and compliance for UAE business — advisory and platform.',
+  /** The home page's <title>. Kept under 60 characters so search results
+   *  show it whole; the tagline is for the footer, not the tab. */
+  titleTag: 'Accounting, tax and compliance platform for UAE business',
+  /** Meta and Open Graph description, under 160 characters so it is not
+   *  truncated in search results. The long form lives in the About copy. */
   description:
-    'NUMARATECH is a UAE accounting and tax consultancy, and the team behind a platform for Corporate Tax, financial statements and client workflow. Advisory when you need judgement; software when you need it repeatable.',
+    'UAE accounting and tax consultancy, and the platform behind it: Corporate Tax computation and IFRS statements from one mapped ledger. Dubai.',
   /**
    * The origin that actually serves. numaratech.com is NOT yet purchased and
    * does not resolve, so canonical, og:url and the sitemap must not point at

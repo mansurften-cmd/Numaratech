@@ -10,7 +10,7 @@ const B = process.env.VERIFY_BASE ?? 'http://127.0.0.1:4322';
 const ROUTES = ['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/advisory/risk-compliance/','/platform/',
   '/platform/corporate-tax/','/platform/fs-studio/','/services/','/business-case/','/about/','/insights/',
   '/insights/first-corporate-tax-return-what-breaks/','/insights/closing-the-books-in-five-days/',
-  '/insights/audit-trail-as-a-design-requirement/','/contact/','/privacy/','/terms/','/404.html'];
+  '/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html'];
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 
@@ -19,7 +19,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   p.on('console', m => { if (/Content Security Policy|Refused to/i.test(m.text())) v.push(m.text().slice(0,80)); });
   p.on('pageerror', e => v.push('pageerror: ' + e.message.slice(0,80)));
   for (const r of ROUTES) await p.goto(B+r, { waitUntil: 'networkidle' });
-  t('no CSP violations / page errors on 19 routes', v.length===0, v.join(' | ')); await p.close(); }
+  t('no CSP violations / page errors on 20 routes', v.length===0, v.join(' | ')); await p.close(); }
 
 // PRINT: both calculators, print media
 { const p = await b.newPage({ viewport:{width:1280,height:900} });
@@ -210,7 +210,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
         const req=large?3:4.5, ratio=CR(fg,bg); if(ratio<req) out.push(`${el.tagName.toLowerCase()}.${(typeof el.className==='string'?el.className:'').split(/\s+/)[0]} ${ratio.toFixed(2)}<${req}`); }
       return out; });
     for (const x of rows) bad.set(x, r); }
-  t('text contrast: 0 failing pairs on 19 routes', bad.size===0, [...bad.entries()].slice(0,5).map(([k,v])=>`${v} ${k}`).join(' | ')); await p.close(); }
+  t('text contrast: 0 failing pairs on 20 routes', bad.size===0, [...bad.entries()].slice(0,5).map(([k,v])=>`${v} ${k}`).join(' | ')); await p.close(); }
 
 // LINKS
 { const p = await b.newPage(); const seen=new Set(); const broken=[];

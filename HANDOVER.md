@@ -19,7 +19,7 @@ alone. This split was a direct decision by the owner; do not merge them.
 - **Legal entity:** NUMARATECH FOR ACCOUNTING AND TAX CONSULTANTS — a Dubai
   DET e-Trader sole establishment. **Not registered with the Ministry of
   Economy as an auditor.** This governs what the site may claim.
-- **Stack:** Astro 7.1.6, static output, `trailingSlash: 'always'`,
+- **Stack:** Astro 7.3.8, static output, `trailingSlash: 'always'`,
   `build.format: 'directory'`.
 - **Deploy:** Cloudflare **Workers static assets** (not Pages). `wrangler.toml`
   has `[assets]` + `[build]`, and **no `main`** — there is no Worker script,
@@ -170,6 +170,18 @@ drafting language plus a live computation console) and it is now built:
 - `nt-2a.css`: `.nt-frame*`, `.nt-run*`, `.nt-pane*`, `.nt-dim*`, `+` marks on
   every `.nt-cells .nt-cell`, all reduced-motion and print safe.
 - `npm run verify` is now 45 checks; mobile and nav sweeps clean.
+
+### Done since (11 October 2026) — full-site audit
+See `AUDIT-2026-10.md`. Fixed: trademark-service wording (registered-agent
+filing), the last "assurance" strap, the privacy notice (PDPL named, UAE Data
+Office, residency claim withdrawn, contact-form paragraph follows
+`hasContactForm()`), titles/descriptions under limits, the fs-studio heading
+skip, "Read it" link names, the contact form's on-site confirmation page
+(`/contact/sent/`, noindex, not in the sitemap), Permissions-Policy opt-outs,
+dead CSS, and the dependency bump (Astro 7.3.8, Wrangler 4.149.0, 0
+advisories). **Open for the owner:** the `hello@numaratech.com` mailbox on an
+unpurchased domain (R1), the form key (F3), a read of the privacy notice (R6),
+trademark-agent status (R2), the external calculator link (R7).
 
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides

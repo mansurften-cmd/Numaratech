@@ -13,11 +13,11 @@ Status by finding:
 | 3 `.nt-pulse` motion | **Fixed.** Rule moved after the animation it overrides. | `b312260` |
 | 4 Dropdown ARIA | **Fixed.** `aria-haspopup`/`expanded`/`controls`; Escape; touch first-tap-opens. | `b312260` |
 | 5 `aria-valuetext` | **Fixed.** Both range inputs announce as words. | `b312260` |
-| 6 npm audit | **Fixed.** 0 vulnerabilities. | `98a2041` |
+| 6 npm audit | **Fixed.** 0 vulnerabilities. Re-fixed 11 October 2026 after 10 new `undici` advisories surfaced (Astro 7.3.8, Wrangler 4.149.0). | `98a2041`, AUDIT-2026-10 |
 | 7 Outdated | **Astro 7.3.1, Wrangler 4.129.0.** TypeScript 7 deliberately not taken (major). | `98a2041` |
 | 8 Tap targets | **Fixed.** Footer/legal links, desktop nav links (17→33px), closing-band and contact links, both range sliders (min 40px), the SBR checkbox (24px), the reset control. Scan finds no interactive element under 24×24 on any route at 1280 or 390. | `b312260`, this commit |
 | 9 Skip link | **Fixed.** 44px. | `b312260` |
-| 10 CSP web3forms | **Left deliberately** — needed the moment the form's key is added. | — |
+| 10 CSP web3forms | **Left deliberately** — needed the moment the form's key is added. The form now returns to `/contact/sent/` on success (AUDIT-2026-10 F1). | — |
 | 11 Class name | **Fixed.** `.nt-stage--built`. | `b312260` |
 | 12 Arrow wrap | **Fixed.** `white-space: nowrap`. | `b312260` |
 | 13 Two design systems | **Partly.** 41 dead rules / 25 dead classes removed from `global.css` (7 KB), verified by a 0-difference computed-style diff over 14,756 elements. `global.css` is still loaded — the calculator pages need its forms, tables, prose and print block — so full consolidation remains. | `f61fc85` |

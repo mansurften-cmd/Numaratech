@@ -187,7 +187,8 @@ returns `noindex` and `Disallow: /`.
 - [ ] Update `SITE.email` if `hello@numaratech.com` moves to the new domain's mail.
 - [ ] Set the Web3Forms access key in `src/consts.ts` if you want the contact
       form back — `/contact/` currently offers email and telephone only.
-- [ ] Review `PDPL-DRAFT.md` and apply the privacy notice revisions.
+- [ ] Read `/privacy/` once — the `PDPL-DRAFT.md` revisions were applied on
+      11 October 2026 (see `AUDIT-2026-10.md` R4–R6) and are published legal text.
 - [ ] Work through `AUDIT-LOCAL.md`, starting with findings 1 and 2.
 - [ ] Remove the `noindex` reminder comments in `src/consts.ts` and
       `site.config.mjs` once they no longer apply.

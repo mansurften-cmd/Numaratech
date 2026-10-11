@@ -15,9 +15,15 @@ export function getStaticPaths() {
 }
 
 const { group } = Astro.props;
+
+// Meta description under 160 characters: the group's first four service lines,
+// with a count for the rest. The lead is the hero's, and runs longer.
+const names = group.services.map((service) => service.name);
+const rest = names.length - 4;
+const description = `${group.name} from NUMARATECH, Dubai: ${names.slice(0, 4).join(', ')}${rest > 0 ? ` and ${rest} more service line${rest > 1 ? 's' : ''}` : ''}.`;
 ---
 
-<Base title={group.name} description={group.lead}>
+<Base title={group.name} description={description}>
   <PageHero
     kicker={`Advisory / ${group.name}`}
     title={group.name}

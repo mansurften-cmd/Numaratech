@@ -49,7 +49,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         slug: 'internal-audit',
         name: 'Internal Audit',
-        strap: 'Risk, controls & governance assurance',
+        strap: 'Risk, controls & governance review',
         body:
           'Independent testing of whether your controls actually operate, rather than whether they exist on paper. Scoped by risk, reported to whoever is accountable for it.',
         points: [
@@ -241,12 +241,17 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         slug: 'trademark-registration',
         name: 'Trademark Registration',
-        strap: 'Brand & IP registration with the MoE',
+        strap: 'Trademark search, filing & renewal',
+        // Filing before the Ministry of Economy on another person's behalf is
+        // reserved to registered trademark agents. The copy describes the
+        // search, preparation and portfolio work, and says plainly that the
+        // filing goes through a registered agent where the law requires one —
+        // true whether or not the practice holds that registration itself.
         body:
-          'Registering and maintaining your marks with the Ministry of Economy, including the searches that establish whether a mark is available before you commit to it.',
+          'Searching, preparing and maintaining your marks with the Ministry of Economy, starting with the searches that establish whether a mark is available before you commit to it. Where the law requires it, the filing itself is made through a registered trademark agent.',
         points: [
           'Availability searches and class selection',
-          'Application and prosecution with the MoE',
+          'Application prepared, and filed through a registered trademark agent where required',
           'Renewals and portfolio maintenance',
           'Assignment and licensing records',
         ],

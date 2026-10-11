@@ -94,7 +94,7 @@ const breadcrumb =
           item: new URL(crumb.path, SITE.url).href,
         })),
       };
-const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${title} — ${SITE.name}`;
+const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.titleTag}` : `${title} — ${SITE.name}`;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 
 // Absolute, because Open Graph consumers do not resolve relative URLs.

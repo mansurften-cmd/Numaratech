@@ -1,0 +1,26 @@
+---
+/** /contact/sent/ — where the enquiry form returns the visitor after
+ *  Web3Forms has accepted the message (the form's hidden `redirect` field).
+ *  Not indexed and not in the sitemap: it has no meaning as a landing page.
+ *  Exists even while the form is switched off so the redirect target can
+ *  never 404 the moment a key is added. */
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { SITE } from '../../consts';
+---
+
+<Base title="Enquiry received" description="Your enquiry has reached NUMARATECH." noindex={true}>
+  <PageHero
+    kicker="Contact / Received"
+    title="Received. We will be in touch."
+    lead="Your enquiry is in our mailbox. Expect a reply within one business day — from a person, with a view on what needs doing, not an automated acknowledgement."
+    primary={{ label: 'Back to the home page', href: '/' }}
+    secondary={{ label: 'Read the insights', href: '/insights/' }}
+    stats={[
+      { label: 'Response', value: 'one business day' },
+      { label: 'Email', value: SITE.email },
+      { label: 'Telephone', value: SITE.phoneDisplay },
+      { label: 'Your data', value: 'used only to answer you' },
+    ]}
+  />
+</Base>

@@ -212,10 +212,6 @@
   padding: 3px 7px;
   white-space: nowrap;
 }
-/* 'built' rather than 'live': the badge text is whatever the product's stage
-   is, and today that is 'private beta'. A class called --live on a badge
-   reading 'private beta' misled the next reader (AUDIT-LOCAL finding 11). */
-.nt-stage--built { color: var(--nt-teal); border-color: var(--nt-teal); }
 
 /* ---------- service sections (advisory group pages) ---------- */
 .nt-service { display: grid; grid-template-columns: .42fr .58fr; gap: 48px; padding: 44px 0; border-bottom: 1px solid var(--nt-line); align-items: start; scroll-margin-top: 96px; }
@@ -258,7 +254,9 @@
 .nt-console__nav .nt-console__navlabel { font-family: var(--nt-mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; padding-top: 14px; }
 .nt-console__main { border-right: 1px solid var(--nt-line); padding: 14px 18px; display: flex; flex-direction: column; }
 .nt-console__side { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; background: var(--nt-tint-2); }
-.nt-console__side h4 { margin: 0; font-family: var(--nt-mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--nt-mute); font-weight: 400; }
+/* A label, not a heading: on /platform/fs-studio/ an <h4> here followed an <h2>
+   with no <h3> between, a skipped level in the document outline. */
+.nt-console__side .nt-console__label { margin: 0; font-family: var(--nt-mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--nt-mute); font-weight: 400; }
 /* Teal, not navy: the console bar is already the one solid navy element in
    each mockup, and the site's own primary action is teal — the product's
    primary action should match it. */
@@ -268,7 +266,6 @@
 .nt-row--total { padding: 11px 0 0; border-top: 2px solid var(--nt-navy); border-bottom: 0; margin-top: auto; font-weight: 600; color: var(--nt-navy); }
 .nt-num { text-align: right; font-family: var(--nt-mono); font-variant-numeric: tabular-nums; color: var(--nt-navy); }
 .nt-num--mute { color: var(--nt-mute); }
-.nt-num--teal { color: var(--nt-teal); }
 .nt-trail { display: inline-block; font-family: var(--nt-mono); font-size: 9px; font-style: normal; color: var(--nt-teal); border: 1px solid var(--nt-teal); padding: 1px 5px; }
 .nt-trail--off { color: var(--nt-mute); border-color: #D8DEE6; }
 .nt-figure { display: flex; flex-direction: column; gap: 3px; }
@@ -485,14 +482,6 @@
 .nt-strip__value--teal,
 .nt-pulse {
   color: var(--nt-teal-light);
-}
-
-/* .nt-stage--live is the deep teal, which is 2.50:1 on navy and 3.25:1 on the
-   deep ground. On dark bands it takes the light teal. */
-.nt-dark .nt-stage--built,
-.nt-next .nt-stage--built {
-  color: var(--nt-teal-light);
-  border-color: var(--nt-teal-light);
 }
 
 /* The banner. Split out of PageHero so the nav is a real <header> outside
@@ -1204,3 +1193,21 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
   .nt-run::before, .nt-run::after, .nt-pane::before, .nt-est::before, .nt-cells .nt-cell::before { content: none; }
   .nt-run, .nt-pane { background: #ffffff; color: #000000; border-color: #000000; }
 }
+
+/* ---------- contact form (rendered once a Web3Forms key is set) ---------- */
+.nt-form { display: flex; flex-direction: column; gap: 16px; max-width: 34em; }
+.nt-form__field { display: flex; flex-direction: column; gap: 7px; }
+.nt-form__input {
+  border: 1px solid #D8DEE6;
+  padding: 12px 14px;
+  font-family: var(--nt-sans);
+  font-size: 15px;
+  color: var(--nt-ink);
+  background: #ffffff;
+  border-radius: 0;
+  min-height: 44px;
+}
+.nt-form__input:focus { border-color: var(--nt-teal); }
+textarea.nt-form__input { resize: vertical; }
+.nt-form__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.nt-form__note { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--nt-mute); }

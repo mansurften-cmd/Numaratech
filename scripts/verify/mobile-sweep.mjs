@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const pwm = process.env.PLAYWRIGHT_PKG ? createRequire(import.meta.url)(process.env.PLAYWRIGHT_PKG) : await import('playwright');
 const pw = { chromium: pwm.chromium ?? pwm.default.chromium };
 const B=process.env.VERIFY_BASE ?? 'http://127.0.0.1:4322', OUT=process.argv[2];
-const ROUTES=['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/advisory/risk-compliance/','/platform/','/platform/corporate-tax/','/platform/fs-studio/','/services/','/business-case/','/about/','/insights/','/insights/first-corporate-tax-return-what-breaks/','/insights/closing-the-books-in-five-days/','/insights/audit-trail-as-a-design-requirement/','/contact/','/privacy/','/terms/','/404.html'];
+const ROUTES=['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/advisory/risk-compliance/','/platform/','/platform/corporate-tax/','/platform/fs-studio/','/services/','/business-case/','/about/','/insights/','/insights/first-corporate-tax-return-what-breaks/','/insights/closing-the-books-in-five-days/','/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html'];
 const VIEWPORTS=[[320,568],[360,740],[390,844],[414,896],[768,1024],[820,1180],[1024,1366],[844,390]];
 const b=await pw.chromium.launch({executablePath: process.env.CHROMIUM_PATH || undefined});
 const issues=[]; const note=(k,v)=>issues.push(`${k}: ${v}`);

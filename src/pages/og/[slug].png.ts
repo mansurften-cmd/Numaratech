@@ -22,6 +22,7 @@ const CARDS: { path: string; title: string; kicker?: string }[] = [
   { path: '/about/', title: 'A practice that builds its own tools.', kicker: 'About' },
   { path: '/insights/', title: 'What we have written down.', kicker: 'Insights' },
   { path: '/contact/', title: 'Tell us what is due, and when.', kicker: 'Contact' },
+  { path: '/contact/sent/', title: 'Received. We will be in touch.', kicker: 'Contact' },
   { path: '/privacy/', title: 'What we collect, and why.', kicker: 'Privacy' },
   { path: '/terms/', title: 'The terms you are reading this under.', kicker: 'Legal' },
   // Astro reports the 404 route's pathname as /404, so the slug must match

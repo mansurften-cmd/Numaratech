@@ -38,7 +38,7 @@ const insights = insightsNewestFirst();
             <div class="nt-cell__notes">
               <div><time datetime={insight.date}>{formatInsightDate(insight.date)}</time></div>
             </div>
-            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it</a>
+            <a class="nt-link" href={`/insights/${insight.slug}/`} style="margin-top:8px">Read it<span class="nt-sr-only">: {insight.title}</span></a>
           </article>
         ))
       }
