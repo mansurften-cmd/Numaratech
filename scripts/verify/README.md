@@ -8,7 +8,7 @@ once blanked the live site (inline scripts refused by `script-src 'self'`).
 ```
 npm run build
 npm run verify:serve &          # dist/ on :4322 with the real CSP
-npm run verify                  # 45 browser checks
+npm run verify                  # 46 browser checks
 npm run verify:snapshot before.json   # then change CSS, rebuild, and …
 npm run verify:snapshot after.json    # … diff the two files
 ```

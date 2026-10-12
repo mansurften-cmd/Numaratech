@@ -177,6 +177,20 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   t('CT calculator: 2,000,000 + 100,000 -> 2,100,000 / 155,250', a.taxable==='2,100,000'&&a.tax==='155,250', JSON.stringify(a));
   await nojs.close(); await p2.close(); }
 
+// STACKED CELLS SHARE ONE LEFT EDGE. At phone and tablet widths every cell in
+// a collapsed grid must start its content at the same x. The third card of
+// the three-column grids once sat 26px in from the first two.
+{ const bad = [];
+  for (const w of [390, 820]) { const p = await b.newPage({ viewport:{width:w,height:900} });
+    for (const r of ['/','/advisory/','/about/','/platform/','/platform/fs-studio/','/services/']) { await p.goto(B+r,{waitUntil:'networkidle'});
+      const m = await p.evaluate(() => [...document.querySelectorAll('.nt-cells')].map((g, gi) => {
+        const lefts = [...g.children].map(c => Math.round(c.getBoundingClientRect().left + parseFloat(getComputedStyle(c).paddingLeft)));
+        const links = [...g.querySelectorAll(':scope > .nt-cell > .nt-link')].filter(a => a.getBoundingClientRect().width > a.parentElement.getBoundingClientRect().width - 2).length;
+        return { gi, spread: Math.max(...lefts) - Math.min(...lefts), links }; }));
+      for (const g of m) if (g.spread > 1 || g.links > 0) bad.push(`${w}px ${r} grid#${g.gi} spread=${g.spread}px stretchedLinks=${g.links}`); }
+    await p.close(); }
+  t('stacked cells: one left edge, links hug their text (390 + 820px, 6 routes)', bad.length===0, bad.slice(0,4).join(' | ')); }
+
 // REDUCED MOTION
 { const c = await b.newContext({ reducedMotion:'reduce' }); const p = await c.newPage(); await p.goto(B+'/',{waitUntil:'networkidle'});
   const m = await p.evaluate(() => ({ grid:getComputedStyle(document.querySelector('.nt-grid')).animationName, pulse:getComputedStyle(document.querySelector('.nt-pulse')).animationName }));

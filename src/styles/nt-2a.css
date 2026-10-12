@@ -1215,3 +1215,25 @@ textarea.nt-form__input { resize: vertical; }
 /* A two-column cell grid with an odd count: the last cell otherwise sits
    alone with a divider on its right and nothing beyond it. */
 .nt-cells:not(.nt-cells--3):not(.nt-cells--4) > .nt-cell:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: 0; padding-right: 0; }
+
+/* ---------- stacked cells: one left edge (12 October 2026) ---------- */
+/* Below 1100px the three- and four-column grids collapse to one column, but
+   kept their desktop side padding: only the first cell lost its left padding
+   and only even cells matched the reset, so the third card sat 26px in from
+   the others and the first card's link stopped 26px short. Every stacked
+   cell now shares one edge, with a hairline between cells so each + mark
+   lands on a corner as it does on desktop. */
+@media (max-width: 1100px) {
+  .nt-cells--3 .nt-cell,
+  .nt-cells--4 .nt-cell { padding: 24px 0; border-right: 0; }
+  .nt-cells--3 .nt-cell + .nt-cell,
+  .nt-cells--4 .nt-cell + .nt-cell { border-top: 1px solid var(--nt-line); }
+  .nt-dark .nt-cells--3 .nt-cell + .nt-cell,
+  .nt-dark .nt-cells--4 .nt-cell + .nt-cell { border-top-color: rgba(255, 255, 255, .16); }
+}
+
+/* A link at the foot of a cell is a link, not a divider. In a flex column it
+   stretched to the cell's full width, so its underline ran edge to edge and
+   ended wherever the cell's padding happened to stop. It now hugs its text,
+   as the design canvas draws it. */
+.nt-cell > .nt-link { align-self: flex-start; }
