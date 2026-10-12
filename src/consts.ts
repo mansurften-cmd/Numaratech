@@ -133,7 +133,7 @@ export const NAV: NavItem[] = [
       {
         label: 'Risk & Compliance',
         href: '/advisory/risk-compliance/',
-        note: 'AML, ESR, UBO, goAML',
+        note: 'AML, UBO, goAML',
       },
     ],
   },

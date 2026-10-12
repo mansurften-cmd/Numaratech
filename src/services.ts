@@ -181,7 +181,10 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
   {
     slug: 'risk-compliance',
     name: 'Risk & Compliance',
-    strap: 'AML, ESR, UBO, goAML',
+    // ESR removed 12 October 2026: Economic Substance Regulations no longer
+    // apply for financial years after 31 December 2022, so the practice does
+    // not offer them as a service line.
+    strap: 'AML, UBO, goAML',
     lead:
       'The obligations that carry real penalties and are most often treated as paperwork. We build the framework and keep it current, rather than producing a policy nobody reads.',
     services: [
@@ -201,11 +204,10 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         slug: 'compliance-services',
         name: 'Compliance Services',
-        strap: 'AML, ESR, UBO, goAML',
+        strap: 'AML, UBO, goAML',
         body:
-          'The full obligation set for a UAE entity, handled together — because they share underlying data and are far cheaper to run as one exercise than four.',
+          'The full obligation set for a UAE entity, handled together — because they share underlying data and are far cheaper to run as one exercise than three.',
         points: [
-          'Economic Substance Regulations notification and reporting',
           'UBO register maintenance and filing',
           'goAML registration and ongoing reporting',
           'Regulatory correspondence and remediation',
@@ -228,7 +230,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
       {
         slug: 'annual-compliance',
         name: 'Annual Compliance',
-        strap: 'ESR, UBO, audit & filing calendar',
+        strap: 'UBO, audit & filing calendar',
         body:
           'One calendar covering every recurring obligation, generated from your financial year end rather than maintained by hand in a spreadsheet somebody owns.',
         points: [
