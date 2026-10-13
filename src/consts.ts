@@ -219,8 +219,14 @@ export const UAE_CT = {
   standardRate: 0.09,
   /** Taxable income up to and including this amount is taxed at 0%. */
   zeroBandCeiling: 375_000,
-  /** Revenue ceiling for electing Small Business Relief. */
+  /** Revenue ceiling for electing Small Business Relief. Must be met in the
+   *  tax period AND every earlier tax period since 1 June 2023. */
   smallBusinessReliefRevenueCap: 3_000_000,
+  /** Last tax-period end date for which the relief may be elected. Was 31
+   *  December 2026 under Ministerial Decision No. 73 of 2023; extended by
+   *  Ministerial Decision No. 131 of 2026 (signed 29 July 2026, announced by
+   *  the Ministry of Finance on 7 August 2026). Checked 13 October 2026. */
+  smallBusinessReliefLastPeriodEnd: '31 December 2029',
   currency: 'AED',
   /** Regime applies to financial years beginning on or after this date. */
   effectiveFrom: '1 June 2023',

@@ -67,7 +67,7 @@ Expect `[custom build]` output followed by
 ### 2. What wrangler.toml declares
 
 ```toml
-name = "numaratech-website"
+name = "numaratech"
 compatibility_date = "2026-07-30"
 
 [assets]

@@ -168,8 +168,11 @@ const capabilities = [
               <span>Elect Small Business Relief</span>
             </label>
             <p class="nt-hint" id="est-sbr-hint">
-              Available where revenue does not exceed {UAE_CT.currency}
-              {nf.format(UAE_CT.smallBusinessReliefRevenueCap)} for the period.
+              For tax periods ending on or before {UAE_CT.smallBusinessReliefLastPeriodEnd},
+              where revenue did not exceed {UAE_CT.currency}
+              {nf.format(UAE_CT.smallBusinessReliefRevenueCap)} in this period or any earlier one.
+              Not available to a Qualifying Free Zone Person or a member of a large
+              multinational group. The estimator checks this period's revenue only.
             </p>
           </div>
         </div>

@@ -31,7 +31,7 @@ early is the expensive mistake.
 
 ## 2. Workers custom domain
 
-- [ ] Cloudflare dashboard → Workers & Pages → `numaratech-website` → Settings
+- [ ] Cloudflare dashboard → Workers & Pages → `numaratech` → Settings
       → Domains & Routes → **Add** → Custom domain → `numaratech.com`.
 - [ ] Add `www.numaratech.com` as a second custom domain (step 9 redirects it).
 - [ ] Wait for the certificate to issue.

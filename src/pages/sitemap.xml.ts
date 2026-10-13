@@ -36,7 +36,7 @@ export const GET: APIRoute = ({ site }) => {
     })),
     ...INSIGHTS.map((insight) => ({
       loc: `${origin}/insights/${insight.slug}/`,
-      lastmod: insight.date,
+      lastmod: insight.updated ?? insight.date,
       changefreq: 'yearly',
       priority: '0.6',
     })),

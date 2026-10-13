@@ -25,7 +25,7 @@ interface Props {
   /** Override the generated Open Graph card. Site-relative path. */
   ogImage?: string;
   /** Present on insight pages; emits the Article block. */
-  article?: { datePublished: string; author: string; section: string };
+  article?: { datePublished: string; dateModified?: string; author: string; section: string };
 }
 
 const {
@@ -107,6 +107,7 @@ const articleSchema = article
       headline: title,
       description,
       datePublished: article.datePublished,
+      dateModified: article.dateModified ?? article.datePublished,
       articleSection: article.section,
       author: { '@type': 'Organization', name: article.author, url: SITE.url },
       publisher: { '@id': `${SITE.url}/#organisation` },

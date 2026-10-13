@@ -8,6 +8,9 @@ export type Insight = {
   summary: string;
   /** ISO date — used for <time datetime> and sorting. */
   date: string;
+  /** ISO date of the last substantive correction, if any. Shown in the
+   *  byline and emitted as schema.org dateModified. */
+  updated?: string;
   readingMinutes: number;
   topic: string;
   /**
@@ -31,6 +34,7 @@ export const INSIGHTS: Insight[] = [
     summary:
       'Registration is the easy part. The failures we see are upstream — a chart of accounts that cannot support a tax computation, and adjustments nobody can evidence twelve months later.',
     date: '2026-06-18',
+    updated: '2026-10-13',
     readingMinutes: 7,
     topic: 'Corporate Tax',
   },

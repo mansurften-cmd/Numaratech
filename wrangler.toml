@@ -7,7 +7,12 @@
 # server-side code left. The contact form posts directly to Web3Forms from the
 # browser, so no Worker, no Function and no server secret are involved.
 
-name = "numaratech-website"
+# Must match the Worker Cloudflare builds and serves: "numaratech", at
+# numaratech.mansurften.workers.dev (see the Workers Builds check on any commit).
+# This said "numaratech-website", so a manual `npx wrangler deploy` would have
+# created a second, separate Worker at numaratech-website.<subdomain> and left
+# the real site unchanged.
+name = "numaratech"
 compatibility_date = "2026-07-30"
 
 # Custom build, run by wrangler immediately before deploying.

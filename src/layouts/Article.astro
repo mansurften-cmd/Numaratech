@@ -23,6 +23,7 @@ const others = insightsNewestFirst()
   description={insight.summary}
   article={{
     datePublished: insight.date,
+    dateModified: insight.updated,
     author: authorOf(insight),
     section: insight.topic,
   }}
@@ -49,6 +50,12 @@ const others = insightsNewestFirst()
           <span class="nt-byline__author">{authorOf(insight)}</span>
           <span aria-hidden="true">·</span>
           <time datetime={insight.date}>{formatInsightDate(insight.date)}</time>
+          {insight.updated && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>Updated <time datetime={insight.updated}>{formatInsightDate(insight.updated)}</time></span>
+            </>
+          )}
           <span aria-hidden="true">·</span>
           <span>{insight.readingMinutes} min read</span>
         </p>
