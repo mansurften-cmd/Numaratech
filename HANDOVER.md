@@ -183,6 +183,13 @@ advisories). **Open for the owner:** the `hello@numaratech.com` mailbox on an
 unpurchased domain (R1), the form key (F3), a read of the privacy notice (R6),
 trademark-agent status (R2), the external calculator link (R7).
 
+### Owner decisions (13 October 2026)
+See `AUDIT-2026-10.md` §8. Domain/mailbox and form key **paused**; privacy
+notice **approved**; licence **No. 1632409 (Dubai DET e-Trader)** now on
+every page via `SITE.licence`. Open for the owner: confirm the licence fee
+was paid (a Notion note says not), confirm the Business Bay address, buy the
+domain spelled with an A, revoke the GitHub token.
+
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
    `.nt-site-header`, `.nt-site-footer`, `.nt-nav-toggle` — **System A class

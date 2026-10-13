@@ -58,6 +58,11 @@ const organisation = {
     addressCountry: 'AE',
   },
   areaServed: { '@type': 'Country', name: 'United Arab Emirates', identifier: 'AE' },
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: `${SITE.licence.authorityShort} trade licence`,
+    value: SITE.licence.number,
+  },
 };
 
 /* Breadcrumbs, derived from the path so a new page cannot ship without them.

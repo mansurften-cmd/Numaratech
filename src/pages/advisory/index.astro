@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
-import { spell } from '../../consts';
+import { SITE, spell } from '../../consts';
 ---
 
 <Base
@@ -19,7 +19,7 @@ import { spell } from '../../consts';
     stats={[
       { label: 'Practice groups', value: spell(SERVICE_GROUPS.length) },
       { label: 'Service lines', value: String(ALL_SERVICES.length) },
-      { label: 'Licence', value: 'Dubai DET e-Trader' },
+      { label: 'Licence', value: `${SITE.licence.authorityShort} ${SITE.licence.type} No. ${SITE.licence.number}` },
       { label: 'Jurisdiction', value: 'United Arab Emirates' },
     ]}
   />

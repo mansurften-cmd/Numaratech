@@ -40,6 +40,19 @@ export const SITE = {
    * See LAUNCH.md for the full migration sequence.
    */
   url: SITE_ORIGIN,
+  /**
+   * Trade licence, as recorded in the owner's goAML registration and brand
+   * guide (Notion, checked 13 October 2026). An e-Trader licence issued by
+   * Dubai's Department of Economy and Tourism. Shown in the footer, the
+   * terms, the advisory strip and the structured data — the claim "licensed
+   * practice" is now checkable rather than asserted.
+   */
+  licence: {
+    number: '1632409',
+    type: 'e-Trader',
+    authority: 'Department of Economy and Tourism, Dubai',
+    authorityShort: 'Dubai DET',
+  },
   locale: 'en_AE',
   email: 'hello@numaratech.com',
   /** Single source of truth. Nothing may hard-code a number. */
