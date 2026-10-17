@@ -20,7 +20,7 @@ const others = insightsNewestFirst()
 
 <Base
   title={insight.title}
-  description={insight.summary}
+  description={insight.description ?? insight.summary}
   article={{
     datePublished: insight.date,
     dateModified: insight.updated,

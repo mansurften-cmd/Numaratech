@@ -168,6 +168,19 @@ Only now, once every URL the crawler can reach is the final one.
 - [ ] Submit `https://numaratech.com/sitemap.xml`.
 - [ ] Use the URL Inspection tool on the homepage → "Request indexing".
 - [ ] Check Coverage after ~48 h: expect 18 valid, 0 "blocked by robots.txt".
+- [ ] **Bing Webmaster Tools** → "Import from Google Search Console". One
+      click; Bing also feeds DuckDuckGo, Yahoo and ChatGPT search.
+- [ ] **Google Business Profile** → create it as a *service-area business*
+      (Dubai / UAE). No street address is shown, which matches the site's
+      "Dubai, United Arab Emirates" address. Use the exact legal name, the
+      phone number and the website URL as they appear on the site.
+- [ ] **LinkedIn company page** with the same name, phone and URL.
+- [ ] Add the Business Profile and LinkedIn URLs to `SITE.sameAs` in
+      `src/consts.ts`. They are emitted as schema.org `sameAs`, which is how
+      search engines connect the site to those listings.
+- [ ] https://search.google.com/test/rich-results on the home page and one
+      advisory group page: expect *Organization/LocalBusiness*, *Breadcrumbs*
+      and no errors.
 
 ---
 

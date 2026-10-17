@@ -19,7 +19,13 @@ import '../styles/nt-2a.css';
 
 interface Props {
   title: string;
+  /** Search-result title. The visible headline stays the brand voice; this
+   *  carries the words people search for. "— NUMARATECH" is appended. */
+  seoTitle?: string;
   description?: string;
+  /** Extra schema.org nodes for this page (e.g. the Service entries on an
+   *  advisory group page). Emitted in one @graph block. */
+  schema?: Record<string, unknown>[];
   /** Set on pages that must not be indexed (404). */
   noindex?: boolean;
   /** Override the generated Open Graph card. Site-relative path. */
@@ -30,6 +36,8 @@ interface Props {
 
 const {
   title,
+  seoTitle,
+  schema = [],
   description = SITE.description,
   noindex = false,
   ogImage,
@@ -57,6 +65,20 @@ const organisation = {
     addressCountry: 'AE',
   },
   areaServed: { '@type': 'Country', name: 'United Arab Emirates', identifier: 'AE' },
+  // The mark search engines may show beside the business name.
+  logo: { '@type': 'ImageObject', url: `${SITE.url}/icon-512.png`, width: 512, height: 512 },
+  image: `${SITE.url}/og/index.png`,
+  knowsAbout: [
+    'UAE Corporate Tax',
+    'UAE VAT',
+    'Transfer pricing',
+    'IFRS financial statements',
+    'Bookkeeping and management accounts',
+    'Audit file preparation',
+    'Anti-money laundering compliance',
+    'Ultimate beneficial ownership filing',
+  ],
+  ...(SITE.sameAs.length ? { sameAs: [...SITE.sameAs] } : {}),
   identifier: {
     '@type': 'PropertyValue',
     propertyID: `${SITE.licence.authorityShort} trade licence`,
@@ -98,7 +120,33 @@ const breadcrumb =
           item: new URL(crumb.path, SITE.url).href,
         })),
       };
-const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.titleTag}` : `${title} — ${SITE.name}`;
+// Search results show about 60 characters. The brand is appended where it
+// fits; a long article headline stands alone rather than being cut off.
+const suffix = ` — ${SITE.name}`;
+const head = seoTitle ?? title;
+const pageTitle =
+  title === SITE.name
+    ? `${SITE.name} — ${SITE.titleTag}`
+    : head.length + suffix.length <= 60
+      ? `${head}${suffix}`
+      : head;
+const isHome = Astro.url.pathname === '/';
+
+// Google reads the site name it shows in results from WebSite data on the
+// home page.
+const websiteSchema = isHome
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      name: SITE.name,
+      alternateName: SITE.legalName,
+      url: `${SITE.url}/`,
+      inLanguage: 'en-AE',
+      publisher: { '@id': `${SITE.url}/#organisation` },
+    }
+  : null;
+const graphSchema = schema.length ? { '@context': 'https://schema.org', '@graph': schema } : null;
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 
 // Absolute, because Open Graph consumers do not resolve relative URLs.
@@ -138,8 +186,19 @@ const articleSchema = article
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={SITE.locale} />
-    <meta property="og:type" content="website" />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    {
+      article && (
+        <>
+          <meta property="article:published_time" content={article.datePublished} />
+          <meta property="article:modified_time" content={article.dateModified ?? article.datePublished} />
+          <meta property="article:section" content={article.section} />
+        </>
+      )
+    }
+    {/* Large image previews in results, once the site is indexable. The
+        pre-launch X-Robots-Tag header still keeps everything out until then. */}
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="max-image-preview:large" />}
     <meta name="theme-color" content="#061a34" />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
@@ -179,6 +238,16 @@ const articleSchema = article
     {
       breadcrumb && (
         <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumb)} />
+      )
+    }
+    {
+      websiteSchema && (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+      )
+    }
+    {
+      graphSchema && (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(graphSchema)} />
       )
     }
     {

@@ -2,7 +2,7 @@
 /** The three advisory group pages: /advisory/accounting-audit/, /tax/,
  *  /risk-compliance/. Each carries its services as anchored sections. */
 import Base from '../../layouts/Base.astro';
-import { spell } from '../../consts';
+import { SITE, spell } from '../../consts';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS } from '../../services';
@@ -16,14 +16,32 @@ export function getStaticPaths() {
 
 const { group } = Astro.props;
 
-// Meta description under 160 characters: the group's first four service lines,
-// with a count for the rest. The lead is the hero's, and runs longer.
+// Meta description under 160 characters: as many service lines as fit, with
+// a count for the rest. The lead is the hero's, and runs longer.
 const names = group.services.map((service) => service.name);
-const rest = names.length - 4;
-const description = `${group.name} from NUMARATECH, Dubai: ${names.slice(0, 4).join(', ')}${rest > 0 ? ` and ${rest} more service line${rest > 1 ? 's' : ''}` : ''}.`;
+const describe = (n: number) => {
+  const rest = names.length - n;
+  return `${group.name} in Dubai, UAE: ${names.slice(0, n).join(', ')}${rest > 0 ? ` and ${rest} more service line${rest > 1 ? 's' : ''}` : ''}.`;
+};
+let shown = names.length;
+while (shown > 1 && describe(shown).length > 160) shown--;
+const description = describe(shown);
+
+// One schema.org Service per service line, each tied to the business by @id.
+const pageUrl = new URL(Astro.url.pathname, SITE.url).href;
+const serviceSchema = group.services.map((service) => ({
+  '@type': 'Service',
+  '@id': `${pageUrl}#${service.slug}`,
+  name: service.name,
+  serviceType: service.name,
+  description: service.body,
+  url: `${pageUrl}#${service.slug}`,
+  provider: { '@id': `${SITE.url}/#organisation` },
+  areaServed: { '@type': 'Country', name: 'United Arab Emirates', identifier: 'AE' },
+}));
 ---
 
-<Base title={group.name} description={description}>
+<Base title={group.name} seoTitle={group.seoTitle} description={description} schema={serviceSchema}>
   <PageHero
     kicker={`Advisory / ${group.name}`}
     title={group.name}

@@ -4,5 +4,3 @@
 /platform/client-portal/  /platform/  301
 /platform/client-portal   /platform/  301
 
-# The advisory page moved from a single page to a group hub.
-/advisory/index.html  /advisory/  301

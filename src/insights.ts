@@ -8,6 +8,9 @@ export type Insight = {
   summary: string;
   /** ISO date — used for <time datetime> and sorting. */
   date: string;
+  /** Search-result description, when the summary is longer than the 160
+   *  characters a result shows. Falls back to the summary. */
+  description?: string;
   /** ISO date of the last substantive correction, if any. Shown in the
    *  byline and emitted as schema.org dateModified. */
   updated?: string;
@@ -33,6 +36,8 @@ export const INSIGHTS: Insight[] = [
     title: 'The first Corporate Tax return: where it actually breaks',
     summary:
       'Registration is the easy part. The failures we see are upstream — a chart of accounts that cannot support a tax computation, and adjustments nobody can evidence twelve months later.',
+    description:
+      'Where first UAE Corporate Tax returns actually fail: a chart of accounts that cannot carry a computation, and adjustments nobody can evidence a year later.',
     date: '2026-06-18',
     updated: '2026-10-13',
     readingMinutes: 7,

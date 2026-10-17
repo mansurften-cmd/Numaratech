@@ -15,7 +15,12 @@
 name = "numaratech"
 compatibility_date = "2026-07-30"
 
-# Custom build, run by wrangler immediately before deploying.
+# Custom build, run by wrangler immediately before deploying — when wrangler
+# is run by hand. Cloudflare's Workers Builds does NOT honour this block (see
+# developers.cloudflare.com/workers/ci-cd/builds/configuration/); it runs the
+# dashboard build command, `npm run build`. That script now runs the type
+# check, the build, the security-header assertions and HTML validation, so a
+# change that fails any of them fails the build and is never deployed.
 #
 # This makes `npx wrangler deploy` self-sufficient from a bare clone: it
 # installs dependencies and builds the site itself, so the deploy works even

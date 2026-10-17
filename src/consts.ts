@@ -25,7 +25,7 @@ export const SITE = {
   tagline: 'Finance and compliance for UAE business — advisory and platform.',
   /** The home page's <title>. Kept under 60 characters so search results
    *  show it whole; the tagline is for the footer, not the tab. */
-  titleTag: 'Accounting, tax and compliance platform for UAE business',
+  titleTag: 'Accounting and Tax Consultants in Dubai, UAE',
   /** Meta and Open Graph description, under 160 characters so it is not
    *  truncated in search results. The long form lives in the About copy. */
   description:
@@ -53,6 +53,10 @@ export const SITE = {
     authority: 'Department of Economy and Tourism, Dubai',
     authorityShort: 'Dubai DET',
   },
+  /** Official profiles (LinkedIn company page, Google Business Profile URL).
+   *  Emitted as schema.org sameAs once filled in — it is how search engines
+   *  join the site to the business's other listings. Empty until they exist. */
+  sameAs: [] as readonly string[],
   locale: 'en_AE',
   email: 'hello@numaratech.com',
   /** Single source of truth. Nothing may hard-code a number. Non-breaking

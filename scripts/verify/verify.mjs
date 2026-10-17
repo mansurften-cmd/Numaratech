@@ -233,6 +233,47 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
     await p.close(); }
   t(`axe-core: 0 WCAG 2.2 AA violations on ${ROUTES.length} routes at 1280 and 390px`, bad.length===0, bad.slice(0,5).join(' | ')); }
 
+// SEO: on every indexable page — a title under 60 characters and unique, a
+// description of 70-160 characters and unique, an absolute canonical for
+// this exact path that og:url repeats, one non-empty h1, share tags, en-AE,
+// structured data that parses and carries what the page should (the business
+// everywhere, breadcrumbs off the home page, WebSite on the home page,
+// Article on posts, Service on advisory groups). The sitemap must list
+// exactly the indexable pages; the two hidden pages must say noindex.
+{ const HIDDEN = ['/404.html','/contact/sent/']; const INDEXABLE = ROUTES.filter(r => !HIDDEN.includes(r));
+  const p = await b.newPage(); const bad = []; const titles = new Map(), descs = new Map();
+  for (const r of ROUTES) { await p.goto(B+r,{waitUntil:'domcontentloaded'});
+    const m = await p.evaluate(() => { const q=s=>document.querySelector(s); const meta=n=>q(`meta[name="${n}"]`)?.content ?? q(`meta[property="${n}"]`)?.content;
+      const ld=[...document.querySelectorAll('script[type="application/ld+json"]')].map(x=>{ try { const j=JSON.parse(x.textContent); return j['@graph'] ? j['@graph'].map(n=>n['@type']) : [j['@type']]; } catch { return ['INVALID']; } }).flat();
+      return { title: document.title, desc: meta('description'), canon: q('link[rel=canonical]')?.href, ogUrl: meta('og:url'), ogTitle: meta('og:title'), ogImage: meta('og:image'), card: meta('twitter:card'), robots: meta('robots')||'',
+        h1: [...document.querySelectorAll('h1')].map(h=>h.textContent.trim()), lang: document.documentElement.lang, ld }; });
+    if (HIDDEN.includes(r)) { if (!/noindex/.test(m.robots)) bad.push(`${r} should be noindex`); continue; }
+    const why = [];
+    if (!m.title || m.title.length > 60) why.push(`title ${m.title?.length}`);
+    if (!m.desc || m.desc.length < 70 || m.desc.length > 160) why.push(`desc ${m.desc?.length}`);
+    let cpath = ''; try { const u = new URL(m.canon); cpath = u.pathname; if (u.protocol !== 'https:') why.push('canonical not https'); } catch { why.push('canonical missing'); }
+    if (cpath !== r) why.push(`canonical ${cpath}`);
+    if (m.ogUrl !== m.canon) why.push('og:url != canonical');
+    if (!m.ogTitle || !/^https:\/\//.test(m.ogImage||'') || m.card !== 'summary_large_image') why.push('share tags');
+    if (m.h1.length !== 1 || !m.h1[0]) why.push(`h1 x${m.h1.length}`);
+    if (m.lang !== 'en-AE') why.push(`lang ${m.lang}`);
+    if (/noindex/.test(m.robots)) why.push('noindex on an indexable page');
+    if (m.ld.includes('INVALID')) why.push('JSON-LD does not parse');
+    if (!m.ld.includes('AccountingService')) why.push('no AccountingService');
+    if (r !== '/' && !m.ld.includes('BreadcrumbList')) why.push('no BreadcrumbList');
+    if (r === '/' && !m.ld.includes('WebSite')) why.push('no WebSite');
+    if (/^\/insights\/.+\/$/.test(r) && !m.ld.includes('Article')) why.push('no Article');
+    if (/^\/advisory\/.+\/$/.test(r) && !m.ld.includes('Service')) why.push('no Service');
+    if (titles.has(m.title)) why.push(`title duplicates ${titles.get(m.title)}`); titles.set(m.title, r);
+    if (descs.has(m.desc)) why.push(`description duplicates ${descs.get(m.desc)}`); descs.set(m.desc, r);
+    if (why.length) bad.push(`${r}: ${why.join(', ')}`); }
+  const xml = await (await p.request.get(B+'/sitemap.xml')).text();
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x => new URL(x[1]).pathname).sort();
+  const want = [...INDEXABLE].sort();
+  if (JSON.stringify(locs) !== JSON.stringify(want)) bad.push(`sitemap lists [${locs.filter(x=>!want.includes(x))}] extra, [${want.filter(x=>!locs.includes(x))}] missing`);
+  t(`SEO: titles, descriptions, canonicals, h1, share tags, structured data on ${INDEXABLE.length} pages; sitemap exact; hidden pages noindex`, bad.length===0, bad.slice(0,5).join(' | '));
+  await p.close(); }
+
 // REDUCED MOTION
 { const c = await b.newContext({ reducedMotion:'reduce' }); const p = await c.newPage(); await p.goto(B+'/',{waitUntil:'networkidle'});
   const m = await p.evaluate(() => ({ grid:getComputedStyle(document.querySelector('.nt-grid')).animationName, pulse:getComputedStyle(document.querySelector('.nt-pulse')).animationName }));

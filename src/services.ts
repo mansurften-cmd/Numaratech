@@ -19,6 +19,8 @@ export type ServiceGroup = {
   strap: string;
   /** Sentence used at the top of the group page. */
   lead: string;
+  /** Search-result title, under 60 characters with the brand suffix. */
+  seoTitle: string;
   services: Service[];
 };
 
@@ -29,6 +31,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
     // see /about/ and /terms/, which state the same boundary to clients.
     slug: 'accounting-audit',
     name: 'Accounting & Audit Support',
+    seoTitle: 'Accounting & Audit Support in Dubai, UAE',
     strap: 'IFRS, outsourced CFO, audit support',
     lead:
       'Books that can carry a filing, and the work that gets them through someone else’s audit. From day-to-day bookkeeping to the year-end file your auditor asks for.',
@@ -116,6 +119,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
   {
     slug: 'tax',
     name: 'Tax & Advisory',
+    seoTitle: 'UAE Corporate Tax & VAT Advisory',
     strap: 'Corporate Tax, VAT & Transfer Pricing',
     lead:
       'Positions taken deliberately and documented as they are taken — so the reasoning is still in the file when a question arrives eighteen months later.',
@@ -181,6 +185,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
   {
     slug: 'risk-compliance',
     name: 'Risk & Compliance',
+    seoTitle: 'AML, UBO & goAML Compliance in the UAE',
     // ESR removed 12 October 2026: Economic Substance Regulations no longer
     // apply for financial years after 31 December 2022, so the practice does
     // not offer them as a service line.
