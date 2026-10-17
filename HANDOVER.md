@@ -190,6 +190,12 @@ every page via `SITE.licence`. Open for the owner: confirm the licence fee
 was paid (a Notion note says not), buy the
 domain spelled with an A, revoke the GitHub token.
 
+### Deploy gate and SEO (17 October 2026)
+`npm run build` is what Cloudflare runs, and it now runs `astro check`, the
+build, `check-headers` and `html-validate`; any failure blocks the deploy
+(proved with commits `6c1f4e5`/`5295ee9`). For a quick build without the
+checks use `npm run build:site`. SEO details: `AUDIT-2026-10.md` §10.
+
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
    `.nt-site-header`, `.nt-site-footer`, `.nt-nav-toggle` — **System A class
