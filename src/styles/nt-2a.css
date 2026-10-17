@@ -24,7 +24,9 @@
   --nt-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-@keyframes ntDrift { from { background-position: 0 0; } to { background-position: 0 -160px; } }
+/* Transform, not background-position: runs on the compositor, no per-frame
+   repaint. The layer is one tile pair taller than the band and slides up. */
+@keyframes ntDrift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(0, -160px, 0); } }
 @keyframes ntPulse { 0%, 100% { opacity: .25; } 50% { opacity: .9; } }
 
 .nt { font-family: var(--nt-sans); color: var(--nt-ink); background: #fff; -webkit-font-smoothing: antialiased; }
@@ -50,7 +52,9 @@
     linear-gradient(to right, rgba(14, 116, 144, .16) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(14, 116, 144, .16) 1px, transparent 1px);
   background-size: 80px 80px;
+  bottom: -160px;
   animation: ntDrift 18s linear infinite;
+  will-change: transform;
 }
 .nt-grid--v {
   background-image: linear-gradient(to right, rgba(14, 116, 144, .16) 1px, transparent 1px);
@@ -836,8 +840,9 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
    marks at every cell corner — with B's computation console in the hero,
    typing out the run. Hairlines, no radius, no shadow, no gradient wash. */
 
-@keyframes ntCorner { from { width: 0; height: 0; } }
-@keyframes ntDraw   { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+/* Scale from each corner, not width/height: no per-frame layout. */
+@keyframes ntCorner { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes ntDraw   { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes ntType   { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes ntBlink  { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
@@ -877,10 +882,10 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
   border: 0 solid var(--nt-teal-light);
   animation: ntCorner .5s cubic-bezier(.2, .7, .2, 1) backwards;
 }
-.nt-frame__edge--top::before    { left: 0;  top: 0;    border-top-width: 1px;    border-left-width: 1px; }
-.nt-frame__edge--top::after     { right: 0; top: 0;    border-top-width: 1px;    border-right-width: 1px; animation-delay: .25s; }
-.nt-frame__edge--bottom::after  { right: 0; bottom: 0; border-bottom-width: 1px; border-right-width: 1px; animation-delay: .5s; }
-.nt-frame__edge--bottom::before { left: 0;  bottom: 0; border-bottom-width: 1px; border-left-width: 1px; animation-delay: .75s; }
+.nt-frame__edge--top::before    { left: 0;  top: 0;    border-top-width: 1px;    border-left-width: 1px; transform-origin: top left; }
+.nt-frame__edge--top::after     { right: 0; top: 0;    border-top-width: 1px;    border-right-width: 1px; animation-delay: .25s; transform-origin: top right; }
+.nt-frame__edge--bottom::after  { right: 0; bottom: 0; border-bottom-width: 1px; border-right-width: 1px; animation-delay: .5s; transform-origin: bottom right; }
+.nt-frame__edge--bottom::before { left: 0;  bottom: 0; border-bottom-width: 1px; border-left-width: 1px; animation-delay: .75s; transform-origin: bottom left; }
 
 /* The dimension line: a dashed rule with end ticks, the parameters under it. */
 .nt-frame__dim {
@@ -903,6 +908,7 @@ a.nt-btn:not(.nt-btn--ghost) { white-space: nowrap; }
   right: 0;
   top: 0;
   border-top: 1px dashed rgba(79, 179, 204, .55);
+  transform-origin: left center;
   animation: ntDraw 1.2s cubic-bezier(.2, .7, .2, 1) .6s backwards;
 }
 .nt-frame__dim::after {
@@ -1237,3 +1243,50 @@ textarea.nt-form__input { resize: vertical; }
    ended wherever the cell's padding happened to stop. It now hugs its text,
    as the design canvas draws it. */
 .nt-cell > .nt-link { align-self: flex-start; }
+
+/* ==========================================================================
+   Performance and accessibility pass, 17 October 2026
+   ========================================================================== */
+
+/* Links inside running text were told apart from the text around them by
+   colour alone — 2.12:1 against the body ink, under the 3:1 a reader with a
+   colour-vision deficiency needs (WCAG 1.4.1). Underlined, as is standard. */
+.nt-prose a:not(.nt-btn):not(.nt-arrow-link),
+.nt-form__note a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+
+/* The grid holds a compositor layer only while it moves. */
+@media (prefers-reduced-motion: reduce) { .nt-grid { will-change: auto; } }
+
+/* ---------- phone nav: final shape from the first paint ---------- */
+/* On a slow phone the page could paint before Nav.astro's script had set
+   data-nav="ready". That first frame showed the no-JS fallback — every link
+   stacked, a ~900px header — and a moment later the drawer collapsed it,
+   jumping the page up (measured: layout shift 0.871, one load in four on a
+   throttled phone). Now the bar has its collapsed shape from the start:
+   - script running (the normal case): toggle shown, links out of flow and
+     hidden until the script claims the nav, which is usually before paint;
+   - JavaScript off (scripting: none): the stacked list, as before;
+   - script enabled but it never arrives: after four seconds the stacked list
+     is revealed anyway. The footer carries every link regardless. */
+@keyframes ntNavFallback { to { position: static; visibility: visible; } }
+@keyframes ntBurgerFallback { to { visibility: hidden; position: absolute; } }
+@media (max-width: 999px) {
+  .nt-nav:not([data-nav='ready']) .nt-burger {
+    display: inline-flex;
+    animation: ntBurgerFallback 0s 4s forwards;
+  }
+  .nt-nav:not([data-nav='ready']) .nt-nav__links {
+    position: absolute;
+    visibility: hidden;
+    animation: ntNavFallback 0s 4s forwards;
+  }
+}
+@media (max-width: 999px) and (scripting: none) {
+  .nt-nav:not([data-nav='ready']) .nt-burger { display: none; animation: none; }
+  .nt-nav:not([data-nav='ready']) .nt-nav__links { position: static; visibility: visible; animation: none; }
+}

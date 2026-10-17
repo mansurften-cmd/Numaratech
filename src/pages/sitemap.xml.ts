@@ -25,12 +25,15 @@ const STATIC_ROUTES: { path: string; priority: string; changefreq: string }[] = 
 
 export const GET: APIRoute = ({ site }) => {
   const origin = (site ?? new URL(SITE.url)).origin;
-  const today = new Date().toISOString().slice(0, 10);
+  // No lastmod on the static routes: stamping every page with the build date
+  // tells search engines all of them changed on every deploy, and Google
+  // ignores lastmod from sites whose dates are not accurate. Insights carry
+  // their real publication or correction date.
 
   const entries = [
     ...STATIC_ROUTES.map((route) => ({
       loc: `${origin}${route.path}`,
-      lastmod: today,
+      lastmod: undefined as string | undefined,
       changefreq: route.changefreq,
       priority: route.priority,
     })),
@@ -48,8 +51,7 @@ ${entries
   .map(
     (entry) => `  <url>
     <loc>${entry.loc}</loc>
-    <lastmod>${entry.lastmod}</lastmod>
-    <changefreq>${entry.changefreq}</changefreq>
+${entry.lastmod ? `    <lastmod>${entry.lastmod}</lastmod>\n` : ''}    <changefreq>${entry.changefreq}</changefreq>
     <priority>${entry.priority}</priority>
   </url>`
   )

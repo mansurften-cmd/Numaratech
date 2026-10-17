@@ -25,9 +25,10 @@ const { index, eyebrow, title, lead, invert = false } = Astro.props;
     max-width: 62ch;
   }
 
+  /* Full strength: at 75% opacity the index measured 4.26:1 on white and
+     4.01:1 on the tint, under the 4.5:1 minimum for 12px text. */
   .idx {
     font-variant-numeric: tabular-nums;
-    opacity: 0.75;
   }
 
   .title {

@@ -14,7 +14,7 @@
  *
  * Run: node scripts/check-headers.mjs
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
 const SOURCE = 'public/_headers';
 
@@ -79,6 +79,21 @@ const REAL_PATHS = [
   '/sitemap.xml',
   '/favicon.svg',
 ];
+
+// When a build exists, check against every file it actually emits instead of
+// relying on the hand list alone — a new file (an icon, the manifest) would
+// otherwise need adding here by hand, and its rule would fail as unreachable.
+{
+  const dist = new URL('../dist/', import.meta.url);
+  const walk = (dir, base = '') => {
+    for (const entry of readdirSync(new URL(dir, dist), { withFileTypes: true })) {
+      const rel = `${base}/${entry.name}`;
+      if (entry.isDirectory()) walk(`${dir}${entry.name}/`, rel);
+      else REAL_PATHS.push(rel.endsWith('/index.html') ? rel.slice(0, -'index.html'.length) : rel);
+    }
+  };
+  if (existsSync(dist)) walk('');
+}
 
 for (const rule of rules) {
   const reachable = REAL_PATHS.some((p) => matches(rule.pattern, p));

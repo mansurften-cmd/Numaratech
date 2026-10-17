@@ -23,6 +23,13 @@ export default defineConfig({
       assetsInlineLimit: 0,
     },
   },
+  // Fetch the next page when a visitor hovers or focuses a link (touchstart
+  // on phones), so the click lands on a page that is already downloaded.
+  // Astro bundles this as an external module, so script-src 'self' allows it.
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover',
+  },
   compressHTML: true,
   devToolbar: { enabled: false },
 });

@@ -10,7 +10,11 @@ npm run dev      # http://localhost:4321
 npm run build    # → dist/
 npm run preview  # serve dist/ locally
 npm run check    # astro check — type and template diagnostics
+npm test         # check + build + security headers + HTML validation
 ```
+
+Node.js 24 is pinned in `.node-version`; Cloudflare's build reads the same
+file, so production builds on the version the checks ran on.
 
 ---
 
@@ -305,9 +309,8 @@ law changes and this repository is not the authority.
 
 Content placeholders that must be replaced with real values:
 
-- [ ] `SITE.phoneDisplay` / `SITE.phoneHref` in `src/consts.ts` — currently
-      `+971 4 000 0000`
-- [ ] `SITE.address` — currently "Business Bay, Dubai"
+- [x] `SITE.phoneDisplay` / `SITE.phoneHref` in `src/consts.ts` — the real number
+- [x] `SITE.address` — "Dubai, United Arab Emirates", no street address (owner's decision)
 - [ ] `SITE.email` — confirm `hello@numaratech.com` exists and is monitored
 - [ ] `site` in `astro.config.mjs` and the `Sitemap:` line in `robots.txt`
 - [ ] **`WEB3FORMS.accessKey` in `src/consts.ts` is blank** — the contact form is

@@ -150,10 +150,10 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 // hero overflows or overlaps at the widths the split layout spans.
 { for (const [w, r] of [[1440,'/'],[1101,'/'],[1280,'/platform/corporate-tax/'],[1440,'/about/']]) { const p = await b.newPage({ viewport:{width:w,height:900} });
     await p.goto(B+r,{waitUntil:'networkidle'}); await p.waitForTimeout(2200);
-    const m = await p.evaluate(() => { const e=document.querySelector('.nt-frame__edge--bottom'); const cs=getComputedStyle(e,'::before');
+    const m = await p.evaluate(() => { const e=document.querySelector('.nt-frame__edge--bottom'); const cs=getComputedStyle(e,'::before'); const tf=cs.transform;
       const copy=document.querySelector('.nt-hero__copy')?.getBoundingClientRect(); const aside=document.querySelector('.nt-hero__aside')?.getBoundingClientRect();
       const body=document.querySelector('.nt-run__body'); const lines=[...document.querySelectorAll('.nt-run__line')].map(l=>getComputedStyle(l).clipPath);
-      return { corner: cs.width+'x'+cs.height, overlap: copy&&aside ? copy.right > aside.left+1 : false, asideRight: aside ? Math.round(aside.right) : null, vw: document.documentElement.clientWidth,
+      return { corner: cs.width+'x'+cs.height+((tf==='none'||tf==='matrix(1, 0, 0, 1, 0, 0)')?'':' '+tf), overlap: copy&&aside ? copy.right > aside.left+1 : false, asideRight: aside ? Math.round(aside.right) : null, vw: document.documentElement.clientWidth,
         scroll: document.documentElement.scrollWidth > document.documentElement.clientWidth, runClip: body ? body.scrollWidth > body.clientWidth+1 : false, lines: [...new Set(lines)].join('|') }; });
     t(`drawing ${w}px ${r}: corners drawn 24x24, no copy/console overlap, no overflow, console lines fully revealed`, m.corner==='24px x 24px'.replace(' x ','x') && !m.overlap && !m.scroll && !m.runClip && (m.asideRight===null || m.asideRight <= m.vw) && (!m.lines || /^(none|inset\((0(px|%)\s*){1,4}\))$/.test(m.lines)), JSON.stringify(m));
     await p.close(); } }
@@ -177,6 +177,32 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   t('CT calculator: 2,000,000 + 100,000 -> 2,100,000 / 155,250', a.taxable==='2,100,000'&&a.tax==='155,250', JSON.stringify(a));
   await nojs.close(); await p2.close(); }
 
+// PHONE NAV HAS ITS FINAL SHAPE BEFORE ANY SCRIPT RUNS, and both fallbacks
+// work. A slow phone once painted the stacked no-JS menu (a ~900px header)
+// and then collapsed it, shifting the page 0.871.
+{ const shape = async (ctxOpts, block) => { const ctx = await b.newContext({ viewport:{width:390,height:844}, ...ctxOpts }); const p = await ctx.newPage();
+    if (block) await p.route(/Nav\.astro_astro_type_script/, r => r.abort());
+    await p.goto(B+'/insights/',{waitUntil:'domcontentloaded'});
+    const read = () => p.evaluate(() => { const h=document.querySelector('.nt-header').getBoundingClientRect().height; const l=document.querySelector('#nt-menu'); const bt=document.querySelector('.nt-burger');
+      return { h: Math.round(h), links: getComputedStyle(l).visibility==='visible' && getComputedStyle(l).position==='static', burger: getComputedStyle(bt).display!=='none' && getComputedStyle(bt).visibility==='visible' }; });
+    const early = await read(); let late = early; if (block) { await p.waitForTimeout(4300); late = await read(); }
+    await ctx.close(); return { early, late }; };
+  const blocked = await shape({}, true);
+  t('phone nav: script blocked -> collapsed bar first (<=100px), stacked links revealed after 4s', blocked.early.h<=100 && !blocked.early.links && blocked.late.links && !blocked.late.burger, JSON.stringify(blocked));
+  const nojs = await shape({ javaScriptEnabled:false }, false);
+  t('phone nav: JavaScript off -> stacked links shown at once, no dead toggle', nojs.early.links && !nojs.early.burger, JSON.stringify(nojs.early)); }
+
+// NO LAYOUT SHIFT ON A THROTTLED PHONE: 6x CPU, slow 3G-ish network, three
+// loads per page. CLS must stay under 0.01 every time.
+{ const bad = [];
+  for (const r of ['/','/insights/first-corporate-tax-return-what-breaks/','/platform/corporate-tax/']) for (let i=0;i<3;i++) {
+    const ctx = await b.newContext({ viewport:{width:412,height:823} }); const p = await ctx.newPage(); const cdp = await ctx.newCDPSession(p);
+    await cdp.send('Emulation.setCPUThrottlingRate',{rate:6}); await cdp.send('Network.enable'); await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:200000,uploadThroughput:93750});
+    await p.addInitScript(() => { window.__cls=0; new PerformanceObserver(l=>{ for (const e of l.getEntries()) if(!e.hadRecentInput) window.__cls+=e.value; }).observe({type:'layout-shift',buffered:true}); });
+    await p.goto(B+r,{waitUntil:'load'}); await p.waitForTimeout(2500);
+    const cls = await p.evaluate(()=>window.__cls); if (cls>=0.01) bad.push(`${r} run${i} CLS ${cls.toFixed(3)}`); await ctx.close(); }
+  t('layout shift: CLS < 0.01 on every throttled phone load (3 pages x 3 loads)', bad.length===0, bad.join(' | ')); }
+
 // STACKED CELLS SHARE ONE LEFT EDGE. At phone and tablet widths every cell in
 // a collapsed grid must start its content at the same x. The third card of
 // the three-column grids once sat 26px in from the first two.
@@ -190,6 +216,22 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
       for (const g of m) if (g.spread > 1 || g.links > 0) bad.push(`${w}px ${r} grid#${g.gi} spread=${g.spread}px stretchedLinks=${g.links}`); }
     await p.close(); }
   t('stacked cells: one left edge, links hug their text (390 + 820px, 6 routes)', bad.length===0, bad.slice(0,4).join(' | ')); }
+
+// AXE-CORE, the standard automated accessibility engine, WCAG 2.2 A + AA, on
+// every route at desktop and phone width. Lighthouse (which runs axe) found
+// three issues the hand-written checks above missed: the logo link's spoken
+// name, section indices drawn at 75% opacity, and links in prose told apart
+// by colour alone. label-content-name-mismatch is off by default in axe
+// ("experimental"); Lighthouse enables it, so it is enabled here too.
+{ const axeSrc = (await import('node:fs')).readFileSync(createRequire(import.meta.url).resolve('axe-core/axe.min.js'), 'utf8');
+  const bad = [];
+  for (const vp of [{width:1280,height:900},{width:390,height:844}]) { const p = await b.newPage({ viewport: vp });
+    for (const r of ROUTES) { await p.goto(B+r,{waitUntil:'networkidle'}); await p.waitForTimeout(2300); // let load animations finish
+      await p.evaluate(axeSrc); // via DevTools, not a <script>: the page's CSP would refuse an inline one
+      const v = await p.evaluate(async () => (await window.axe.run(document, { runOnly: { type:'tag', values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa'] }, rules: { 'label-content-name-mismatch': { enabled: true } }, resultTypes:['violations'] })).violations.map(x => `${x.id}(${x.nodes.length}): ${x.nodes[0].target.join(' ')}`));
+      for (const x of v) bad.push(`${vp.width}px ${r} ${x}`); }
+    await p.close(); }
+  t(`axe-core: 0 WCAG 2.2 AA violations on ${ROUTES.length} routes at 1280 and 390px`, bad.length===0, bad.slice(0,5).join(' | ')); }
 
 // REDUCED MOTION
 { const c = await b.newContext({ reducedMotion:'reduce' }); const p = await c.newPage(); await p.goto(B+'/',{waitUntil:'networkidle'});

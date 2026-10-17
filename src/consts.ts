@@ -55,12 +55,14 @@ export const SITE = {
   },
   locale: 'en_AE',
   email: 'hello@numaratech.com',
-  /** Single source of truth. Nothing may hard-code a number. */
-  phoneDisplay: '+971 52 974 2697',
+  /** Single source of truth. Nothing may hard-code a number. Non-breaking
+   *  spaces, so the number never wraps across two lines. */
+  phoneDisplay: '+971\u00a052\u00a0974\u00a02697',
   /** E.164, no spaces or dashes, so it dials correctly from mobile. */
   phoneHref: '+971529742697',
+  /** City and country only, by the owner's instruction (17 October 2026):
+   *  the practice publishes no street address. */
   address: {
-    line1: 'Business Bay',
     city: 'Dubai',
     country: 'United Arab Emirates',
   },

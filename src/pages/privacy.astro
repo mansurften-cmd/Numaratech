@@ -192,9 +192,8 @@ const formLive = hasContactForm();
 
       <p>
         Questions about this notice or about how we handle your data:
-        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, or write to us at
-        {' '}{SITE.address.line1}, {SITE.address.city},
-        {' '}{SITE.address.country}.
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, or call us on
+        {' '}<a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>.
       </p>
     </div>
   </section>

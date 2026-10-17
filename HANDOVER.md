@@ -187,7 +187,7 @@ trademark-agent status (R2), the external calculator link (R7).
 See `AUDIT-2026-10.md` §8. Domain/mailbox and form key **paused**; privacy
 notice **approved**; licence **No. 1632409 (Dubai DET e-Trader)** now on
 every page via `SITE.licence`. Open for the owner: confirm the licence fee
-was paid (a Notion note says not), confirm the Business Bay address, buy the
+was paid (a Notion note says not), buy the
 domain spelled with an A, revoke the GitHub token.
 
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)

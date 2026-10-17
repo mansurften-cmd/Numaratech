@@ -53,7 +53,6 @@ const organisation = {
   telephone: SITE.phoneHref,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: SITE.address.line1,
     addressLocality: SITE.address.city,
     addressCountry: 'AE',
   },
@@ -132,6 +131,8 @@ const articleSchema = article
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />

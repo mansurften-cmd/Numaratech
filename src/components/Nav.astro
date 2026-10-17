@@ -16,12 +16,16 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 ---
 
 <div class="nt-nav">
-  <a class="nt-brand" href="/" aria-label="NUMARATECH — home">
+  <!-- No aria-label: the visible wordmark and strap are the link's name, so
+       what a speech user says ("NUMARATECH") matches what a screen reader
+       announces (WCAG 2.5.3). The hidden word says where it goes. -->
+  <a class="nt-brand" href="/">
     <Logomark size={32} />
     <span style="display:flex; flex-direction:column; gap:5px">
       <span class="nt-brand__name">NUMARATECH</span>
       <span class="nt-brand__strap">ACCOUNTING · TAX · ADVISORY</span>
     </span>
+    <span class="nt-sr-only">, home</span>
   </a>
 
   <button

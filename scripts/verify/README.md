@@ -8,7 +8,7 @@ once blanked the live site (inline scripts refused by `script-src 'self'`).
 ```
 npm run build
 npm run verify:serve &          # dist/ on :4322 with the real CSP
-npm run verify                  # 46 browser checks
+npm run verify                  # 50 browser checks
 npm run verify:snapshot before.json   # then change CSS, rebuild, and …
 npm run verify:snapshot after.json    # … diff the two files
 ```
@@ -19,6 +19,7 @@ In the build sandbox Playwright is only installed globally:
 | Script | Checks |
 |---|---|
 | `verify.mjs` | CSP violations on all routes · print media on both calculators · dropdown ARIA, Escape, hit-test and hover-intent path · hero extrude ghost/solid line parity at three widths · button hover on both grounds and no clipping · both calculator live regions and range `aria-valuetext` · CT calculator SSR/CSR parity and correctness · **home hero console ↔ estimator: SSR == CSR on the demo entity, either slider re-runs the other, estimate mode** · **the drawing: frame corners finish at 24px, copy and console never overlap or overflow, typed lines end fully revealed, all static under reduced motion** · mobile drawer · text contrast against walked-up backgrounds on 20 routes · every internal link and anchor |
+| `verify.mjs`, added 17 October 2026 | **axe-core** WCAG 2.2 AA on all 20 routes at 1280 and 390px (with the label-in-name rule Lighthouse enables) · phone nav keeps its collapsed shape before any script runs, with both fallbacks (JavaScript off; script blocked → links after 4s) · **no layout shift** on a throttled phone (6× CPU, slow network, 3 pages × 3 loads) |
 | `snapshot.mjs` | Computed-style fingerprint of every element, screen + print, 1280 + 390px. Diff two runs to prove a CSS change is a no-op. Media is set before navigation and animations are frozen — without that the diff is nondeterministic. |
 | `mobile-sweep.mjs <outdir>` | 19 routes × 8 viewports (320 → 1024, plus landscape phone): horizontal overflow, clipped text, failed asset loads, console errors, drawer scrolls and its CTA is centred; full-page screenshots at 390px. Found the iPad nav overflow. |
 | `nav-breakpoint.mjs <outdir>` | 14 widths: no overflow; drawer below 1000px; one-line desktop nav at 1000px and above; iPad drawer opens on tap; viewport crops of the risky sections. |
@@ -26,3 +27,17 @@ In the build sandbox Playwright is only installed globally:
 
 `scripts/check-headers.mjs` (`npm run check:headers`) resolves `_headers` the
 way Cloudflare does and asserts 41 things about the result.
+
+## Fast checks (no browser)
+
+`npm test` — type check, build, the 41 header assertions, and `html-validate`
+on every built page. GitHub Actions runs the same on every push
+(`.github/workflows/ci.yml`).
+
+## Performance
+
+Measured with Lighthouse 12 against the CSP server, mobile emulation
+(simulated slow 4G, 4× CPU) and desktop. 17 October 2026, after this pass:
+performance 99–100 on every page tested, accessibility 100, best practices
+100, total blocking time 0 ms, layout shift 0. SEO reads 66 only because the
+pre-launch `noindex` is in force — expected until launch.

@@ -19,7 +19,7 @@ if (!hasContactForm()) {
 
 <Base
   title="Contact"
-  description="Talk to NUMARATECH about advisory work or the platform. Business Bay, Dubai."
+  description="Talk to NUMARATECH about advisory work or the platform. Dubai, United Arab Emirates."
 >
   <PageHero
     kicker="Contact / Dubai"
@@ -28,7 +28,7 @@ if (!hasContactForm()) {
     stats={[
       { label: 'Email', value: SITE.email },
       { label: 'Telephone', value: SITE.phoneDisplay },
-      { label: 'Office', value: `${SITE.address.line1}, ${SITE.address.city}` },
+      { label: 'Based in', value: `${SITE.address.city}, ${SITE.address.country}` },
       { label: 'Response', value: 'one business day' },
     ]}
   />
@@ -45,7 +45,6 @@ if (!hasContactForm()) {
         <div class="nt-footer__meta" style="color:var(--nt-ink)">
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
           <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a><br />
-          {SITE.address.line1}<br />
           {SITE.address.city}, {SITE.address.country}
         </div>
       </div>
