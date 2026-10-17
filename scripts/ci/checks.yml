@@ -1,0 +1,33 @@
+# To switch on: copy this file to .github/workflows/ci.yml on GitHub
+# (repository → Add file → Create new file → paste the path and this content).
+# Pushing it needs a token with the Workflows permission, which the current
+# token and the GitHub connector both lack — GitHub refused both on 17 Oct 2026.
+#
+# Runs on every push and pull request. Cloudflare deploys main on its own
+# (Workers Builds); this is the second opinion that shows a red cross on
+# GitHub if a change breaks the type check, the build, the security headers
+# or the HTML. The browser suite (scripts/verify/) is heavier and runs
+# locally — see scripts/verify/README.md.
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm audit --omit=dev --audit-level=high

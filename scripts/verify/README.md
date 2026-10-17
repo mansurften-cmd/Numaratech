@@ -31,8 +31,9 @@ way Cloudflare does and asserts 41 things about the result.
 ## Fast checks (no browser)
 
 `npm test` — type check, build, the 41 header assertions, and `html-validate`
-on every built page. GitHub Actions runs the same on every push
-(`.github/workflows/ci.yml`).
+on every built page. A GitHub Actions workflow that runs the same on every push
+is written and saved as `scripts/ci/checks.yml`; it takes effect once copied to
+`.github/workflows/ci.yml` (see the note at the top of that file).
 
 ## Performance
 
