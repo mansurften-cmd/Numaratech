@@ -1,7 +1,18 @@
 ---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { SITE, FOOTER_NAV } from '../consts';
 import Logomark from './Logomark.astro';
 const year = new Date().getFullYear();
+
+// The association logo is off until permission and the official file exist
+// (see SITE.association.logo). A logo switched on without its file would
+// ship a broken image on every page: fail the build instead, so Cloudflare
+// deploys nothing.
+const assoc = SITE.association;
+if (assoc.logo && !existsSync(join(process.cwd(), 'public', assoc.logo.src))) {
+  throw new Error(`SITE.association.logo points at ${assoc.logo.src}, which is not in public/.`);
+}
 ---
 
 <footer>
@@ -28,11 +39,35 @@ const year = new Date().getFullYear();
       ))
     }
   </div>
+  <!-- Association row: label, then the network's mark linked to its site.
+       The relationship is stated in words in the legal line below. -->
+  <div class="nt-assoc">
+    <span class="nt-assoc__label">In association with</span>
+    <a class="nt-assoc__mark" href={assoc.url} rel="noopener">
+      {
+        assoc.logo ? (
+          <img
+            class:list={['nt-assoc__logo', { 'nt-assoc__logo--plate': assoc.logo.plate }]}
+            src={assoc.logo.src}
+            width={assoc.logo.width}
+            height={assoc.logo.height}
+            alt={assoc.name}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <span class="nt-assoc__word">
+            G&nbsp;R&nbsp;A&nbsp;M&nbsp;P<span class="nt-assoc__sub">Network</span>
+          </span>
+        )
+      }
+    </a>
+  </div>
   <div class="nt-legal">
     © {year} {SITE.legalName}. All rights reserved.<br />
     {SITE.licence.type} licence No. {SITE.licence.number}, issued by the {SITE.licence.authority}.
-    Associated with <a href={SITE.association.url} rel="noopener">{SITE.association.name}</a>; a
-    separate business, not a member firm.<br />
+    {SITE.name} is associated with {assoc.name}, and is a separate business, not a member firm of the
+    network.<br />
     Content on this site is general information, not tax or accounting advice.
   </div>
 </footer>

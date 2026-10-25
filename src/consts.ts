@@ -71,6 +71,24 @@ export const SITE = {
     url: 'https://gramp.in/',
     host: 'gramp.in',
     description: 'a network of Chartered Accountant firms with offices across India',
+    /**
+     * The network's logo in the footer's association row. OFF (null) until
+     * BOTH are true:
+     *   1. written permission from the network's IP custodian to display it
+     *      (the logo is the network's registered intellectual property, and
+     *      NUMARATECH is associated with the network, not a member firm);
+     *   2. the network's official artwork, unaltered, is in public/associations/
+     *      — preferably an SVG, and preferably the reversed (white) version,
+     *      since the footer is dark navy.
+     * Then set, e.g.:
+     *   logo: { src: '/associations/gramp.svg', width: 120, height: 32, plate: false }
+     * `plate: true` puts a full-colour logo on a white tile instead of
+     * recolouring it (altering another firm's mark is not acceptable).
+     * Until then the row shows the name set in type, "G R A M P", which is the
+     * no-logo treatment the network's founder firm asked for. If `logo` is
+     * set and the file is missing, the build fails and nothing is deployed.
+     */
+    logo: null as null | { src: string; width: number; height: number; plate?: boolean },
   },
   /** Official profiles (LinkedIn company page, Google Business Profile URL).
    *  Emitted as schema.org sameAs once filled in — it is how search engines
