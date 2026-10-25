@@ -1,16 +1,19 @@
 // Case studies. Each has a page at /case-studies/<slug>/ and is linked from
 // the service pages it illustrates.
 //
-// Written 25 October 2026 from the practice's own records in Notion (the
-// GrowFactor sub-contracting tasks, the 3 August 2026 meeting notes, the
+// Written 25 October 2026 from the practice's own records in Notion (work
+// delivered for a partner firm, the 3 August 2026 meeting notes, the
 // Payment Tracker, and the practice's own goAML registration tracker).
-// Anonymised: no client, partner or person is named, figures that could
-// identify a business are rounded, and dates are given to the month. Only
-// outcomes the records show as done are claimed.
+// Anonymised: no client, partner firm or person is named, figures that
+// could identify a business are rounded, and dates are given to the month.
+// Only outcomes the records show as done are claimed. The partner firm
+// agreed to its work being described; the owner confirmed the loss case
+// was his engagement (25 October 2026). On the site, partners are referred
+// to only as "partner firms we work with" — never by name.
 //
 // Before adding one: the client must not be identifiable, and the
 // engagement terms must allow it to be described. Where work came through
-// another firm, that firm's agreement is needed too.
+// a partner firm, that firm's agreement is needed too.
 
 export type CaseStudy = {
   slug: string;
