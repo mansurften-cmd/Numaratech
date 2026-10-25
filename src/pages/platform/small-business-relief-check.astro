@@ -1,0 +1,504 @@
+---
+/** /platform/small-business-relief-check/ — the first free tool. Six
+ *  questions in; whether Small Business Relief is available out, with what
+ *  electing it costs. The rules live in src/lib/sbr.ts, shared by the page
+ *  script and the verification harness. Runs entirely in the browser. */
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Arrow from '../../components/Arrow.astro';
+import { SITE, UAE_CT } from '../../consts';
+import { checkSbr } from '../../lib/sbr';
+
+const nf = new Intl.NumberFormat('en-AE');
+
+// The panel as it stands before anything is answered — the six conditions,
+// each unanswered. Rendered at build time, so without JavaScript the page
+// still lists exactly what the relief requires.
+const initial = checkSbr({
+  periodEnd: '',
+  revenue: null,
+  earlier: null,
+  resident: null,
+  qfzp: null,
+  mne: null,
+  loss: null,
+});
+
+const questions = [
+  {
+    name: 'earlier',
+    legend: 'Was revenue at or below the threshold in every earlier tax period?',
+    hint: 'Every tax period since the regime began on 1 June 2023. One period above it ends the relief for good.',
+    options: [
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
+      { value: 'first', label: 'This is our first tax period' },
+    ],
+  },
+  {
+    name: 'resident',
+    legend: 'Is the business a UAE Resident Person?',
+    hint: 'A company incorporated or effectively managed in the UAE, or an individual doing business here.',
+    options: [
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
+    ],
+  },
+  {
+    name: 'qfzp',
+    legend: 'Is it a Qualifying Free Zone Person?',
+    hint: 'A free zone business that meets the conditions for the 0% rate on qualifying income.',
+    options: [
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
+    ],
+  },
+  {
+    name: 'mne',
+    legend: 'Is it part of a multinational group with consolidated revenue of AED 3.15 billion or more?',
+    hint: 'A multinational group as defined by Cabinet Decision No. 44 of 2020.',
+    options: [
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
+    ],
+  },
+  {
+    name: 'loss',
+    legend: 'Do you expect a tax loss for this period?',
+    hint: 'Not a condition. It changes what electing costs you.',
+    options: [
+      { value: 'yes', label: 'Yes' },
+      { value: 'no', label: 'No' },
+    ],
+  },
+];
+
+const mark = (ok: boolean | null) => (ok === true ? 'Met' : ok === false ? 'Not met' : 'To answer');
+
+// A tool, to search engines and to the reader: what it is, that it is free,
+// and who provides it.
+const toolSchema = [
+  {
+    '@type': 'WebApplication',
+    name: 'Small Business Relief Check',
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Any (runs in the browser)',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'AED' },
+    description:
+      'Checks whether a UAE business can elect Small Business Relief for Corporate Tax, and shows what electing it costs.',
+    provider: { '@id': `${SITE.url}/#organisation` },
+  },
+];
+---
+
+<Base
+  title="Small Business Relief Check"
+  seoTitle="UAE Small Business Relief Checker (Free)"
+  description={`Free check: can your business elect UAE Small Business Relief for Corporate Tax? Revenue up to AED 3m, periods ending by ${UAE_CT.smallBusinessReliefLastPeriodEnd}.`}
+  schema={toolSchema}
+>
+  <PageHero
+    kicker="Platform / Free tool"
+    title="Can you elect Small Business Relief?"
+    lead="Six questions, and the answer with its cost: whether the relief is available for the period, and what you give up by electing it. Nothing you enter leaves your browser."
+    primary={{ label: 'Run the check', href: '#check' }}
+    secondary={{ label: 'Read the rules', href: '/insights/small-business-relief-extended-to-2029/' }}
+    stats={[
+      { label: 'Revenue threshold', value: `${UAE_CT.currency} ${nf.format(UAE_CT.smallBusinessReliefRevenueCap)}` },
+      { label: 'Last period ending', value: UAE_CT.smallBusinessReliefLastPeriodEnd },
+      { label: 'Rules', value: 'MD 73 of 2023, as amended' },
+      { label: 'Runs', value: 'in your browser', live: true },
+    ]}
+  />
+
+  <section class="nt-section" id="check">
+    <div class="sbr__intro">
+      <SectionHead
+        index="01"
+        eyebrow="Free check"
+        title="Answer for one tax period."
+        lead="Each answer updates the result as you go. Answer for the tax period you are filing, not the calendar year."
+      />
+    </div>
+
+    <div class="sbr">
+      <form class="sbr__form" id="sbr-form" novalidate>
+        <p class="nt-micro nt-micro--accent nt-micro-idx">Questions</p>
+
+        <div class="sbr__fields">
+          <div class="nt-field-group">
+            <label class="nt-label" for="sbr-period-end">When does the tax period end?</label>
+            <input
+              class="nt-input sbr__date"
+              id="sbr-period-end"
+              name="periodEnd"
+              type="date"
+              min="2023-06-01"
+              max="2035-12-31"
+              aria-describedby="sbr-period-end-hint"
+            />
+            <p class="nt-hint" id="sbr-period-end-hint">
+              Usually your financial year end. The period must also have started on or after
+              {' '}{UAE_CT.effectiveFrom}.
+            </p>
+          </div>
+
+          <div class="nt-field-group">
+            <label class="nt-label" for="sbr-revenue">Revenue for the period</label>
+            <div class="nt-affix">
+              <span class="nt-affix__unit">{UAE_CT.currency}</span>
+              <input
+                class="nt-input nt-input--fig"
+                id="sbr-revenue"
+                name="revenue"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                aria-describedby="sbr-revenue-hint"
+              />
+            </div>
+            <p class="nt-hint" id="sbr-revenue-hint">
+              Gross revenue in your financial statements for the period, before any expenses.
+            </p>
+          </div>
+
+          {
+            questions.map((question) => (
+              <fieldset class="nt-field-group sbr__q" aria-describedby={`sbr-${question.name}-hint`}>
+                <legend class="nt-label">{question.legend}</legend>
+                <div class="sbr__options">
+                  {question.options.map((option) => (
+                    <label class="sbr__option">
+                      <input type="radio" name={question.name} value={option.value} />
+                      <span>{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <p class="nt-hint" id={`sbr-${question.name}-hint`}>{question.hint}</p>
+              </fieldset>
+            ))
+          }
+        </div>
+
+        <p class="sbr__reset">
+          <button type="reset" class="nt-arrow-link sbr__reset-btn">Clear the answers</button>
+        </p>
+      </form>
+
+      <div class="sbr__out" data-sbr-status={initial.status}>
+        <p class="nt-micro nt-micro--accent nt-micro-idx sbr__out-label">Result</p>
+        <p class="nt-sr-only" id="sbr-live"></p>
+        <p class="sbr__headline" data-sbr-headline>{initial.headline}</p>
+
+        <ul class="sbr__tests">
+          {
+            initial.tests.map((test) => (
+              <li data-sbr-test={test.key} data-ok="null">
+                <span class="sbr__mark" data-sbr-mark>{mark(test.ok)}</span>
+                <span class="sbr__test">
+                  <span class="sbr__test-label">{test.label}</span>
+                  <span class="sbr__test-note" data-sbr-note>{test.note}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="sbr__cost" data-sbr-cost hidden>
+          <p class="nt-micro nt-micro--accent nt-micro-idx">If you elect</p>
+          <ul class="nt-points sbr__cost-list" data-sbr-consequences></ul>
+        </div>
+
+        <p class="sbr__next nt-no-print">
+          <a class="nt-arrow-link" href="/platform/corporate-tax/#estimator">
+            Estimate the tax if you do not elect
+            <Arrow />
+          </a>
+        </p>
+
+        <p class="sbr__disclaimer nt-sm">
+          <strong>This is a check, not advice.</strong> It applies the published conditions to
+          your answers and nothing else. Whether a business is a Resident Person, a Qualifying
+          Free Zone Person or a member of a multinational group can itself need analysis, and the
+          Federal Tax Authority looks at the substance. Confirm your position with a qualified
+          adviser before you elect.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <NextBand
+    title="Not sure how to answer one of these?"
+    body="That is usually the question that matters. A 30-minute call — bring the period, the revenue and how the business is set up."
+  />
+</Base>
+
+<style>
+  .sbr__intro {
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .sbr {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+  .sbr__fields {
+    display: grid;
+    gap: var(--nt-5);
+    margin-top: var(--nt-5);
+    padding-top: var(--nt-5);
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+  .sbr__date {
+    max-width: 14rem;
+  }
+  .sbr__q {
+    margin: 0;
+    padding: var(--nt-4) 0 0;
+    border: 0;
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    min-width: 0;
+  }
+  .sbr__q legend {
+    padding: 0;
+    float: left;
+    width: 100%;
+  }
+  .sbr__options {
+    clear: both;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--nt-2) var(--nt-5);
+    padding-top: var(--nt-3);
+  }
+  .sbr__option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nt-3);
+    min-height: 44px;
+    color: var(--nt-navy-900);
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  /* Square radio, the estimator's checkbox idiom: 24px target, teal fill. */
+  .sbr__option input[type='radio'] {
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+    margin: 0;
+    border: var(--nt-hair) solid var(--nt-hairline);
+    background: var(--nt-white);
+    cursor: pointer;
+    position: relative;
+  }
+  .sbr__option input[type='radio']:checked {
+    border-color: var(--nt-teal-700);
+  }
+  .sbr__option input[type='radio']:checked::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    background: var(--nt-teal-700);
+  }
+  .sbr__reset {
+    margin-top: var(--nt-5);
+  }
+  .sbr__reset-btn {
+    background: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding-inline: 0;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .sbr__out {
+    border-top: var(--nt-hair) solid var(--nt-navy-700);
+    padding-top: var(--nt-5);
+  }
+  .sbr__out-label {
+    margin-bottom: var(--nt-4);
+  }
+  .sbr__headline {
+    margin: 0;
+    padding: var(--nt-3) 0 var(--nt-3) var(--nt-4);
+    border-left: 3px solid var(--nt-hairline);
+    color: var(--nt-navy-900);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  [data-sbr-status='available'] .sbr__headline {
+    border-left-color: var(--nt-teal-700);
+  }
+  [data-sbr-status='not-available'] .sbr__headline {
+    border-left-color: var(--nt-navy-900);
+  }
+  .sbr__tests {
+    margin: var(--nt-5) 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--nt-hair) solid var(--nt-hairline);
+  }
+  .sbr__tests li {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: var(--nt-4);
+    padding: var(--nt-3) 0;
+    border-bottom: var(--nt-hair) solid var(--nt-hairline-soft);
+  }
+  .sbr__mark {
+    font-family: var(--nt-font-mono);
+    font-size: var(--nt-fs-micro);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--nt-text-muted);
+    padding-top: 3px;
+  }
+  .sbr__tests li[data-ok='true'] .sbr__mark {
+    color: var(--nt-teal-700);
+  }
+  .sbr__tests li[data-ok='false'] .sbr__mark {
+    color: var(--nt-navy-900);
+    font-weight: 600;
+  }
+  .sbr__test {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sbr__test-label {
+    color: var(--nt-navy-900);
+    font-weight: 500;
+  }
+  .sbr__test-note {
+    color: var(--nt-text-body);
+    font-size: var(--nt-fs-sm);
+  }
+  .sbr__cost {
+    margin-top: var(--nt-6);
+  }
+  .sbr__cost[hidden] {
+    display: none;
+  }
+  .sbr__cost-list {
+    margin-top: var(--nt-3);
+  }
+  .sbr__next {
+    margin-top: var(--nt-6);
+  }
+  .sbr__disclaimer {
+    margin-top: var(--nt-6);
+    padding-top: var(--nt-4);
+    border-top: var(--nt-hair) solid var(--nt-hairline-soft);
+    color: var(--nt-text-muted);
+    max-width: 62ch;
+  }
+
+  @media (min-width: 62rem) {
+    .sbr {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: var(--nt-8);
+    }
+    .sbr__out {
+      position: sticky;
+      top: calc(var(--nt-header-h) + var(--nt-6));
+    }
+  }
+</style>
+
+<script>
+  // Small Business Relief Check. Reads the form, runs the shared rules in
+  // src/lib/sbr.ts, and redraws the result panel. Nothing leaves the browser.
+  import { checkSbr, type SbrInputs } from '../../lib/sbr';
+
+  const form = document.getElementById('sbr-form') as HTMLFormElement | null;
+  const panel = document.querySelector<HTMLElement>('[data-sbr-status]');
+  const live = document.getElementById('sbr-live');
+
+  if (form && panel && live) {
+    const money = new Intl.NumberFormat('en-AE', { maximumFractionDigits: 0 });
+    const revenueField = form.elements.namedItem('revenue') as HTMLInputElement;
+    const periodField = form.elements.namedItem('periodEnd') as HTMLInputElement;
+
+    const radio = (name: string) =>
+      (form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? null);
+    const yesNo = (name: string) => {
+      const value = radio(name);
+      return value === null ? null : value === 'yes';
+    };
+    const parseAmount = (raw: string): number | null => {
+      const cleaned = raw.replace(/[^0-9.]/g, '');
+      if (cleaned === '') return null;
+      const value = Number(cleaned);
+      return Number.isFinite(value) ? value : null;
+    };
+
+    const read = (): SbrInputs => ({
+      periodEnd: periodField.value,
+      revenue: parseAmount(revenueField.value),
+      earlier: radio('earlier') as SbrInputs['earlier'],
+      resident: yesNo('resident'),
+      qfzp: yesNo('qfzp'),
+      mne: yesNo('mne'),
+      loss: yesNo('loss'),
+    });
+
+    const mark = (ok: boolean | null) => (ok === true ? 'Met' : ok === false ? 'Not met' : 'To answer');
+    const headline = panel.querySelector<HTMLElement>('[data-sbr-headline]')!;
+    const cost = panel.querySelector<HTMLElement>('[data-sbr-cost]')!;
+    const consequences = panel.querySelector<HTMLElement>('[data-sbr-consequences]')!;
+
+    // Spoken once typing settles, and not on page load: the region is set
+    // live only after the first render.
+    let timer: number | undefined;
+    const speak = (text: string) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (live.textContent !== text) live.textContent = text;
+      }, 500);
+    };
+
+    const render = (announce: boolean) => {
+      const result = checkSbr(read());
+      panel.dataset.sbrStatus = result.status;
+      headline.textContent = result.headline;
+      for (const test of result.tests) {
+        const row = panel.querySelector<HTMLElement>(`[data-sbr-test="${test.key}"]`);
+        if (!row) continue;
+        row.dataset.ok = String(test.ok);
+        row.querySelector('[data-sbr-mark]')!.textContent = mark(test.ok);
+        row.querySelector('[data-sbr-note]')!.textContent = test.note;
+      }
+      consequences.replaceChildren(
+        ...result.consequences.map((line) => {
+          const li = document.createElement('li');
+          li.textContent = line;
+          return li;
+        })
+      );
+      cost.hidden = result.consequences.length === 0;
+      if (announce) speak(result.headline);
+    };
+
+    form.addEventListener('input', () => render(true));
+    form.addEventListener('change', () => render(true));
+    // Thousands separators once the visitor leaves the field.
+    revenueField.addEventListener('blur', () => {
+      const value = parseAmount(revenueField.value);
+      if (value !== null) revenueField.value = money.format(value);
+    });
+    // Reset clears the fields after this event; redraw on the next frame.
+    form.addEventListener('reset', () => requestAnimationFrame(() => render(true)));
+
+    render(false);
+    live.setAttribute('aria-atomic', 'true');
+    requestAnimationFrame(() => live.setAttribute('aria-live', 'polite'));
+  }
+</script>

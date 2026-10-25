@@ -1,0 +1,78 @@
+---
+/** /insights/regulatory-brief/ — every edition of the weekly brief, newest
+ *  first. Editions come from src/briefs.ts. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import NextBand from '../../../components/NextBand.astro';
+import { SITE } from '../../../consts';
+import { formatInsightDate } from '../../../insights';
+import { BRIEF_SERIES, briefsNewestFirst } from '../../../briefs';
+
+const briefs = briefsNewestFirst();
+
+// The series as a collection page: what search engines are told this is.
+const seriesSchema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${SITE.url}${BRIEF_SERIES.path}`,
+    name: BRIEF_SERIES.name,
+    url: `${SITE.url}${BRIEF_SERIES.path}`,
+    publisher: { '@id': `${SITE.url}/#organisation` },
+    hasPart: briefs.map((brief) => ({
+      '@type': 'Article',
+      headline: `${BRIEF_SERIES.name}: ${brief.title}`,
+      url: `${SITE.url}${BRIEF_SERIES.path}${brief.slug}/`,
+      datePublished: brief.published,
+    })),
+  },
+];
+---
+
+<Base
+  title={BRIEF_SERIES.name}
+  seoTitle="UAE Regulatory Brief: Tax & Compliance Updates"
+  description="What changed in UAE tax and compliance regulation, week by week — FTA, Ministry of Finance, AML, DIFC and ADGM — and what falls due in the next 30 days."
+  schema={seriesSchema}
+>
+  <PageHero
+    kicker="Insights / Regulatory Brief"
+    title="What changed in the week, and what falls due."
+    lead="Each edition covers one week of UAE tax and compliance regulation: what the Federal Tax Authority, the Ministry of Finance and the financial free zone regulators published, what it means for a small business, and the deadlines in the next 30 days."
+    primary={{ label: 'Read the latest', href: `${BRIEF_SERIES.path}${briefs[0].slug}/` }}
+    stats={[
+      { label: 'Editions', value: String(briefs.length) },
+      { label: 'Covers', value: 'FTA · MoF · AML · DIFC · ADGM' },
+      { label: 'Latest window', value: briefs[0].title.replace(/^Week to /, 'to ') },
+      { label: 'Sources', value: 'cited in every edition' },
+    ]}
+  />
+
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Editions</span></div>
+    <h2 class="nt-h2">Every edition, newest first.</h2>
+    <p class="nt-body">
+      Each edition is dated and stays as it was written. A deadline in an older edition may have
+      passed or moved; the newest edition carries the current position.
+    </p>
+    <ul class="nt-ruled nt-brief-list">
+      {
+        briefs.map((brief) => (
+          <li>
+            <p class="nt-micro">
+              Published <time datetime={brief.published}>{formatInsightDate(brief.published)}</time>
+            </p>
+            <h3 class="nt-h3">
+              <a href={`${BRIEF_SERIES.path}${brief.slug}/`}>{brief.title}</a>
+            </h3>
+            <p class="nt-small">{brief.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <NextBand
+    title="Want to know which of these reaches you?"
+    body="A 30-minute call. Tell us what the business does and where it is licensed, and we will tell you which items matter."
+  />
+</Base>

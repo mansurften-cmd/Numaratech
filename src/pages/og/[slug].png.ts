@@ -10,6 +10,7 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { renderOgPng, ogSlug } from '../../og';
 import { SERVICE_GROUPS } from '../../services';
 import { INSIGHTS } from '../../insights';
+import { BRIEFS, BRIEF_SERIES } from '../../briefs';
 
 const CARDS: { path: string; title: string; kicker?: string }[] = [
   { path: '/', title: 'Finance that can be defended.', kicker: 'Advisory and platform' },
@@ -17,6 +18,8 @@ const CARDS: { path: string; title: string; kicker?: string }[] = [
   { path: '/platform/', title: 'It computes and it evidences. It does not decide.', kicker: 'Platform' },
   { path: '/platform/corporate-tax/', title: 'Trial balance to filed return.', kicker: 'Corporate Tax Engine' },
   { path: '/platform/fs-studio/', title: 'IFRS statements, generated.', kicker: 'FS Studio' },
+  { path: '/platform/small-business-relief-check/', title: 'Can you elect Small Business Relief?', kicker: 'Free tool' },
+  { path: BRIEF_SERIES.path, title: 'What changed in the week, and what falls due.', kicker: BRIEF_SERIES.name },
   { path: '/services/', title: 'Licensing the software is the easy part.', kicker: 'Implementation' },
   { path: '/business-case/', title: 'What the close actually costs.', kicker: 'Business case' },
   { path: '/about/', title: 'A practice that builds its own tools.', kicker: 'About' },
@@ -39,6 +42,11 @@ const CARDS: { path: string; title: string; kicker?: string }[] = [
     path: `/insights/${insight.slug}/`,
     title: insight.title,
     kicker: insight.topic,
+  })),
+  ...BRIEFS.map((brief) => ({
+    path: `${BRIEF_SERIES.path}${brief.slug}/`,
+    title: brief.title,
+    kicker: BRIEF_SERIES.name,
   })),
 ];
 

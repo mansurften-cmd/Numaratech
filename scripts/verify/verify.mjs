@@ -10,7 +10,9 @@ const B = process.env.VERIFY_BASE ?? 'http://127.0.0.1:4322';
 const ROUTES = ['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/','/advisory/risk-compliance/','/platform/',
   '/platform/corporate-tax/','/platform/fs-studio/','/services/','/business-case/','/about/','/insights/',
   '/insights/first-corporate-tax-return-what-breaks/','/insights/closing-the-books-in-five-days/',
-  '/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html'];
+  '/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html',
+  '/platform/small-business-relief-check/','/insights/small-business-relief-extended-to-2029/',
+  '/insights/regulatory-brief/','/insights/regulatory-brief/week-to-2026-10-18/'];
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 
@@ -19,7 +21,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   p.on('console', m => { if (/Content Security Policy|Refused to/i.test(m.text())) v.push(m.text().slice(0,80)); });
   p.on('pageerror', e => v.push('pageerror: ' + e.message.slice(0,80)));
   for (const r of ROUTES) await p.goto(B+r, { waitUntil: 'networkidle' });
-  t('no CSP violations / page errors on 20 routes', v.length===0, v.join(' | ')); await p.close(); }
+  t(`no CSP violations / page errors on ${ROUTES.length} routes`, v.length===0, v.join(' | ')); await p.close(); }
 
 // PRINT: both calculators, print media
 { const p = await b.newPage({ viewport:{width:1280,height:900} });
@@ -262,7 +264,9 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
     if (!m.ld.includes('AccountingService')) why.push('no AccountingService');
     if (r !== '/' && !m.ld.includes('BreadcrumbList')) why.push('no BreadcrumbList');
     if (r === '/' && !m.ld.includes('WebSite')) why.push('no WebSite');
-    if (/^\/insights\/.+\/$/.test(r) && !m.ld.includes('Article')) why.push('no Article');
+    // Posts carry Article; the brief's index is a CollectionPage of them.
+    if (/^\/insights\/.+\/$/.test(r) && r !== '/insights/regulatory-brief/' && !m.ld.includes('Article')) why.push('no Article');
+    if (r === '/insights/regulatory-brief/' && !m.ld.includes('CollectionPage')) why.push('no CollectionPage');
     if (/^\/advisory\/.+\/$/.test(r) && !m.ld.includes('Service')) why.push('no Service');
     if (titles.has(m.title)) why.push(`title duplicates ${titles.get(m.title)}`); titles.set(m.title, r);
     if (descs.has(m.desc)) why.push(`description duplicates ${descs.get(m.desc)}`); descs.set(m.desc, r);
@@ -307,7 +311,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
         const req=large?3:4.5, ratio=CR(fg,bg); if(ratio<req) out.push(`${el.tagName.toLowerCase()}.${(typeof el.className==='string'?el.className:'').split(/\s+/)[0]} ${ratio.toFixed(2)}<${req}`); }
       return out; });
     for (const x of rows) bad.set(x, r); }
-  t('text contrast: 0 failing pairs on 20 routes', bad.size===0, [...bad.entries()].slice(0,5).map(([k,v])=>`${v} ${k}`).join(' | ')); await p.close(); }
+  t(`text contrast: 0 failing pairs on ${ROUTES.length} routes`, bad.size===0, [...bad.entries()].slice(0,5).map(([k,v])=>`${v} ${k}`).join(' | ')); await p.close(); }
 
 // LINKS
 { const p = await b.newPage(); const seen=new Set(); const broken=[];
@@ -317,6 +321,72 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
       const res=await p.request.get(u.href).catch(()=>null); if(!res||res.status()>=400){broken.push(`${r} -> ${h}`);continue;}
       if(u.hash){ const html=await res.text(); if(!new RegExp(`id=["']${u.hash.slice(1)}["']`).test(html)) broken.push(`${r} -> ${h} (anchor)`); } } }
   t(`links: all ${seen.size} internal links/anchors resolve`, broken.length===0, broken.slice(0,4).join(' | ')); await p.close(); }
+
+// SMALL BUSINESS RELIEF CHECK — the rules, then the page that runs them.
+// The rules module is plain TypeScript with no DOM, so Node imports it
+// directly (type stripping, Node 22.18+).
+{ const { checkSbr } = await import('../../src/lib/sbr.ts');
+  const ok = { periodEnd:'2026-12-31', revenue:2_400_000, earlier:'yes', resident:true, qfzp:false, mne:false, loss:false };
+  const cases = [
+    ['all conditions met', ok, 'available'],
+    ['revenue exactly AED 3,000,000 is within', { ...ok, revenue:3_000_000 }, 'available'],
+    ['revenue AED 3,000,001 is over', { ...ok, revenue:3_000_001 }, 'not-available'],
+    ['an earlier period over the threshold', { ...ok, earlier:'no' }, 'not-available'],
+    ['first tax period', { ...ok, earlier:'first' }, 'available'],
+    ['period ending 31 December 2029 is the last', { ...ok, periodEnd:'2029-12-31' }, 'available'],
+    ['period ending 1 January 2030 is out', { ...ok, periodEnd:'2030-01-01' }, 'not-available'],
+    ['period ending before the regime', { ...ok, periodEnd:'2023-05-31' }, 'not-available'],
+    ['non-resident', { ...ok, resident:false }, 'not-available'],
+    ['Qualifying Free Zone Person', { ...ok, qfzp:true }, 'not-available'],
+    ['multinational group member', { ...ok, mne:true }, 'not-available'],
+    ['one question unanswered', { ...ok, mne:null }, 'incomplete'],
+    ['blank form', { periodEnd:'', revenue:null, earlier:null, resident:null, qfzp:null, mne:null, loss:null }, 'incomplete'],
+    ['a failure outranks open questions', { periodEnd:'', revenue:3_500_000, earlier:null, resident:null, qfzp:null, mne:null, loss:null }, 'not-available'],
+  ];
+  const wrong = cases.filter(([, input, want]) => checkSbr(input).status !== want).map(([n, input, want]) => `${n}: ${checkSbr(input).status}, wanted ${want}`);
+  const lossNote = checkSbr({ ...ok, loss:true }).consequences.some((c) => /forfeit/.test(c));
+  t(`SBR rules: ${cases.length} cases (threshold edges, cumulative test, 2029 end date, exclusions) + loss cost note`, wrong.length===0 && lossNote, wrong.join(' | '));
+
+  const p = await b.newPage({ viewport:{width:1280,height:900} }); const errs=[]; p.on('pageerror', e => errs.push(e.message));
+  await p.goto(B+'/platform/small-business-relief-check/',{waitUntil:'networkidle'});
+  const h0 = await p.textContent('[data-sbr-headline]');
+  await p.fill('#sbr-period-end','2026-12-31'); await p.fill('#sbr-revenue','2400000');
+  for (const [n, v] of [['earlier','yes'],['resident','yes'],['qfzp','no'],['mne','no'],['loss','yes']]) await p.check(`input[name="${n}"][value="${v}"]`);
+  await p.locator('#sbr-revenue').blur(); await p.waitForTimeout(700);
+  const a = await p.evaluate(() => ({ status: document.querySelector('[data-sbr-status]').dataset.sbrStatus, head: document.querySelector('[data-sbr-headline]').textContent,
+    rev: document.querySelector('#sbr-revenue').value, cost: !document.querySelector('[data-sbr-cost]').hidden, forfeit: /forfeit/.test(document.querySelector('[data-sbr-consequences]').textContent),
+    live: document.querySelector('#sbr-live').getAttribute('aria-live'), said: document.querySelector('#sbr-live').textContent }));
+  await p.check('input[name="earlier"][value="no"]'); await p.waitForTimeout(700);
+  const n = await p.evaluate(() => ({ status: document.querySelector('[data-sbr-status]').dataset.sbrStatus, mark: document.querySelector('[data-sbr-test="earlier"] [data-sbr-mark]').textContent, cost: document.querySelector('[data-sbr-cost]').hidden }));
+  await p.click('.sbr__reset-btn'); await p.waitForTimeout(200);
+  const r = await p.evaluate(() => document.querySelector('[data-sbr-status]').dataset.sbrStatus);
+  t('SBR page: blank on load; answers -> available with loss cost; earlier period over -> not available; clear resets; live region polite; no errors',
+    /6 of 6 questions/.test(h0) && a.status==='available' && a.rev==='2,400,000' && a.cost && a.forfeit && a.live==='polite' && /appears to be available/.test(a.said)
+    && n.status==='not-available' && n.mark==='Not met' && n.cost && r==='incomplete' && errs.length===0, JSON.stringify({ h0, a, n, r, errs }));
+  await p.close(); }
+
+// PEOPLE, BYLINES, WHATSAPP
+{ const p = await b.newPage({ viewport:{width:1280,height:900} });
+  await p.goto(B+'/about/',{waitUntil:'networkidle'});
+  // The photo is lazy-loaded below the fold: bring it into view first.
+  await p.locator('#mansur-kothambawala img').scrollIntoViewIfNeeded();
+  await p.waitForFunction(() => { const i = document.querySelector('#mansur-kothambawala img'); return i && i.complete && i.naturalWidth > 0; }, null, { timeout: 5000 }).catch(() => {});
+  const a = await p.evaluate(() => { const ld=[...document.querySelectorAll('script[type="application/ld+json"]')].map(x=>JSON.parse(x.textContent));
+    const person = ld.flatMap(j => j['@graph'] ?? [j]).find(n => n['@type']==='Person'); const org = ld.find(j => j['@type']==='AccountingService');
+    const img = document.querySelector('#mansur-kothambawala img');
+    return { person: person?.name, cred: person?.honorificSuffix, founder: org?.founder?.[0]?.['@id'], id: person?.['@id'],
+      avif: !!document.querySelector('#mansur-kothambawala source[type="image/avif"]'), loaded: !!img && img.complete && img.naturalWidth > 0, alt: img?.alt, h: img?.getAttribute('height') }; });
+  t('about: profile with photo (AVIF/WebP, sized), Person JSON-LD, organisation names the founder by the same @id',
+    a.person==='Mansur Kothambawala' && a.cred==='FCCA' && a.founder===a.id && a.avif && a.loaded && /Mansur Kothambawala/.test(a.alt||'') && a.h==='531', JSON.stringify(a));
+  await p.goto(B+'/insights/small-business-relief-extended-to-2029/',{waitUntil:'domcontentloaded'});
+  const by = await p.evaluate(() => { const art = [...document.querySelectorAll('script[type="application/ld+json"]')].map(x=>JSON.parse(x.textContent)).find(j=>j['@type']==='Article');
+    const link = document.querySelector('a.nt-byline__author'); return { type: art?.author?.['@type'], url: art?.author?.url, href: link?.getAttribute('href'), rel: link?.rel, text: link?.textContent }; });
+  t('articles: byline links to the profile (rel=author); Article author is the Person', by.type==='Person' && /\/about\/#mansur-kothambawala$/.test(by.url||'') && by.href==='/about/#mansur-kothambawala' && by.rel==='author' && /FCCA/.test(by.text||''), JSON.stringify(by));
+  const wa = [];
+  for (const r of ['/','/contact/']) { await p.goto(B+r,{waitUntil:'domcontentloaded'}); wa.push(await p.evaluate(() => [...document.querySelectorAll('a[href^="https://wa.me/"]')].map(x=>x.getAttribute('href')))); }
+  const scripts = await p.evaluate(() => [...document.scripts].map(s=>s.src).filter(s=>s && !s.startsWith(location.origin)));
+  t('WhatsApp: plain wa.me links in the footer and on /contact/, same number as tel:, no third-party script', wa[0].length>=1 && wa[1].length>=2 && wa.flat().every(h=>h==='https://wa.me/971529742697') && scripts.length===0, JSON.stringify({ wa, scripts }));
+  await p.close(); }
 
 await b.close();
 let fails=0; for (const [n,ok,d] of R) { if(!ok) fails++; console.log(`${ok?'PASS':'FAIL'}  ${n}${!ok&&d?'\n        '+d:''}`); }

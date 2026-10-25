@@ -136,7 +136,7 @@ curl -sI https://numaratech.com/ | grep -iE \
 
 ## 8. Verify canonicals, sitemap and structured data
 
-- [ ] `curl -s https://numaratech.com/sitemap.xml | grep -c "<loc>"` → **18**.
+- [ ] `curl -s https://numaratech.com/sitemap.xml | grep -c "<loc>"` → **22**.
 - [ ] Every `<loc>` is `https://numaratech.com/...` with a trailing slash.
 - [ ] `curl -s https://numaratech.com/about/ | grep canonical` → the apex, not workers.dev.
 - [ ] Paste the homepage and one insight post into
@@ -197,7 +197,9 @@ returns `noindex` and `Disallow: /`.
 
 ## 12. Post-launch
 
-- [ ] Update `SITE.email` if `hello@numaratech.com` moves to the new domain's mail.
+- [ ] Set up the domain mailbox, then change `SITE.email` in `src/consts.ts` from
+      the interim `accamansur@outlook.com` to it. Every page, the privacy
+      notice, the terms, `security.txt` and the structured data follow.
 - [ ] Set the Web3Forms access key in `src/consts.ts` if you want the contact
       form back — `/contact/` currently offers email and telephone only.
 - [ ] Read `/privacy/` once — the `PDPL-DRAFT.md` revisions were applied on

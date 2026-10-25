@@ -311,7 +311,7 @@ Content placeholders that must be replaced with real values:
 
 - [x] `SITE.phoneDisplay` / `SITE.phoneHref` in `src/consts.ts` — the real number
 - [x] `SITE.address` — "Dubai, United Arab Emirates", no street address (owner's decision)
-- [ ] `SITE.email` — confirm `hello@numaratech.com` exists and is monitored
+- [x] `SITE.email` — `accamansur@outlook.com`, the owner's mailbox, until the domain mailbox exists (see LAUNCH.md)
 - [ ] `site` in `astro.config.mjs` and the `Sitemap:` line in `robots.txt`
 - [ ] **`WEB3FORMS.accessKey` in `src/consts.ts` is blank** — the contact form is
       hidden until you paste your Web3Forms key. See "Activate the contact form"

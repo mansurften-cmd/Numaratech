@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { SITE } from '../consts';
 import { INSIGHTS } from '../insights';
+import { BRIEFS, BRIEF_SERIES } from '../briefs';
 
 // Hand-rolled rather than pulled from @astrojs/sitemap: the site is small
 // enough that an explicit list is clearer than a build integration, and the
@@ -14,10 +15,12 @@ const STATIC_ROUTES: { path: string; priority: string; changefreq: string }[] = 
   { path: '/platform/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/corporate-tax/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/fs-studio/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/platform/small-business-relief-check/', priority: '0.8', changefreq: 'monthly' },
   { path: '/services/', priority: '0.8', changefreq: 'monthly' },
   { path: '/business-case/', priority: '0.8', changefreq: 'monthly' },
   { path: '/about/', priority: '0.7', changefreq: 'yearly' },
   { path: '/insights/', priority: '0.7', changefreq: 'weekly' },
+  { path: BRIEF_SERIES.path, priority: '0.6', changefreq: 'weekly' },
   { path: '/contact/', priority: '0.7', changefreq: 'yearly' },
   { path: '/privacy/', priority: '0.3', changefreq: 'yearly' },
   { path: '/terms/', priority: '0.3', changefreq: 'yearly' },
@@ -42,6 +45,12 @@ export const GET: APIRoute = ({ site }) => {
       lastmod: insight.updated ?? insight.date,
       changefreq: 'yearly',
       priority: '0.6',
+    })),
+    ...BRIEFS.map((brief) => ({
+      loc: `${origin}${BRIEF_SERIES.path}${brief.slug}/`,
+      lastmod: brief.published,
+      changefreq: 'yearly',
+      priority: '0.5',
     })),
   ];
 

@@ -1,0 +1,127 @@
+---
+/** One edition of the UAE Regulatory Brief. The article shell, with the
+ *  review window and the "as at" date up front: a brief is a dated record,
+ *  and its deadlines are only true as at the day it was compiled. */
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
+import Arrow from '../components/Arrow.astro';
+import { SITE } from '../consts';
+import { DEFAULT_AUTHOR, formatInsightDate } from '../insights';
+import { BRIEF_SERIES, type Brief } from '../briefs';
+
+interface Props {
+  brief: Brief;
+  standfirst: string;
+}
+
+const { brief, standfirst } = Astro.props;
+
+const day = (iso: string) => new Date(`${iso}T00:00:00Z`).getUTCDate();
+const reviewWindow = `${day(brief.windowStart)}–${formatInsightDate(brief.windowEnd)}`;
+---
+
+<Base
+  title={`${BRIEF_SERIES.name}: ${brief.title}`}
+  description={brief.description}
+  article={{
+    datePublished: brief.published,
+    author: { type: 'Organization', name: DEFAULT_AUTHOR, url: SITE.url },
+    section: 'Regulation',
+  }}
+>
+  <article>
+    <PageHero
+      kicker={`Insights / ${BRIEF_SERIES.name}`}
+      title={brief.title}
+      lead={standfirst}
+      secondary={{ label: 'All editions', href: BRIEF_SERIES.path }}
+      stats={[
+        { label: 'Review window', value: reviewWindow },
+        { label: 'Facts as at', value: formatInsightDate(brief.asAt) },
+        { label: 'Published', value: formatInsightDate(brief.published) },
+        { label: 'Compiled by', value: DEFAULT_AUTHOR },
+      ]}
+    />
+
+    <div class="nt-section body">
+      <div class="nt-prose nt-brief">
+        <p class="nt-byline">
+          <span class="nt-byline__author">{DEFAULT_AUTHOR}</span>
+          <span aria-hidden="true">·</span>
+          <span>As at <time datetime={brief.asAt}>{formatInsightDate(brief.asAt)}</time></span>
+          <span aria-hidden="true">·</span>
+          <span>Published <time datetime={brief.published}>{formatInsightDate(brief.published)}</time></span>
+        </p>
+        <p class="nt-brief__asat">
+          Every date and deadline in this edition is stated as at
+          {' '}{formatInsightDate(brief.asAt)}. Some will have passed by the time you read it; check
+          the current position with the issuing authority before relying on any of them.
+        </p>
+        <slot />
+      </div>
+
+      <aside class="aside" aria-label="About this brief">
+        <p class="nt-micro">Note</p>
+        <p class="aside__text nt-sm">
+          General information compiled from published official sources. Where an item is
+          described from an authority's announcement rather than the instrument itself, it says
+          so. Not advice on the facts of any business, and no action should be taken on it alone
+          without professional review.
+        </p>
+        <p class="aside__link">
+          <a href={BRIEF_SERIES.path} class="nt-arrow-link">
+            All editions
+            <Arrow />
+          </a>
+        </p>
+      </aside>
+    </div>
+  </article>
+
+  <NextBand
+    title="Not sure whether one of these reaches you?"
+    body="A 30-minute call. Tell us what the business does and where it is licensed, and we will tell you which of these items matter."
+  />
+</Base>
+
+<style>
+  .body {
+    display: grid;
+    gap: var(--nt-7);
+    align-items: start;
+  }
+
+  /* A grid item defaults to min-width: auto, so a wide table would widen
+     the column past a phone screen instead of scrolling in its own box. */
+  .body > * {
+    min-width: 0;
+  }
+
+  .aside {
+    border-top: var(--nt-hair) solid var(--nt-accent-rule);
+    padding-top: var(--nt-4);
+  }
+
+  .aside__text {
+    margin-top: var(--nt-3);
+    color: var(--nt-text-muted);
+    max-width: 38ch;
+  }
+
+  .aside__link {
+    margin-top: var(--nt-5);
+  }
+
+  @media (min-width: 62rem) {
+    .body {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 3fr);
+      gap: var(--nt-8);
+    }
+
+    .aside {
+      position: sticky;
+      top: calc(var(--nt-header-h) + var(--nt-6));
+    }
+  }
+</style>

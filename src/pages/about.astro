@@ -1,12 +1,13 @@
 ---
-/** /about/ — positioning, beliefs and boundaries. Copy carried over from the
- *  previous build unchanged; no team names or headcount are asserted, because
- *  none have been supplied. */
+/** /about/ — positioning, beliefs, boundaries and the people. The People
+ *  section reads src/people.ts; article bylines link to its anchors. */
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
 import { SITE, spell } from '../consts';
 import { ALL_SERVICES, BUILT_PRODUCTS, IDEA_PRODUCTS } from '../services';
+import { PEOPLE, bylineOf } from '../people';
 
 const beliefs = [
   {
@@ -63,12 +64,35 @@ const boundaries = [
       'The platform reads your accounting system; it does not replace it. If you are choosing bookkeeping software, that decision comes before us and we are happy to be left out of it.',
   },
 ];
+
+// One schema.org Person per profile, tied to the business by @id. The
+// organisation block in Base names the founder by the same @id.
+const personSchema = PEOPLE.map((person) => ({
+  '@type': 'Person',
+  '@id': `${SITE.url}/about/#${person.id}`,
+  name: person.name,
+  honorificSuffix: person.credential,
+  jobTitle: person.role,
+  image: new URL(person.photo.src, SITE.url).href,
+  url: `${SITE.url}/about/#${person.id}`,
+  worksFor: { '@id': `${SITE.url}/#organisation` },
+  knowsAbout: person.focus,
+  knowsLanguage: person.languages,
+  hasCredential: {
+    '@type': 'EducationalOccupationalCredential',
+    credentialCategory: 'Professional membership',
+    name: person.credentialLong,
+    recognizedBy: { '@type': 'Organization', name: 'ACCA', url: 'https://www.accaglobal.com/' },
+  },
+  ...(person.linkedin ? { sameAs: [person.linkedin] } : {}),
+}));
 ---
 
 <Base
   title="About"
   seoTitle="About Our Dubai Accounting & Tax Practice"
-  description="NUMARATECH is a UAE accounting and tax consultancy that also builds the platform it works on — why we exist, what we believe, and where the boundaries are."
+  description="NUMARATECH is a UAE accounting and tax consultancy that also builds the platform it works on — who leads it, what we believe, and where the boundaries are."
+  schema={personSchema}
 >
   <PageHero
     kicker="About / Dubai, United Arab Emirates"
@@ -163,8 +187,53 @@ const boundaries = [
     </div>
   </section>
 
+  <section class="nt-section" id="people">
+    <div class="nt-eyebrow"><b>04</b><span>People</span></div>
+    <h2 class="nt-h2">Who leads the work.</h2>
+    {
+      PEOPLE.map((person) => (
+        <article class="nt-person" id={person.id}>
+          <Picture
+            class="nt-person__photo"
+            src={person.photo}
+            formats={['avif', 'webp']}
+            widths={[240, 413]}
+            sizes="(max-width: 720px) 60vw, 240px"
+            alt={`Portrait of ${person.name}`}
+            loading="lazy"
+            decoding="async"
+          />
+          <div>
+            <h3 class="nt-h3">{bylineOf(person)}</h3>
+            <div class="nt-kicker nt-person__role">{person.role}</div>
+            {person.bio.map((paragraph) => <p class="nt-small nt-person__bio">{paragraph}</p>)}
+            <dl class="nt-person__facts">
+              <div>
+                <dt>Credential</dt>
+                <dd>{person.credentialLong}</dd>
+              </div>
+              <div>
+                <dt>Focus</dt>
+                <dd>{person.focus.join(' · ')}</dd>
+              </div>
+              <div>
+                <dt>Languages</dt>
+                <dd>{person.languages.join(', ')}</dd>
+              </div>
+            </dl>
+            {person.linkedin && (
+              <p class="nt-small nt-person__link">
+                <a class="nt-link" href={person.linkedin} rel="noopener">{person.name} on LinkedIn</a>
+              </p>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
   <section class="nt-section">
-    <div class="nt-eyebrow"><b>04</b><span>Association</span></div>
+    <div class="nt-eyebrow"><b>05</b><span>Association</span></div>
     <h2 class="nt-h2">Associated with {SITE.association.name}.</h2>
     <div class="nt-split--even nt-split">
       <div>
@@ -185,7 +254,7 @@ const boundaries = [
   </section>
 
   <section class="nt-section">
-    <div class="nt-eyebrow"><b>05</b><span>Working with us</span></div>
+    <div class="nt-eyebrow"><b>06</b><span>Working with us</span></div>
     <h2 class="nt-h2">What the first call is like.</h2>
     <div class="nt-split--even nt-split">
       <div>

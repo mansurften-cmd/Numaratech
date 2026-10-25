@@ -26,7 +26,8 @@ if (assoc.logo && !existsSync(join(process.cwd(), 'public', assoc.logo.src))) {
       <div class="nt-footer__meta">
         {SITE.address.city}, {SITE.address.country}<br />
         <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
-        <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+        <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a><br />
+        <a href={SITE.whatsappHref} rel="noopener">Message on WhatsApp</a>
       </div>
     </div>
 

@@ -70,7 +70,8 @@ export const SITE = {
     name: 'G\u00a0R\u00a0A\u00a0M\u00a0P Network',
     url: 'https://gramp.in/',
     host: 'gramp.in',
-    description: 'a network of Chartered Accountant firms with offices across India',
+    // gramp.in states "ICAI Registered Network NRN_W_00062" on its home page.
+    description: 'an ICAI-registered network of Chartered Accountant firms with offices across India',
     /**
      * The network's logo in the footer's association row. OFF (null) until
      * BOTH are true:
@@ -95,12 +96,21 @@ export const SITE = {
    *  join the site to the business's other listings. Empty until they exist. */
   sameAs: [] as readonly string[],
   locale: 'en_AE',
-  email: 'hello@numaratech.com',
+  /** Interim address, at the owner's instruction (25 October 2026), until
+   *  numaratech.com and its mailbox are set up at launch. Every page, the
+   *  privacy notice, the terms, security.txt and the structured data read
+   *  this value, so the move to the domain mailbox is a one-line change. */
+  email: 'accamansur@outlook.com',
   /** Single source of truth. Nothing may hard-code a number. Non-breaking
    *  spaces, so the number never wraps across two lines. */
   phoneDisplay: '+971\u00a052\u00a0974\u00a02697',
   /** E.164, no spaces or dashes, so it dials correctly from mobile. */
   phoneHref: '+971529742697',
+  /** WhatsApp click-to-chat on the same number (owner's choice, 25 October
+   *  2026). A plain link: no WhatsApp widget or script is loaded, so the CSP
+   *  and the no-third-party-scripts rule are untouched. The privacy notice
+   *  names WhatsApp as a channel. */
+  whatsappHref: 'https://wa.me/971529742697',
   /** City and country only, by the owner's instruction (17 October 2026):
    *  the practice publishes no street address. */
   address: {
@@ -208,6 +218,11 @@ export const NAV: NavItem[] = [
         note: 'IFRS financial statements from your ledger',
       },
       {
+        label: 'Small Business Relief Check',
+        href: '/platform/small-business-relief-check/',
+        note: 'Free: can you elect the relief, and what it costs',
+      },
+      {
         label: 'Roadmap',
         href: '/platform/#roadmap',
         note: 'What we intend to build next',
@@ -240,6 +255,7 @@ export const FOOTER_NAV = [
       { label: 'Overview', href: '/platform/' },
       { label: 'Corporate Tax Engine', href: '/platform/corporate-tax/' },
       { label: 'FS Studio', href: '/platform/fs-studio/' },
+      { label: 'Small Business Relief Check', href: '/platform/small-business-relief-check/' },
       { label: 'Roadmap', href: '/platform/#roadmap' },
       { label: 'Implementation and support', href: '/services/' },
     ],

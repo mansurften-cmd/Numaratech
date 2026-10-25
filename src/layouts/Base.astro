@@ -12,6 +12,8 @@ import { ogSlug } from '../og';
 import { NAV } from '../consts';
 import { SERVICE_GROUPS } from '../services';
 import { INSIGHTS } from '../insights';
+import { PEOPLE } from '../people';
+import { BRIEFS, BRIEF_SERIES } from '../briefs';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
@@ -31,7 +33,12 @@ interface Props {
   /** Override the generated Open Graph card. Site-relative path. */
   ogImage?: string;
   /** Present on insight pages; emits the Article block. */
-  article?: { datePublished: string; dateModified?: string; author: string; section: string };
+  article?: {
+    datePublished: string;
+    dateModified?: string;
+    author: { type: 'Person' | 'Organization'; name: string; url: string; jobTitle?: string };
+    section: string;
+  };
 }
 
 const {
@@ -79,6 +86,12 @@ const organisation = {
     'Ultimate beneficial ownership filing',
   ],
   ...(SITE.sameAs.length ? { sameAs: [...SITE.sameAs] } : {}),
+  // The founder's full Person record is on /about/, under this @id.
+  founder: PEOPLE.filter((person) => person.role === 'Founder').map((person) => ({
+    '@type': 'Person',
+    '@id': `${SITE.url}/about/#${person.id}`,
+    name: person.name,
+  })),
   identifier: {
     '@type': 'PropertyValue',
     propertyID: `${SITE.licence.authorityShort} trade licence`,
@@ -93,6 +106,9 @@ const SEGMENT_LABELS = new Map<string, string>([
   ...NAV.map((item) => [item.href.replace(/\//g, ''), item.label] as [string, string]),
   ...SERVICE_GROUPS.map((group) => [group.slug, group.name] as [string, string]),
   ...INSIGHTS.map((insight) => [insight.slug, insight.title] as [string, string]),
+  ...BRIEFS.map((brief) => [brief.slug, brief.title] as [string, string]),
+  ['regulatory-brief', BRIEF_SERIES.name],
+  ['small-business-relief-check', 'Small Business Relief Check'],
   ['platform', 'Platform'],
   ['insights', 'Insights'],
 ]);
@@ -161,7 +177,13 @@ const articleSchema = article
       datePublished: article.datePublished,
       dateModified: article.dateModified ?? article.datePublished,
       articleSection: article.section,
-      author: { '@type': 'Organization', name: article.author, url: SITE.url },
+      author: {
+        '@type': article.author.type,
+        ...(article.author.type === 'Person' ? { '@id': article.author.url } : {}),
+        name: article.author.name,
+        url: article.author.url,
+        ...(article.author.jobTitle ? { jobTitle: article.author.jobTitle } : {}),
+      },
       publisher: { '@id': `${SITE.url}/#organisation` },
       mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
       image: ogImageUrl,

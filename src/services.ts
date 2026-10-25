@@ -326,8 +326,10 @@ export const PRODUCTS: Product[] = [
   },
   /* Roadmap, revised 11 October 2026. The earlier four (e-invoicing bridge,
      VAT engine, transfer pricing studio, obligation console) were dropped by
-     the owner. These seven share one shape: bring your own data, get a
-     derived answer, nothing leaves the browser unless you choose to send it.
+     the owner. These share one shape: bring your own data, get a derived
+     answer, nothing leaves the browser unless you choose to send it. The
+     Small Business Relief Check, the seventh, shipped on 25 October 2026 as
+     a free tool at /platform/small-business-relief-check/.
      The first three are a sequence — score the ledger, open the workbook,
      propose the mapping — and each creates the need for the next. */
   {
@@ -406,19 +408,6 @@ export const PRODUCTS: Product[] = [
       'Dates derived from the rules, with the source cited',
       'What to check against your EmaraTax record',
       'Re-run when the year end or licence changes',
-    ],
-  },
-  {
-    slug: 'small-business-relief-check',
-    name: 'Small Business Relief Check',
-    strap: 'Whether to elect, and what it costs you',
-    stage: 'idea',
-    body:
-      'Revenue, group membership, free zone status and entity type in; eligibility out, together with the consequence most people miss — the losses and interest you give up by electing. An extension of the estimator on this site, and still not advice.',
-    points: [
-      'Eligibility tested against every published condition',
-      'The election’s cost shown, not just its saving',
-      'Carries into the Corporate Tax Engine as a position you took',
     ],
   },
 ];

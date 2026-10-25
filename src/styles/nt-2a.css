@@ -1344,3 +1344,146 @@ textarea.nt-form__input { resize: vertical; }
 .nt-assoc__logo { display: block; height: 32px; width: auto; max-width: 180px; }
 .nt-assoc__logo--plate { background: #ffffff; padding: 6px 10px; box-sizing: content-box; }
 @media print { .nt-assoc { display: none !important; } }
+
+/* ---------- about: people ---------- */
+/* Photo beside the profile; the photo keeps its own aspect ratio (the
+   width and height attributes reserve the space, so nothing shifts). */
+.nt-person {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  padding-top: 28px;
+  border-top: 1px solid var(--nt-navy);
+  scroll-margin-top: 96px;
+}
+.nt-person picture { display: block; }
+.nt-person__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--nt-tint);
+  border: 1px solid var(--nt-line);
+}
+.nt-person__role { margin: 6px 0 18px; }
+.nt-person__bio { margin: 0 0 12px; max-width: 44em; }
+.nt-person__facts {
+  margin: 24px 0 0;
+  border-top: 1px solid var(--nt-line);
+}
+.nt-person__facts > div {
+  display: grid;
+  grid-template-columns: 9em minmax(0, 1fr);
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--nt-line-2);
+}
+.nt-person__facts dt {
+  font-family: var(--nt-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--nt-mute);
+  padding-top: 2px;
+}
+.nt-person__facts dd { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--nt-ink); }
+.nt-person__link { margin-top: 18px; }
+@media (max-width: 720px) {
+  .nt-person { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .nt-person picture { max-width: 60vw; }
+  .nt-person__facts > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* Byline author, when it links to the profile. */
+.nt-byline a.nt-byline__author { color: var(--nt-navy); text-decoration: underline; text-decoration-color: var(--nt-teal); text-underline-offset: 3px; }
+.nt-byline a.nt-byline__author:hover { color: var(--nt-teal); }
+
+/* A ghost button on a white ground (the contact page's WhatsApp button).
+   Opt-in by container, for the reason given above for the print buttons. */
+.nt .nt-actions--light a.nt-btn--ghost { border-color: var(--nt-teal); color: var(--nt-teal); }
+.nt .nt-actions--light a.nt-btn--ghost:hover { background: var(--nt-teal); border-color: var(--nt-teal); color: #ffffff; }
+
+/* ---------- regulatory brief ---------- */
+/* The "as at" warning under the byline: a dated record's deadlines go stale. */
+.nt-brief__asat {
+  padding: 12px 0 12px 16px;
+  border-left: 3px solid var(--nt-teal);
+  background: var(--nt-tint);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--nt-ink);
+}
+/* "Act now" items: label and text in two columns, one above the other on a
+   phone — a five-column table of paragraphs does not survive 390px. */
+.nt-brief-item { margin-top: 28px; border-top: 1px solid var(--nt-navy); padding-top: 4px; }
+.nt-prose .nt-brief-item h3 { margin-top: 14px; }
+.nt-brief-item dl { margin: 14px 0 0; }
+.nt-brief-item dl > div {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr);
+  gap: 16px;
+  padding: 11px 0;
+  border-top: 1px solid var(--nt-line-2);
+}
+.nt-brief-item dt {
+  font-family: var(--nt-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--nt-mute);
+  padding-top: 3px;
+}
+.nt-brief-item dd { margin: 0; font-size: 15px; line-height: 1.6; color: var(--nt-ink); }
+.nt-brief__tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border: 1px solid var(--nt-line);
+  font-family: var(--nt-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--nt-mute);
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+.nt-brief__sources { font-size: 14px; color: var(--nt-mute); }
+.nt-brief__table { min-width: 44rem; }
+.nt-brief__table th[scope='row'] { font-weight: 500; color: var(--nt-navy); min-width: 12em; }
+.nt-brief__registers li { font-size: 14.5px; }
+@media (max-width: 720px) {
+  .nt-brief-item dl > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+
+/* Series list on the brief index. */
+.nt-brief-list { border-top: 1px solid var(--nt-navy); }
+.nt-brief-list li { padding: 22px 0; }
+.nt-brief-list .nt-h3 { margin: 8px 0 8px; }
+.nt-brief-list .nt-h3 a { color: var(--nt-navy); }
+.nt-brief-list .nt-h3 a:hover { color: var(--nt-teal); }
+
+/* The brief, called out above the articles on the insights index. */
+.nt-brief-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 40px;
+  margin-bottom: 48px;
+  padding: 24px 26px;
+  border: 1px solid var(--nt-navy);
+  background: var(--nt-tint);
+}
+.nt-brief-callout > div { max-width: 44em; display: flex; flex-direction: column; gap: 8px; }
+.nt-brief-callout .nt-small { margin: 0; }
+
+/* Links in a hint (the estimator's pointer to the relief check) are
+   underlined: colour alone does not mark a link inside running text. */
+.nt-hint a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* The contact page's direct block now stacks three links. Each line is a
+   28px target with no overlap, rather than the footer's padded inline
+   links, whose boxes overlap once three sit one above the other. */
+.nt-contact-direct { line-height: 28px; }
+.nt-contact-direct a { margin: 0; padding: 0; line-height: 28px; }

@@ -7,7 +7,9 @@ import { SITE, hasContactForm } from '../consts';
 // Revised 11 October 2026: names the PDPL and the supervisory authority,
 // describes the contact form's processor when the form is live, and no longer
 // asserts a hosting region for a system this website does not contain.
-const updated = '11 October 2026';
+// Revised 25 October 2026: WhatsApp as a contact channel, and the Small
+// Business Relief Check, which, like the estimator, runs in the browser.
+const updated = '25 October 2026';
 const formLive = hasContactForm();
 ---
 
@@ -37,8 +39,8 @@ const formLive = hasContactForm();
       {
         formLive ? (
           <p>
-            If you write to us through the enquiry form, email us or telephone
-            us, we receive what you chose to provide — typically your name,
+            If you write to us through the enquiry form, email us, telephone
+            us or message us on WhatsApp, we receive what you chose to provide — typically your name,
             email address, company, and the substance of your enquiry. The form
             is delivered by Web3Forms, a form-handling service that passes your
             message to our mailbox and does not use it for anything else. We
@@ -47,8 +49,8 @@ const formLive = hasContactForm();
           </p>
         ) : (
           <p>
-            This site has no contact form. If you email or telephone us, we
-            receive what you chose to provide — typically your name, email
+            This site has no contact form. If you email us, telephone us or
+            message us on WhatsApp, we receive what you chose to provide — typically your name, email
             address, company, and the substance of your enquiry. We use it to
             answer you and to keep a record of the conversation.
           </p>
@@ -67,9 +69,11 @@ const formLive = hasContactForm();
       <p>
         This site sets no advertising or tracking cookies and loads no
         third-party analytics, fonts or scripts. Fonts are served from our own
-        domain. The Corporate Tax estimator runs entirely in your browser — the
-        figures you enter are never transmitted to us, are not stored, and are
-        gone when you close the tab.
+        domain. The Corporate Tax estimator and the Small Business Relief Check
+        run entirely in your browser — the figures and answers you enter are
+        never transmitted to us, are not stored, and are gone when you close
+        the tab. The WhatsApp links are ordinary links: nothing from WhatsApp
+        loads on this site unless you choose to follow one.
       </p>
 
       <h2>Why we are allowed to hold it</h2>
@@ -102,6 +106,11 @@ const formLive = hasContactForm();
           <strong>Email mailbox.</strong> Carries and stores the messages you
           send us.
         </li>
+        <li>
+          <strong>WhatsApp.</strong> If you message us on WhatsApp, the
+          conversation is carried by WhatsApp (part of Meta) under its own
+          terms and privacy policy. We use it only to answer you.
+        </li>
         {
           formLive && (
             <li>
@@ -123,7 +132,7 @@ const formLive = hasContactForm();
       <p>
         This website holds no client data. It is a static site with no database
         and no server-side processing, and the Corporate Tax estimator runs
-        entirely in your browser.
+        entirely in your browser, as does the Small Business Relief Check.
       </p>
 
       <p>

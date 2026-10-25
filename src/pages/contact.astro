@@ -38,14 +38,15 @@ if (!hasContactForm()) {
     <div class="nt-split--even nt-split">
       <div>
         <div class="nt-eyebrow"><b>01</b><span>Direct</span></div>
-        <h2 class="nt-h2">Write, or call.</h2>
+        <h2 class="nt-h2">Write, call, or message.</h2>
         <p class="nt-body">
-          Either reaches the same three people. If your question is specific, send the detail — it
+          Each reaches the same three people. If your question is specific, send the detail — it
           saves a round trip.
         </p>
-        <div class="nt-footer__meta" style="color:var(--nt-ink)">
+        <div class="nt-footer__meta nt-contact-direct" style="color:var(--nt-ink)">
           <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
           <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a><br />
+          <a href={SITE.whatsappHref} rel="noopener">Message on WhatsApp</a><br />
           {SITE.address.city}, {SITE.address.country}
         </div>
       </div>
@@ -90,8 +91,9 @@ if (!hasContactForm()) {
                 type and what is currently unresolved — that is enough for us to come back with
                 something useful rather than a request for more detail.
               </p>
-              <div class="nt-actions">
+              <div class="nt-actions nt-actions--light">
                 <a class="nt-btn" href={`mailto:${SITE.email}`}>Email us</a>
+                <a class="nt-btn nt-btn--ghost" href={SITE.whatsappHref} rel="noopener">WhatsApp</a>
                 <a class="nt-link" href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
               </div>
             </div>

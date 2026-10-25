@@ -2,9 +2,12 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
+import Arrow from '../../components/Arrow.astro';
 import { insightsNewestFirst, formatInsightDate } from '../../insights';
+import { BRIEF_SERIES, briefsNewestFirst } from '../../briefs';
 
 const insights = insightsNewestFirst();
+const latestBrief = briefsNewestFirst()[0];
 ---
 
 <Base
@@ -15,7 +18,7 @@ const insights = insightsNewestFirst();
   <PageHero
     kicker="Insights / Notes from the work"
     title="Written down once, so it can be argued with."
-    lead="Short notes on the problems we keep meeting: first Corporate Tax returns, slow closes, and audit trails treated as reports rather than requirements."
+    lead="Short notes on the problems we keep meeting — first Corporate Tax returns, reliefs elected without counting the cost, slow closes — and a brief on what the regulators published each week."
     primary={{ label: 'Talk to us', href: '/contact/' }}
     stats={[
       { label: 'Notes published', value: String(insights.length) },
@@ -26,6 +29,22 @@ const insights = insightsNewestFirst();
   />
 
   <section class="nt-section">
+    <aside class="nt-brief-callout" aria-labelledby="brief-callout-title">
+      <div>
+        <p class="nt-kicker">Regulation, week by week</p>
+        <h2 class="nt-h3" id="brief-callout-title">{BRIEF_SERIES.name}</h2>
+        <p class="nt-small">
+          Each edition covers one week: what UAE tax and compliance regulators published, what it
+          means for a small business, and what falls due in the next 30 days. Latest:
+          {' '}{latestBrief.title.replace(/^Week/, 'week')}.
+        </p>
+      </div>
+      <a class="nt-arrow-link" href={BRIEF_SERIES.path}>
+        Read the brief
+        <Arrow />
+      </a>
+    </aside>
+
     <div class="nt-cells" style="--nt-cols:2">
       {
         insights.map((insight) => (

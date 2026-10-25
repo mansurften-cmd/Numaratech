@@ -1,0 +1,178 @@
+---
+import Article from '../../layouts/Article.astro';
+import { findInsight } from '../../insights';
+import { UAE_CT } from '../../consts';
+
+const insight = findInsight('small-business-relief-extended-to-2029')!;
+const nf = new Intl.NumberFormat('en-AE');
+const cap = `${UAE_CT.currency} ${nf.format(UAE_CT.smallBusinessReliefRevenueCap)}`;
+---
+
+<Article
+  insight={insight}
+  standfirst="Small Business Relief was due to end with tax periods finishing in 2026. It now runs three years longer. The rules for who can use it have not changed — and neither has the cost of using it without thinking."
+>
+  <p>
+    Small Business Relief lets a small UAE business elect to be treated as
+    having no taxable income for a tax period, so no Corporate Tax is due for
+    it. It was introduced by Ministerial Decision No. 73 of 2023 and was to
+    apply to tax periods ending on or before 31 December 2026. For a business
+    with a calendar year end, 2026 would have been the last year it could be
+    used.
+  </p>
+
+  <h2>What changed</h2>
+
+  <p>
+    Ministerial Decision No. 131 of 2026, signed on 29 July 2026 and announced
+    by the Ministry of Finance on 7 August 2026, amends Article 2 of the 2023
+    decision. The revenue threshold applies to tax periods starting on or after
+    1 June 2023 and now continues to apply to later tax periods that end on or
+    before {UAE_CT.smallBusinessReliefLastPeriodEnd}.
+  </p>
+
+  <p>
+    Nothing else moved. The threshold is still {cap} of revenue, the
+    exclusions are the same, and the relief is still an election rather than
+    something that applies automatically.
+  </p>
+
+  <h2>Who can elect</h2>
+
+  <p>A business can elect Small Business Relief for a tax period if all of these are true:</p>
+
+  <ul>
+    <li>It is a Resident Person for Corporate Tax purposes.</li>
+    <li>The tax period ends on or before {UAE_CT.smallBusinessReliefLastPeriodEnd}.</li>
+    <li>
+      Revenue did not exceed {cap} in that tax period, <strong>and</strong> did
+      not exceed it in any earlier tax period.
+    </li>
+    <li>It is not a Qualifying Free Zone Person.</li>
+    <li>
+      It is not a member of a multinational group with consolidated revenue of
+      AED 3.15 billion or more.
+    </li>
+  </ul>
+
+  <h2>The test that catches people out</h2>
+
+  <p>
+    The revenue test looks backwards. One tax period above {cap} ends the
+    relief for every period after it, even if revenue falls back below the
+    threshold later. A business that had one strong year is out for good.
+  </p>
+
+  <section class="nt-table-scroll" aria-label="Example: when a business can elect" tabindex="0">
+    <table class="nt-table">
+      <caption>A business with a calendar year end. Revenue in {UAE_CT.currency}.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Tax period</th>
+          <th scope="col" class="nt-fig">Revenue</th>
+          <th scope="col">Can it elect?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">2024</th>
+          <td class="nt-fig">2,400,000</td>
+          <td>Yes — within the threshold</td>
+        </tr>
+        <tr>
+          <th scope="row">2025</th>
+          <td class="nt-fig">3,200,000</td>
+          <td>No — above the threshold</td>
+        </tr>
+        <tr>
+          <th scope="row">2026</th>
+          <td class="nt-fig">2,800,000</td>
+          <td>No — 2025 was above it</td>
+        </tr>
+        <tr>
+          <th scope="row">2027 to 2029</th>
+          <td class="nt-fig">under 3,000,000</td>
+          <td>No — 2025 was above it</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <p>
+    The extension does not reopen the door for anyone who has already passed
+    through it. It only matters to businesses that have stayed under the
+    threshold in every period so far.
+  </p>
+
+  <h2>What electing costs</h2>
+
+  <p>
+    The relief removes the tax for the period. It also removes two things
+    that would otherwise carry forward:
+  </p>
+
+  <ul>
+    <li>
+      A <strong>tax loss</strong> incurred in a period for which the relief is
+      elected cannot be carried forward to a later period.
+    </li>
+    <li>
+      <strong>Net interest expenditure</strong> disallowed in that period
+      cannot be carried forward either.
+    </li>
+  </ul>
+
+  <p>
+    Losses from earlier periods in which the relief was not elected are not
+    affected. But a business that expects a loss this year should think
+    before electing. With no taxable income there is no tax to save, and
+    electing gives up a loss that could reduce tax in a later year — when the
+    business has grown past the threshold and can no longer elect at all.
+  </p>
+
+  <h2>What does not change</h2>
+
+  <ul>
+    <li>
+      The business must still register for Corporate Tax and file a return for
+      every period. The election is made in the return, period by period.
+    </li>
+    <li>
+      The records still have to support the revenue figure. Revenue is the
+      gross amount in the financial statements, not profit.
+    </li>
+    <li>
+      The Federal Tax Authority can deny the relief where a business has been
+      artificially separated — split into several entities — to keep each
+      under the threshold.
+    </li>
+  </ul>
+
+  <h2>Check your own position</h2>
+
+  <p>
+    Our free <a href="/platform/small-business-relief-check/">Small Business
+    Relief Check</a> asks six questions and tells you whether the relief is
+    available for the period, and what electing would cost you. It runs in
+    your browser and sends nothing anywhere. If you would rather see the tax
+    without the relief, the <a href="/platform/corporate-tax/#estimator">Corporate
+    Tax estimator</a> does that.
+  </p>
+
+  <h2>Sources</h2>
+
+  <ul>
+    <li>
+      <a href="https://mof.gov.ae/wp-content/uploads/2026/08/Ministerial-Decision-No.-131-of-2026-Amending-Certain-Provisions-of-Ministerial-Decision-No.-73-of-2023-on-Small-Business-Relief-for-the-Purposes-of-Federal-Decree-Law-No.-47-of-2022-EN.pdf" rel="noopener">Ministerial Decision No. 131 of 2026</a>, Ministry of Finance
+    </li>
+    <li>
+      <a href="https://mof.gov.ae/en/news/ministry-of-finance-announces-extension-of-small-business-relief-for-corporate-tax-purposes-until-31-december-2029/" rel="noopener">Announcement of the extension to 31 December 2029</a>, Ministry of Finance
+    </li>
+    <li>
+      <a href="https://tax.gov.ae/datafolder/Files/Legislation/Corporate%20Tax/Ministerial%20Decision%20No.%2073%20of%202023%20-%20for%20publishing.pdf" rel="noopener">Ministerial Decision No. 73 of 2023 on Small Business Relief</a>, Federal Tax Authority
+    </li>
+    <li>
+      <a href="https://tax.gov.ae/en/taxes/corporate.tax/corporate.tax.topics/small.business.relief.23.aspx" rel="noopener">Small Business Relief</a>, Federal Tax Authority
+    </li>
+  </ul>
+</Article>

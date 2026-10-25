@@ -186,15 +186,24 @@ trademark-agent status (R2), the external calculator link (R7).
 ### Owner decisions (13 October 2026)
 See `AUDIT-2026-10.md` §8. Domain/mailbox and form key **paused**; privacy
 notice **approved**; licence **No. 1632409 (Dubai DET e-Trader)** now on
-every page via `SITE.licence`. Open for the owner: confirm the licence fee
-was paid (a Notion note says not), buy the
-domain spelled with an A, revoke the GitHub token.
+every page via `SITE.licence`. Open for the owner: buy the domain spelled
+with an A, revoke the GitHub token. (Licence fee: confirmed paid by the
+owner, 25 October 2026.)
 
 ### Deploy gate and SEO (17 October 2026)
 `npm run build` is what Cloudflare runs, and it now runs `astro check`, the
 build, `check-headers` and `html-validate`; any failure blocks the deploy
 (proved with commits `6c1f4e5`/`5295ee9`). For a quick build without the
 checks use `npm run build:site`. SEO details: `AUDIT-2026-10.md` §10.
+
+### Owner's batch (25 October 2026)
+See `AUDIT-2026-10.md` §12. Email is `accamansur@outlook.com` until the
+domain mailbox exists. Added: People section and named author
+(`src/people.ts`), WhatsApp links (`SITE.whatsappHref`), the Small Business
+Relief article, the **Small Business Relief Check** (`/platform/small-business-relief-check/`,
+rules in `src/lib/sbr.ts`), and the **UAE Regulatory Brief** (`src/briefs.ts`,
+`/insights/regulatory-brief/`). Each brief edition is reviewed by the owner
+before it is published. The site has 24 routes, 22 of them indexable.
 
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
