@@ -2,7 +2,7 @@
 /** The three advisory group pages: /advisory/accounting-audit/, /tax/,
  *  /risk-compliance/. Each carries its services as anchored sections. */
 import Base from '../../layouts/Base.astro';
-import { SITE, spell } from '../../consts';
+import { SITE, spell, bookingHref } from '../../consts';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import Arrow from '../../components/Arrow.astro';
@@ -48,7 +48,7 @@ const serviceSchema = group.services.map((service) => ({
     kicker={`Advisory / ${group.name}`}
     title={group.name}
     lead={group.lead}
-    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    primary={{ label: 'Book a walkthrough', href: bookingHref() }}
     secondary={{ label: 'All advisory', href: '/advisory/' }}
     stats={[
       { label: 'Service lines', value: String(group.services.length) },

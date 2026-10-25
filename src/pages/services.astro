@@ -2,6 +2,7 @@
 /** /services/ — platform implementation and support. Distinct from the
  *  advisory practice; cross-links so neither audience lands in the wrong
  *  place. Copy carried over from the previous build unchanged. */
+import { bookingHref } from '../consts';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
@@ -117,7 +118,7 @@ const principles = [
     kicker="Platform / Implementation and support"
     title="Licensing the software is the easy part."
     lead="A platform is worth nothing sitting on top of a ledger that cannot support it. This is the work that makes the software able to tell the truth — separate from the advisory practice, and available whether or not you use it."
-    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    primary={{ label: 'Book a walkthrough', href: bookingHref() }}
     secondary={{ label: 'The advisory practice', href: '/advisory/' }}
     stats={[
       { label: 'Implementation', value: 'four to eight weeks' },

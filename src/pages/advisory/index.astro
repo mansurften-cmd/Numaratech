@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
-import { SITE, spell } from '../../consts';
+import { SITE, spell, bookingHref } from '../../consts';
 import Arrow from '../../components/Arrow.astro';
 import { KEY_SERVICES, keyServicePath, feeSummary } from '../../key-services';
 ---
@@ -17,7 +17,7 @@ import { KEY_SERVICES, keyServicePath, feeSummary } from '../../key-services';
     kicker="Advisory / The licensed practice"
     title="Judgement, on the record."
     lead="Three practice groups, one team. Where a position has to be taken, we take it deliberately and write down why — so the reasoning is still in the file when a question arrives eighteen months later."
-    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    primary={{ label: 'Book a walkthrough', href: bookingHref() }}
     secondary={{ label: 'See the platform', href: '/platform/' }}
     stats={[
       { label: 'Practice groups', value: spell(SERVICE_GROUPS.length) },

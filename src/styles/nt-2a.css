@@ -1539,3 +1539,6 @@ textarea.nt-form__input { resize: vertical; }
   .nt-svc__index-name { flex-basis: 100%; }
 }
 #fee .nt-split { margin-top: 28px; }
+.nt-book__note { margin-top: 14px; color: var(--nt-ink); }
+.nt-home__fees-more { margin-top: 22px; }
+.nt-home__proof { margin: 40px 0 0; }

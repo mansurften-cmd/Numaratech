@@ -144,6 +144,44 @@ export const CALCULATOR = {
 export const hasCalculator = () => CALCULATOR.url.trim() !== '';
 
 /**
+ * Booking a call.
+ *
+ * `url` is a booking page the owner creates — for example a Google Calendar
+ * appointment schedule (calendar.google.com → Create → Appointment
+ * schedule → share the booking page link). Paste the link below and redeploy:
+ * every "Book a call" button on the site then opens it, and the privacy
+ * notice names it.
+ *
+ * When switching it on, also update the privacy notice's "Last updated"
+ * date (src/pages/privacy.astro): the notice gains a Booking line.
+ *
+ * Blank, the buttons go to the booking block on /contact/, which offers a
+ * WhatsApp message with the request already written, or an email. Either
+ * way it is a plain link: no booking widget or script is embedded.
+ */
+export const BOOKING = {
+  url: '',
+  /** Who runs the booking page, for the privacy notice. */
+  provider: 'Google Calendar',
+  label: 'Book a 30-minute call',
+} as const;
+
+export const hasBooking = () => BOOKING.url.trim() !== '';
+
+/** Where every "Book a call" button goes. */
+export const bookingHref = () => (hasBooking() ? BOOKING.url : '/contact/#book');
+
+/** WhatsApp with the booking request already typed. */
+export const whatsappBookingHref = () =>
+  `${SITE.whatsappHref}?text=${encodeURIComponent(
+    `Hello, I would like to book a 30-minute call with ${SITE.name}. A good time for me is: `
+  )}`;
+
+/** Email with the subject already set. */
+export const emailBookingHref = () =>
+  `mailto:${SITE.email}?subject=${encodeURIComponent('Booking a 30-minute call')}`;
+
+/**
  * Contact form delivery, via Web3Forms (https://web3forms.com).
  *
  * The form posts straight from the visitor's browser to Web3Forms, which

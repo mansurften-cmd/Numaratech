@@ -13,7 +13,7 @@ const ROUTES = ['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/',
   '/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html',
   '/platform/small-business-relief-check/','/insights/small-business-relief-extended-to-2029/',
   '/insights/regulatory-brief/','/insights/regulatory-brief/week-to-2026-10-18/',
-  '/advisory/tax/corporate-tax-registration/','/advisory/tax/corporate-tax-return/','/advisory/tax/vat-registration/','/advisory/tax/vat-return-filing/','/advisory/accounting-audit/bookkeeping/','/advisory/risk-compliance/goaml-registration/','/fees/','/case-studies/','/case-studies/late-corporate-tax-registrations/','/case-studies/full-return-to-keep-a-loss/','/case-studies/vat-registration-after-record-amendment/','/case-studies/our-own-goaml-registration/'];
+  '/advisory/tax/corporate-tax-registration/','/advisory/tax/corporate-tax-return/','/advisory/tax/vat-registration/','/advisory/tax/vat-return-filing/','/advisory/accounting-audit/bookkeeping/','/advisory/risk-compliance/goaml-registration/','/advisory/tax/free-zone-corporate-tax/','/advisory/tax/tax-deregistration/','/advisory/tax/ubo-filing/','/advisory/accounting-audit/payroll-wps/','/advisory/accounting-audit/audit-file-preparation/','/fees/','/case-studies/','/case-studies/late-corporate-tax-registrations/','/case-studies/full-return-to-keep-a-loss/','/case-studies/vat-registration-after-record-amendment/','/case-studies/our-own-goaml-registration/'];
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 
@@ -386,7 +386,7 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   const wa = [];
   for (const r of ['/','/contact/']) { await p.goto(B+r,{waitUntil:'domcontentloaded'}); wa.push(await p.evaluate(() => [...document.querySelectorAll('a[href^="https://wa.me/"]')].map(x=>x.getAttribute('href')))); }
   const scripts = await p.evaluate(() => [...document.scripts].map(s=>s.src).filter(s=>s && !s.startsWith(location.origin)));
-  t('WhatsApp: plain wa.me links in the footer and on /contact/, same number as tel:, no third-party script', wa[0].length>=1 && wa[1].length>=2 && wa.flat().every(h=>h==='https://wa.me/971529742697') && scripts.length===0, JSON.stringify({ wa, scripts }));
+  t('WhatsApp: plain wa.me links in the footer and on /contact/, same number as tel:, no third-party script', wa[0].length>=1 && wa[1].length>=2 && wa.flat().every(h=>/^https:\/\/wa\.me\/971529742697(\?text=[^"]+)?$/.test(h)) && scripts.length===0, JSON.stringify({ wa, scripts }));
   await p.close(); }
 
 // FIXED FEES — one source. Every amount a service page shows must be one the

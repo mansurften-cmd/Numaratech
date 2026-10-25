@@ -209,7 +209,8 @@ before it is published. The site has 24 routes, 22 of them indexable.
 See `AUDIT-2026-10.md` §13. Prices live only in `src/fees.ts` (set as
 starting figures, for the owner to change). Dedicated service pages come from
 `src/key-services.ts` (`/advisory/<group>/<service>/`), case studies from
-`src/case-studies.ts`. 36 routes, 34 of them indexable.
+`src/case-studies.ts`. Booking: `BOOKING.url` in `src/consts.ts` (blank →
+`/contact/#book`). 41 routes, 39 of them indexable — see §13a.
 
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides

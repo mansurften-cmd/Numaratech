@@ -3,7 +3,7 @@
  *  otherwise (a visible gap rather than a form that discards enquiries). */
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import { SITE, WEB3FORMS, hasContactForm } from '../consts';
+import { SITE, WEB3FORMS, hasContactForm, BOOKING, hasBooking, whatsappBookingHref, emailBookingHref } from '../consts';
 
 // Surfaced in the build log so a deploy without a key is noticed. Deliberately
 // a warning and not a thrown error: failing the build would take the entire
@@ -34,10 +34,37 @@ if (!hasContactForm()) {
     ]}
   />
 
+  <section class="nt-section" id="book">
+    <div class="nt-eyebrow"><b>01</b><span>Book a call</span></div>
+    <h2 class="nt-h2">{BOOKING.label}.</h2>
+    <p class="nt-body">
+      Your year end, your licence type and whatever is unresolved, on screen. By the end you will
+      know what is due, what it involves, and the fixed fee.
+    </p>
+    {
+      hasBooking() ? (
+        <div class="nt-actions nt-actions--light">
+          <a class="nt-btn" href={BOOKING.url} rel="noopener">Choose a time</a>
+          <span class="nt-small">Opens our booking page on {BOOKING.provider}.</span>
+        </div>
+      ) : (
+        <>
+          <div class="nt-actions nt-actions--light">
+            <a class="nt-btn" href={whatsappBookingHref()} rel="noopener">Book on WhatsApp</a>
+            <a class="nt-btn nt-btn--ghost" href={emailBookingHref()}>Book by email</a>
+          </div>
+          <p class="nt-small nt-book__note">
+            Send two or three times that suit you. We confirm one within a business day.
+          </p>
+        </>
+      )
+    }
+  </section>
+
   <section class="nt-section">
     <div class="nt-split--even nt-split">
       <div>
-        <div class="nt-eyebrow"><b>01</b><span>Direct</span></div>
+        <div class="nt-eyebrow"><b>02</b><span>Direct</span></div>
         <h2 class="nt-h2">Write, call, or message.</h2>
         <p class="nt-body">
           Each reaches the same three people. If your question is specific, send the detail — it
@@ -52,7 +79,7 @@ if (!hasContactForm()) {
       </div>
 
       <div>
-        <div class="nt-eyebrow"><b>02</b><span>Enquiry</span></div>
+        <div class="nt-eyebrow"><b>03</b><span>Enquiry</span></div>
         {
           hasContactForm() ? (
             <form class="nt-form" action={WEB3FORMS.endpoint} method="POST">

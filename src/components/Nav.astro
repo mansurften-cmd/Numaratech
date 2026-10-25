@@ -8,7 +8,7 @@
  *  reachable, and the script sets data-nav="ready" on the band, which is what
  *  activates the collapsed drawer styling. If the script never runs the nav
  *  degrades to a plain stacked list rather than to nothing. */
-import { NAV } from '../consts';
+import { NAV, bookingHref } from '../consts';
 import Logomark from './Logomark.astro';
 
 const path = Astro.url.pathname;
@@ -67,7 +67,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
         )
       )
     }
-    <a class="nt-btn nt-btn--sm" href="/contact/">Book a walkthrough</a>
+    <a class="nt-btn nt-btn--sm" href={bookingHref()}>Book a walkthrough</a>
   </nav>
 
   <div class="nt-nav__scrim" hidden></div>

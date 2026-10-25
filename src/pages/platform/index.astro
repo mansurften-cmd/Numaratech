@@ -5,7 +5,7 @@ import NextBand from '../../components/NextBand.astro';
 import CtConsole from '../../components/CtConsole.astro';
 import FsConsole from '../../components/FsConsole.astro';
 import { BUILT_PRODUCTS, IDEA_PRODUCTS } from '../../services';
-import { spell } from '../../consts';
+import { spell, bookingHref } from '../../consts';
 ---
 
 <Base
@@ -17,7 +17,7 @@ import { spell } from '../../consts';
     kicker="Platform / Software licensed to firms and finance functions"
     title="It computes and it evidences. It does not decide."
     lead="The tooling our own team files with, licensed to other firms and finance functions. Judgement stays with your people — the platform's job is to make every figure derivable and every derivation durable."
-    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    primary={{ label: 'Book a walkthrough', href: bookingHref() }}
     secondary={{ label: 'See what is next', href: '#roadmap' }}
     stats={[
       { label: 'In private beta', value: spell(BUILT_PRODUCTS.length) },

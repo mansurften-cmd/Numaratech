@@ -5,10 +5,17 @@ import HeroConsole from '../components/HeroConsole.astro';
 import NextBand from '../components/NextBand.astro';
 import { SERVICE_GROUPS, BUILT_PRODUCTS, IDEA_PRODUCTS, ALL_SERVICES } from '../services';
 import { insightsNewestFirst, formatInsightDate } from '../insights';
-import { SITE, UAE_CT, spell } from '../consts';
+import Arrow from '../components/Arrow.astro';
+import { KEY_SERVICES, keyServicePath, feeSummary } from '../key-services';
+import { CASE_STUDIES } from '../case-studies';
+import { SITE, UAE_CT, spell, bookingHref } from '../consts';
 import { DEMO_TAXABLE_INCOME, DEMO_ZERO_BAND, DEMO_CHARGEABLE, DEMO_TAX, fig } from '../demo';
 
 const insights = insightsNewestFirst().slice(0, 3);
+
+// The services people search for by name, with their fixed fees — the
+// first six in src/key-services.ts. The rest are on /advisory/ and /fees/.
+const featured = KEY_SERVICES.slice(0, 6);
 
 // The estimator starts on the demo entity's taxable income — the same number
 // the hero console types out — so the two surfaces show one computation from
@@ -28,7 +35,7 @@ const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, 
     kicker="Advisory and platform / United Arab Emirates"
     title="Finance that can be defended."
     lead="A licensed UAE accounting and tax practice, and the platform our own filings run through. Advisory when you need judgement; software when you need it repeatable."
-    primary={{ label: 'Book a walkthrough', href: '/contact/' }}
+    primary={{ label: 'Book a walkthrough', href: bookingHref() }}
     secondary={{ label: 'See the platform', href: '/platform/' }}
     stats={[
       { label: 'Advisory groups', value: spell(SERVICE_GROUPS.length) },
@@ -64,10 +71,53 @@ const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, 
     </div>
   </section>
 
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>02</b><span>Fixed fees</span></div>
+    <h2 class="nt-h2">The price, before the work.</h2>
+    <p class="nt-body">
+      The services most businesses come to us for, each with its own page and a fixed fee agreed
+      in writing before anything starts.
+    </p>
+    <ul class="nt-svc__index">
+      {
+        featured.map((page) => (
+          <li>
+            <a href={keyServicePath(page)}>
+              <span class="nt-svc__index-name">{page.name}</span>
+              <span class="nt-svc__index-fee">{feeSummary(page)}</span>
+              <Arrow />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="nt-home__fees-more">
+      <a class="nt-arrow-link" href="/fees/">
+        Every fixed fee
+        <Arrow />
+      </a>
+    </p>
+    <aside class="nt-brief-callout nt-home__proof" aria-labelledby="home-cases-title">
+      <div>
+        <p class="nt-kicker">Case studies</p>
+        <h3 class="nt-h3" id="home-cases-title">What the work actually looked like.</h3>
+        <p class="nt-small">
+          {spell(CASE_STUDIES.length, true)} anonymised engagements: late Corporate Tax registrations, a tax
+          loss kept by not electing Small Business Relief, a VAT registration held up by an
+          out-of-date tax record, and our own goAML registration.
+        </p>
+      </div>
+      <a class="nt-arrow-link" href="/case-studies/">
+        Read the case studies
+        <Arrow />
+      </a>
+    </aside>
+  </section>
+
   <section class="nt-section nt-dark nt-section--flush">
     <div class="nt-grid--v"></div>
     <div class="nt-layer">
-      <div class="nt-eyebrow"><b>02</b><span>Platform</span></div>
+      <div class="nt-eyebrow"><b>03</b><span>Platform</span></div>
       <h2 class="nt-h2">It computes and it evidences. It does not decide.</h2>
       <p class="nt-body">
         Two products in private beta, both reading the same mapped ledger — so the statements and
@@ -102,7 +152,7 @@ const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, 
   </section>
 
   <section class="nt-section" id="estimator">
-    <div class="nt-eyebrow"><b>03</b><span>Corporate Tax estimator</span></div>
+    <div class="nt-eyebrow"><b>04</b><span>Corporate Tax estimator</span></div>
     <h2 class="nt-h2">Drag the year's taxable income.</h2>
     <p class="nt-body">
       The published UAE rules, applied to one number: nothing above the zero band is taxed until it
@@ -163,7 +213,7 @@ const machineName = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, 
   </section>
 
   <section class="nt-section">
-    <div class="nt-eyebrow"><b>04</b><span>Insights</span></div>
+    <div class="nt-eyebrow"><b>05</b><span>Insights</span></div>
     <h2 class="nt-h2">What we have written down.</h2>
     <div class="nt-cells nt-cells--3" style="--nt-cols:3">
       {

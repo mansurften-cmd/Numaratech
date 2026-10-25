@@ -7,7 +7,9 @@
 // registration AED 600–750, VAT registration AED 500–750, VAT returns about
 // AED 700, bookkeeping AED 600 a month, goAML registration AED 1,500) and on
 // the figures quoted in the practice's own fee discussions (a Small Business
-// Relief return at about AED 1,000). Change a number here and every page
+// Relief return at about AED 1,000). The free zone return, payroll, audit
+// file and UBO fees have no invoice history yet and are set from the usual
+// market range for a small UAE company. Change a number here and every page
 // that shows it follows.
 //
 // A price on a finance firm's site is a promise. Each one is the fee for a
@@ -64,6 +66,16 @@ export const FEES: Fee[] = [
     from: false,
     unit: 'one-off',
     note: 'Once the final return is filed and the licence cancelled.',
+    href: '/advisory/tax/tax-deregistration/',
+  },
+  {
+    id: 'qfzp-return',
+    label: 'Free zone Corporate Tax return (0% rate)',
+    amount: 3_500,
+    from: true,
+    unit: 'per return',
+    note: 'Qualifying status tested, income classified, the return filed.',
+    href: '/advisory/tax/free-zone-corporate-tax/',
   },
   {
     id: 'vat-registration',
@@ -90,6 +102,7 @@ export const FEES: Fee[] = [
     from: false,
     unit: 'one-off',
     note: 'Application and the final return.',
+    href: '/advisory/tax/tax-deregistration/',
   },
   {
     id: 'bookkeeping',
@@ -99,6 +112,33 @@ export const FEES: Fee[] = [
     unit: 'a month',
     note: 'Set by monthly transaction volume and the number of bank accounts.',
     href: '/advisory/accounting-audit/bookkeeping/',
+  },
+  {
+    id: 'payroll-wps',
+    label: 'Payroll and WPS',
+    amount: 500,
+    from: true,
+    unit: 'a month',
+    note: 'Set by the number of employees and monthly changes.',
+    href: '/advisory/accounting-audit/payroll-wps/',
+  },
+  {
+    id: 'audit-file-prep',
+    label: 'Audit file preparation',
+    amount: 3_500,
+    from: true,
+    unit: 'one-off',
+    note: 'Per year end. Set by the balance sheet and the state of the records.',
+    href: '/advisory/accounting-audit/audit-file-preparation/',
+  },
+  {
+    id: 'ubo-filing',
+    label: 'UBO register and filing',
+    amount: 750,
+    from: false,
+    unit: 'one-off',
+    note: 'Registers prepared and filed with your licensing authority, or updated.',
+    href: '/advisory/tax/ubo-filing/',
   },
   {
     id: 'goaml-registration',

@@ -24,7 +24,7 @@ export type KeyService = {
   /** Group slug in src/services.ts. */
   group: 'tax' | 'accounting-audit' | 'risk-compliance';
   /** The matching section on the group page, which links here. */
-  anchor: string;
+  anchors: string[];
   /** Short name, for menus, breadcrumbs and the fee table. */
   name: string;
   /** The visible headline, with the place name people search for. */
@@ -66,7 +66,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'corporate-tax-registration',
     group: 'tax',
-    anchor: 'corporate-tax',
+    anchors: ['corporate-tax'],
     name: 'Corporate Tax registration',
     title: 'Corporate Tax registration in Dubai.',
     seoTitle: 'Corporate Tax Registration in Dubai, UAE',
@@ -152,7 +152,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'corporate-tax-return',
     group: 'tax',
-    anchor: 'corporate-tax',
+    anchors: ['corporate-tax'],
     name: 'Corporate Tax return filing',
     title: 'Corporate Tax return filing in Dubai.',
     seoTitle: 'Corporate Tax Return Filing in Dubai, UAE',
@@ -239,7 +239,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'vat-registration',
     group: 'tax',
-    anchor: 'vat',
+    anchors: ['vat'],
     name: 'VAT registration',
     title: 'VAT registration in Dubai.',
     seoTitle: 'VAT Registration in Dubai, UAE',
@@ -318,7 +318,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'vat-return-filing',
     group: 'tax',
-    anchor: 'vat',
+    anchors: ['vat'],
     name: 'VAT return filing',
     title: 'VAT return filing in Dubai.',
     seoTitle: 'VAT Return Filing in Dubai, UAE',
@@ -400,7 +400,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'bookkeeping',
     group: 'accounting-audit',
-    anchor: 'accounting-bookkeeping',
+    anchors: ['accounting-bookkeeping'],
     name: 'Bookkeeping and accounting',
     title: 'Bookkeeping and accounting in Dubai.',
     seoTitle: 'Bookkeeping & Accounting Services in Dubai',
@@ -479,7 +479,7 @@ export const KEY_SERVICES: KeyService[] = [
   {
     slug: 'goaml-registration',
     group: 'risk-compliance',
-    anchor: 'compliance-services',
+    anchors: ['compliance-services'],
     name: 'goAML registration',
     title: 'goAML registration in the UAE.',
     seoTitle: 'goAML Registration for DNFBPs in the UAE',
@@ -557,13 +557,365 @@ export const KEY_SERVICES: KeyService[] = [
       { label: 'Anti-money laundering, Ministry of Economy and Tourism', href: 'https://www.moet.gov.ae/en/aml' },
     ],
   },
+  {
+    slug: 'free-zone-corporate-tax',
+    group: 'tax',
+    anchors: ['corporate-tax'],
+    name: 'Free zone Corporate Tax',
+    title: 'Free zone Corporate Tax, and the 0% rate.',
+    seoTitle: 'Free Zone Corporate Tax & QFZP Returns, UAE',
+    description:
+      'Free zone Corporate Tax in the UAE: whether you are a Qualifying Free Zone Person, the de minimis test, and the return, {fee:qfzp-return}.',
+    lead:
+      'A free zone company pays 0% only on qualifying income, and only while it meets every condition, every year. We test the conditions, split the income, and prepare the return — with the evidence the 0% rests on.',
+    fees: [{ id: 'qfzp-return', label: 'Fixed fee, per return' }],
+    stats: [
+      { label: 'Qualifying income', value: '0%' },
+      { label: 'Other taxable income', value: '9% above AED 375,000' },
+      { label: 'De minimis', value: 'lower of 5% and AED 5m' },
+    ],
+    who: {
+      title: 'Who this is for.',
+      intro: 'Any company licensed in a UAE free zone, and in particular:',
+      items: [
+        'Free zone companies that want the 0% rate on their qualifying income.',
+        'Free zone companies with mainland customers, where some income may not qualify.',
+        'Groups with a free zone company alongside mainland or overseas companies.',
+        'Free zone companies that have been told they "do not pay tax" — and still have to register, be audited and file.',
+      ],
+    },
+    included: [
+      'Testing each condition for Qualifying Free Zone Person status: substance in the free zone, qualifying income, arm’s length pricing, audited financial statements, and the de minimis limit.',
+      'Classifying revenue as qualifying or non-qualifying, line by line, with the reasoning recorded.',
+      'The de minimis test: non-qualifying revenue within the lower of 5% of total revenue and AED 5 million.',
+      'Related-party transactions reviewed against the arm’s length standard.',
+      'Preparing the Corporate Tax return and submitting it through your EmaraTax account.',
+      'A file of the evidence the 0% position depends on, kept for the seven years the law requires.',
+    ],
+    need: [
+      'Free zone licence, showing the licensed activities.',
+      'Audited financial statements for the period.',
+      'A revenue listing by customer: where each customer is, and what was supplied.',
+      'Staff, premises and assets in the free zone — the substance the regime looks for.',
+      'Agreements with related parties.',
+    ],
+    steps: [
+      { title: 'Test', body: 'Each condition for qualifying status, checked before the year closes where possible.' },
+      { title: 'Classify', body: 'Revenue split into qualifying and non-qualifying, with the de minimis test run.' },
+      { title: 'Compute', body: '0% on qualifying income, 9% on the rest above the zero band, each line evidenced.' },
+      { title: 'File', body: 'You approve the return; we submit it through your EmaraTax account and keep the file.' },
+    ],
+    faqs: [
+      {
+        q: 'Is every free zone company taxed at 0%?',
+        a: 'No. 0% applies only to qualifying income, and only for a Qualifying Free Zone Person — a free zone company that meets every condition for the period. Other taxable income is taxed at 9%.',
+      },
+      {
+        q: 'What happens if we fail a condition?',
+        a: 'The company loses Qualifying Free Zone Person status and is taxed at the standard rates for a minimum of five years. That is why the test is worth running before the year ends, not after.',
+      },
+      {
+        q: 'Do we need audited accounts?',
+        a: 'Yes. Audited financial statements are one of the conditions for Qualifying Free Zone Person status.',
+      },
+      {
+        q: 'Can a free zone company elect Small Business Relief instead?',
+        a: 'A Qualifying Free Zone Person cannot. A free zone company that is not one may, if it meets the conditions — our free Small Business Relief Check tests them.',
+      },
+    ],
+    related: [
+      { label: 'Audit file preparation', href: '/advisory/accounting-audit/audit-file-preparation/' },
+      { label: 'Corporate Tax return filing', href: '/advisory/tax/corporate-tax-return/' },
+      { label: 'Small Business Relief Check (free)', href: '/platform/small-business-relief-check/' },
+    ],
+    sources: [
+      FTA_CT_GUIDES,
+      {
+        label: 'Ministerial Decision No. 139 of 2023 on Qualifying and Excluded Activities, Ministry of Finance',
+        href: 'https://mof.gov.ae/wp-content/uploads/2023/06/Ministerial-Decision-No.-139-of-2023-Regarding-Qualifying-Activities-and-Excluded-Activities.pdf',
+      },
+    ],
+  },
+  {
+    slug: 'tax-deregistration',
+    group: 'tax',
+    anchors: ['corporate-tax', 'vat'],
+    name: 'Corporate Tax and VAT deregistration',
+    title: 'Corporate Tax and VAT deregistration.',
+    seoTitle: 'Corporate Tax & VAT Deregistration, UAE',
+    description:
+      'Closing a UAE company? Corporate Tax and VAT deregistration for a fixed {fee:ct-deregistration} each: the final returns, the deadlines, and the approval.',
+    lead:
+      'Cancelling a trade licence does not close your tax registrations. Until the Federal Tax Authority approves deregistration, returns keep falling due — and so do the penalties for missing them.',
+    fees: [
+      { id: 'ct-deregistration', label: 'Corporate Tax deregistration' },
+      { id: 'vat-deregistration', label: 'VAT deregistration' },
+    ],
+    stats: [
+      { label: 'Corporate Tax deadline', value: '3 months after the business stops' },
+      { label: 'Before approval', value: 'every return filed, all tax paid' },
+    ],
+    who: {
+      title: 'Who this is for.',
+      intro: 'Businesses that are:',
+      items: [
+        'Closing, liquidating or cancelling their trade licence.',
+        'Merging into another company, or transferring the business.',
+        'No longer making taxable supplies, or whose supplies have fallen below the VAT voluntary registration threshold of AED 187,500.',
+        'Carrying a registration they no longer need, with returns still falling due.',
+      ],
+    },
+    included: [
+      'Confirming the date the business stopped, which starts the deregistration clock.',
+      'The final Corporate Tax return to that date, and the final VAT return.',
+      'Settling the position: tax due, any penalties, and any refund owed to you.',
+      'The deregistration applications, submitted through your EmaraTax account.',
+      'Preparing the replies to any questions until the Federal Tax Authority approves.',
+    ],
+    need: [
+      'The licence cancellation, liquidation or board documents showing when the business stopped.',
+      'Final financial statements, to the date the business stopped.',
+      'Bank statements to the date of closure.',
+      'User access to your EmaraTax account.',
+    ],
+    steps: [
+      { title: 'Confirm', body: 'The cessation date, and which registrations have to be closed.' },
+      { title: 'Final returns', body: 'The last Corporate Tax and VAT returns, and the tax position settled.' },
+      { title: 'Apply', body: 'Deregistration applications submitted through your EmaraTax account.' },
+      { title: 'Approval', body: 'Replies to any questions prepared with you, until the registrations are closed.' },
+    ],
+    faqs: [
+      {
+        q: 'We cancelled the licence. Are we done?',
+        a: 'No. The Federal Tax Authority does not treat a cancelled or expired licence as the end of a tax registration. Until deregistration is approved, returns keep falling due.',
+      },
+      {
+        q: 'When do we have to apply?',
+        a: 'For Corporate Tax, within three months of the business ceasing — for a company, usually its dissolution or liquidation. For VAT, the deadline runs from when the business stops making taxable supplies, and it is shorter. Late deregistration carries penalties under both.',
+      },
+      {
+        q: 'What if we still owe tax or penalties?',
+        a: 'They have to be paid, and every return filed, before the Federal Tax Authority will approve deregistration.',
+      },
+    ],
+    related: [
+      { label: 'Corporate Tax return filing', href: '/advisory/tax/corporate-tax-return/' },
+      { label: 'VAT return filing', href: '/advisory/tax/vat-return-filing/' },
+    ],
+    sources: [FTA_CT_GUIDES, FTA_VAT_GUIDES],
+  },
+  {
+    slug: 'ubo-filing',
+    group: 'tax',
+    anchors: ['ubo-filing'],
+    name: 'UBO filing',
+    title: 'UBO filing in Dubai.',
+    seoTitle: 'UBO Register & Filing in Dubai, UAE',
+    description:
+      'Ultimate beneficial owner registers prepared and filed with your licensing authority in Dubai for a fixed {fee:ubo-filing}, and kept current as ownership changes.',
+    lead:
+      'Every UAE company has to know who ultimately owns and controls it, keep that on a register, and file it with its licensing authority. We trace the owners, prepare the registers, file them, and update them when anything changes.',
+    fees: [{ id: 'ubo-filing', label: 'Fixed fee' }],
+    stats: [
+      { label: 'Ownership test', value: '25% or more' },
+      { label: 'Filed with', value: 'your licensing authority' },
+      { label: 'Updated', value: 'whenever ownership changes' },
+    ],
+    who: {
+      title: 'Who has to file.',
+      intro: 'Companies licensed on the mainland and in the free zones outside the financial free zones, including:',
+      items: [
+        'Companies owned directly by individuals.',
+        'Companies owned through other companies or trusts, where the ultimate owner has to be traced.',
+        'Companies with nominee shareholders or directors.',
+        'Any company whose shareholders, shareholdings or managers have changed since the last filing.',
+      ],
+    },
+    included: [
+      'Tracing ownership to the individuals who own or control 25% or more, or who control the company in another way.',
+      'Where nobody meets that test, identifying the person the rules treat as the beneficial owner.',
+      'The registers: beneficial owners, partners or shareholders, and nominee directors.',
+      'Filing with your licensing authority, through its portal.',
+      'Updating the registers and the filing when ownership or management changes.',
+    ],
+    need: [
+      'Trade licence and memorandum of association.',
+      'Share register, and the ownership chain behind any corporate shareholder.',
+      'Passport, and Emirates ID or address, for each beneficial owner.',
+      'Any nominee agreements.',
+    ],
+    steps: [
+      { title: 'Trace', body: 'Ownership followed through every layer to the individuals at the end of it.' },
+      { title: 'Prepare', body: 'The three registers drafted and agreed with you.' },
+      { title: 'File', body: 'Submitted to your licensing authority through its portal.' },
+      { title: 'Maintain', body: 'Updated when shares, owners or managers change.' },
+    ],
+    faqs: [
+      {
+        q: 'Who counts as a beneficial owner?',
+        a: 'An individual who ultimately owns or controls 25% or more of the company, directly or through other companies, or who controls it by other means. If nobody meets that test, the rules treat a senior manager as the beneficial owner.',
+      },
+      {
+        q: 'What if ownership changes?',
+        a: 'The registers have to be updated and the licensing authority told promptly. The deadline is short, and fines for failing to keep the registers rise on repeat.',
+      },
+      {
+        q: 'Does this apply in DIFC or ADGM?',
+        a: 'The financial free zones run their own beneficial ownership rules. The federal rules cover the mainland and the other free zones.',
+      },
+    ],
+    related: [
+      { label: 'goAML registration', href: '/advisory/risk-compliance/goaml-registration/' },
+      { label: 'Risk & Compliance services', href: '/advisory/risk-compliance/' },
+    ],
+    sources: [
+      {
+        label: 'Ultimate and intermediate beneficial owners: guide, Jebel Ali Free Zone',
+        href: 'https://www.jafza.ae/resource-centre/guides/all-you-need-to-know-about-ultimate-beneficial-owners-and-intermediate-beneficial-owners/',
+      },
+    ],
+  },
+  {
+    slug: 'payroll-wps',
+    group: 'accounting-audit',
+    anchors: ['payroll-wps'],
+    name: 'Payroll and WPS',
+    title: 'Payroll and WPS in Dubai.',
+    seoTitle: 'Payroll & WPS Services in Dubai, UAE',
+    description:
+      'Monthly payroll processed and paid through the Wage Protection System in Dubai, with end-of-service gratuity computed correctly, {fee:payroll-wps} a month.',
+    lead:
+      'Salaries paid on time through the Wage Protection System, payslips issued, and end-of-service gratuity calculated under the law rather than approximated on the employee’s last day.',
+    fees: [{ id: 'payroll-wps', label: 'Fixed fee, a month' }],
+    stats: [
+      { label: 'Paid through', value: 'the Wage Protection System' },
+      { label: 'Gratuity', value: '21 days a year, then 30' },
+      { label: 'Payslips', value: 'every month' },
+    ],
+    who: {
+      title: 'Who this is for.',
+      intro: 'Employers who would rather not run payroll themselves, especially:',
+      items: [
+        'Mainland companies registered with the Ministry of Human Resources and Emiratisation, which pay salaries through WPS.',
+        'Free zone companies, under their own free zone’s rules.',
+        'Small teams where payroll currently sits with the owner.',
+        'Any employer with a leaver whose gratuity needs to be computed correctly.',
+      ],
+    },
+    included: [
+      'Monthly payroll: salaries, allowances, overtime, leave and deductions.',
+      'The WPS salary file prepared for your bank or exchange house each month.',
+      'Payslips for every employee.',
+      'End-of-service gratuity computed under the UAE Labour Law, for every leaver.',
+      'A gratuity provision for your accounts.',
+      'Payroll journals posted to your books.',
+    ],
+    need: [
+      'Employment contracts, or a list of salaries and allowances.',
+      'Joiners, leavers, leave and overtime each month, by a set date.',
+      'Your bank’s or exchange house’s WPS details.',
+    ],
+    steps: [
+      { title: 'Collect', body: 'Changes for the month — joiners, leavers, leave, overtime — by a set date.' },
+      { title: 'Calculate', body: 'Gross to net for every employee, and any gratuity due.' },
+      { title: 'Approve', body: 'You see the payroll summary before anything is paid.' },
+      { title: 'Pay', body: 'The WPS file goes to your bank or exchange house; payslips go to your staff.' },
+    ],
+    faqs: [
+      {
+        q: 'How is end-of-service gratuity calculated?',
+        a: 'Under the UAE Labour Law: 21 days’ basic wage for each of the first five years of service, and 30 days’ basic wage for each year after that, capped at two years’ wage in total. Days of unpaid absence are not counted.',
+      },
+      {
+        q: 'Does WPS apply in free zones?',
+        a: 'WPS is the system for employers registered with the Ministry of Human Resources and Emiratisation. Free zones set their own payroll rules; we follow the one that applies to you.',
+      },
+      {
+        q: 'What sets the monthly fee?',
+        a: 'The number of employees, and how much changes each month. We quote a fixed monthly fee after seeing your payroll.',
+      },
+    ],
+    related: [
+      { label: 'Bookkeeping and accounting', href: '/advisory/accounting-audit/bookkeeping/' },
+      { label: 'Accounting & Audit Support', href: '/advisory/accounting-audit/' },
+    ],
+    sources: [{ label: 'Ministry of Human Resources and Emiratisation', href: 'https://www.mohre.gov.ae/' }],
+  },
+  {
+    slug: 'audit-file-preparation',
+    group: 'accounting-audit',
+    anchors: ['audit-assurance', 'external-audit'],
+    name: 'Audit file preparation',
+    title: 'Audit file preparation in Dubai.',
+    seoTitle: 'Audit Preparation & Support in Dubai, UAE',
+    description:
+      'The year-end file your auditor asks for, prepared before fieldwork: schedules, reconciliations and evidence, {fee:audit-file-prep}. We do not audit.',
+    lead:
+      'We are not your auditor. We are the people who get the file ready before your auditor arrives — so fieldwork is short, the queries are few, and the opinion lands on time.',
+    fees: [{ id: 'audit-file-prep', label: 'Fixed fee, per year end' }],
+    stats: [
+      { label: 'Our role', value: 'your side of the audit' },
+      { label: 'We do not', value: 'audit or sign opinions' },
+      { label: 'You receive', value: 'a cross-referenced year-end file' },
+    ],
+    who: {
+      title: 'Who this is for.',
+      intro: 'Companies that have to be audited, or choose to be:',
+      items: [
+        'Qualifying Free Zone Persons, for whom audited accounts are a condition of the 0% rate.',
+        'Companies whose licensing authority asks for audited accounts.',
+        'Companies whose bank, investors or shareholders require an audit.',
+        'Any company whose last audit ran long because the file was built during fieldwork.',
+      ],
+    },
+    included: [
+      'Lead schedules for every material balance, tied to the trial balance.',
+      'Bank, receivable, payable and intercompany reconciliations.',
+      'Supporting evidence gathered and indexed before fieldwork.',
+      'Fixed asset register and depreciation schedule.',
+      'Draft financial statements under IFRS, or IFRS for SMEs.',
+      'One point of contact for the auditor’s queries, tracked to closure.',
+    ],
+    need: [
+      'Trial balance and general ledger for the year.',
+      'Bank statements for the year.',
+      'Contracts, loan agreements and significant invoices.',
+      'Last year’s audited financial statements.',
+    ],
+    steps: [
+      { title: 'Plan', body: 'Agree the timetable with you and your auditor, and what the file will contain.' },
+      { title: 'Prepare', body: 'Schedules, reconciliations and evidence assembled before fieldwork starts.' },
+      { title: 'Support', body: 'Auditor queries answered from the file, and tracked.' },
+      { title: 'Close', body: 'Adjustments posted and management letter points followed to closure.' },
+    ],
+    faqs: [
+      {
+        q: 'Can you audit our accounts?',
+        a: 'No. A firm that prepares the records cannot independently audit them. We prepare the file and work alongside the auditor you appoint; the opinion is theirs.',
+      },
+      {
+        q: 'Can you help us appoint an auditor?',
+        a: 'Yes — we can help you appoint one and agree the scope and timetable. The auditor stays independent of us.',
+      },
+      {
+        q: 'What sets the fee?',
+        a: 'The size of the balance sheet, the number of bank accounts and companies, and the state of the records. We quote a fixed fee after seeing the trial balance.',
+      },
+    ],
+    related: [
+      { label: 'Free zone Corporate Tax', href: '/advisory/tax/free-zone-corporate-tax/' },
+      { label: 'Bookkeeping and accounting', href: '/advisory/accounting-audit/bookkeeping/' },
+      { label: 'The audit trail is a design requirement', href: '/insights/audit-trail-as-a-design-requirement/' },
+    ],
+    sources: [FTA_CT_GUIDES],
+  },
 ];
 
 export const keyServicePath = (service: KeyService) => `/advisory/${service.group}/${service.slug}/`;
 
 /** Dedicated pages for a group-page section, by its anchor. */
 export const keyServicesFor = (group: string, anchor: string) =>
-  KEY_SERVICES.filter((service) => service.group === group && service.anchor === anchor);
+  KEY_SERVICES.filter((service) => service.group === group && service.anchors.includes(anchor));
 
 /** One line for lists: the fee, or "from" the lowest where a page has
  *  several (a Small Business Relief return and a full one, say). */

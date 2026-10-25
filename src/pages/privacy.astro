@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import NextBand from '../components/NextBand.astro';
-import { SITE, hasContactForm } from '../consts';
+import { SITE, hasContactForm, BOOKING, hasBooking } from '../consts';
 
 // Revised 11 October 2026: names the PDPL and the supervisory authority,
 // describes the contact form's processor when the form is live, and no longer
@@ -111,6 +111,15 @@ const formLive = hasContactForm();
           conversation is carried by WhatsApp (part of Meta) under its own
           terms and privacy policy. We use it only to answer you.
         </li>
+        {
+          hasBooking() && (
+            <li>
+              <strong>Booking.</strong> If you book a call through our booking
+              page, {BOOKING.provider} receives the name, email address and time
+              you enter, and sends us the booking.
+            </li>
+          )
+        }
         {
           formLive && (
             <li>

@@ -1,6 +1,6 @@
 ---
 /** The closing navy band. Every page ends on one. */
-import { SITE } from '../consts';
+import { SITE, bookingHref } from '../consts';
 
 interface Props {
   title: string;
@@ -13,7 +13,7 @@ const {
   title,
   body,
   cta = 'Book a walkthrough',
-  href = '/contact/',
+  href = bookingHref(),
 } = Astro.props;
 ---
 
