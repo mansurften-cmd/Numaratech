@@ -55,9 +55,9 @@ const {
 
 // AccountingService is a subtype of ProfessionalService and of LocalBusiness,
 // which is what this actually is — Organization alone said nothing about what
-// the business does or where it operates (A9). No priceRange is asserted:
-// engagements are quoted individually and inventing a band would be a claim
-// about pricing we do not make anywhere else on the site.
+// the business does or where it operates (A9). Its fixed fees are the
+// OfferCatalog on /fees/, referenced here by @id rather than restated, so
+// src/fees.ts stays the only place a price lives.
 const organisation = {
   '@context': 'https://schema.org',
   '@type': 'AccountingService',
@@ -87,6 +87,7 @@ const organisation = {
     'Anti-money laundering compliance',
     'Ultimate beneficial ownership filing',
   ],
+  hasOfferCatalog: { '@id': `${SITE.url}/fees/#catalog` },
   ...(SITE.sameAs.length ? { sameAs: [...SITE.sameAs] } : {}),
   // The founder's full Person record is on /about/, under this @id.
   founder: PEOPLE.filter((person) => person.role === 'Founder').map((person) => ({
