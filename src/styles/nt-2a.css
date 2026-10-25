@@ -1290,3 +1290,8 @@ textarea.nt-form__input { resize: vertical; }
   .nt-nav:not([data-nav='ready']) .nt-burger { display: none; animation: none; }
   .nt-nav:not([data-nav='ready']) .nt-nav__links { position: static; visibility: visible; animation: none; }
 }
+
+/* Links in the footer's legal strip. The site-wide link teal is too dark on
+   the deep navy; these take the paper text colour and an underline. */
+.nt-legal a { color: var(--nt-paper-text); text-decoration: underline; text-underline-offset: 3px; }
+.nt-legal a:hover { color: #ffffff; }

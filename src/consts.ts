@@ -53,6 +53,25 @@ export const SITE = {
     authority: 'Department of Economy and Tourism, Dubai',
     authorityShort: 'Dubai DET',
   },
+  /**
+   * Association, at the owner's request (25 October 2026). Wording rests on
+   * the network's own correspondence: the name is written with spaces
+   * ("G R A M P"), with no logo, as its founder member firm asked on 18
+   * October 2026; and the UAE presence is listed on gramp.in under Gautam
+   * Joshi & Co. LLP, "not as UAE member" (24 October 2026). So the site says
+   * "associated with" and states plainly that NUMARATECH is a separate
+   * business and not a member firm. Do not strengthen this to "member",
+   * "partner" or "part of" without the network's written agreement — Indian
+   * CA networks are governed by ICAI's networking guidelines.
+   */
+  association: {
+    // Non-breaking spaces between the letters, so the name never splits
+    // across two lines ("G" / "R A M P") on a narrow screen.
+    name: 'G\u00a0R\u00a0A\u00a0M\u00a0P Network',
+    url: 'https://gramp.in/',
+    host: 'gramp.in',
+    description: 'a network of Chartered Accountant firms with offices across India',
+  },
   /** Official profiles (LinkedIn company page, Google Business Profile URL).
    *  Emitted as schema.org sameAs once filled in — it is how search engines
    *  join the site to the business's other listings. Empty until they exist. */
