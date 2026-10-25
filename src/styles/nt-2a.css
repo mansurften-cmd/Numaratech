@@ -1487,3 +1487,55 @@ textarea.nt-form__input { resize: vertical; }
    links, whose boxes overlap once three sit one above the other. */
 .nt-contact-direct { line-height: 28px; }
 .nt-contact-direct a { margin: 0; padding: 0; line-height: 28px; }
+
+/* ---------- dedicated service pages, fees, case studies ---------- */
+.nt-svc__list { max-width: 52em; }
+.nt-svc__steps { list-style: none; margin: 0; padding: 0; }
+/* Fee block: label, amount, note — the amount set as a figure. */
+.nt-svc__fees { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--nt-navy); }
+.nt-svc__fees li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 24px; padding: 18px 0; border-bottom: 1px solid var(--nt-line); }
+.nt-svc__fee-label { font-weight: 600; color: var(--nt-navy); }
+.nt-svc__fee-amount { font-family: var(--nt-mono); font-size: 18px; font-weight: 500; color: var(--nt-teal); white-space: nowrap; text-align: right; }
+.nt-svc__fee-note { grid-column: 1 / -1; font-size: 14px; color: var(--nt-ink); }
+.nt-svc__term { margin: 0 0 12px; max-width: 44em; }
+.nt-svc__case { padding: 24px 26px; border: 1px solid var(--nt-navy); background: var(--nt-tint); display: flex; flex-direction: column; gap: 10px; max-width: 52em; }
+.nt-svc__case .nt-small { margin: 0; }
+.nt-svc__faqs { border-top: 1px solid var(--nt-navy); max-width: 56em; }
+.nt-svc__faq { padding: 22px 0; border-bottom: 1px solid var(--nt-line); }
+.nt-svc__faq .nt-h3 { font-size: 19px; margin: 0 0 8px; }
+.nt-svc__faq .nt-small { margin: 0; }
+.nt-svc__related-head { margin: 24px 0 8px; font-weight: 600; color: var(--nt-navy); }
+.nt-svc__related, .nt-svc__sources, .nt-svc__deeplinks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.nt-svc__sources { margin-top: 10px; font-size: 14px; }
+.nt-svc__sources a { text-decoration: underline; text-underline-offset: 3px; }
+.nt-svc__note { margin-top: 16px; color: var(--nt-mute); }
+.nt-svc__deeplinks { margin-top: 20px; }
+/* The advisory overview's list of dedicated pages. */
+.nt-svc__index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--nt-navy); }
+.nt-svc__index li { border-bottom: 1px solid var(--nt-line); }
+.nt-svc__index li:nth-child(odd) { border-right: 1px solid var(--nt-line); padding-right: 24px; }
+.nt-svc__index li:nth-child(even) { padding-left: 24px; }
+.nt a.nt-svc__index-link, .nt-svc__index a { display: flex; align-items: center; gap: 16px; padding: 18px 0; min-height: 44px; color: var(--nt-navy); }
+.nt-svc__index a:hover { color: var(--nt-teal); }
+.nt-svc__index-name { font-weight: 600; flex: 1; }
+.nt-svc__index-fee { font-family: var(--nt-mono); font-size: 13px; color: var(--nt-teal); white-space: nowrap; }
+@media (max-width: 720px) {
+  .nt-svc__index { grid-template-columns: minmax(0, 1fr); }
+  .nt-svc__index li:nth-child(odd), .nt-svc__index li:nth-child(even) { border-right: 0; padding: 0; }
+  .nt-svc__fee-amount { font-size: 16px; }
+}
+/* Fee table. */
+.nt-fees th[scope='row'] { font-weight: 600; color: var(--nt-navy); }
+.nt-fees th[scope='row'] a { color: var(--nt-navy); text-decoration: underline; text-decoration-color: var(--nt-teal); text-underline-offset: 3px; }
+.nt-fees__note { display: block; margin-top: 2px; font-weight: 400; font-size: 13.5px; color: var(--nt-ink); }
+.nt-fees td.nt-fig { color: var(--nt-teal); font-family: var(--nt-mono); font-weight: 500; }
+/* Case study page. */
+.nt-case__lesson { padding: 12px 0 12px 16px; border-left: 3px solid var(--nt-teal); background: var(--nt-tint); color: var(--nt-navy); font-weight: 500; }
+.nt-case__note { font-size: 13.5px; color: var(--nt-mute); }
+@media (max-width: 720px) {
+  /* Name on its own line, fee and arrow beneath: the three side by side
+     overflowed a 320px screen. */
+  .nt-svc__index a { flex-wrap: wrap; gap: 4px 12px; }
+  .nt-svc__index-name { flex-basis: 100%; }
+}
+#fee .nt-split { margin-top: 28px; }

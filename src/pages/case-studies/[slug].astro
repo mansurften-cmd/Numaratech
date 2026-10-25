@@ -1,0 +1,114 @@
+---
+/** One case study: situation, what we did, outcome, and the general point.
+ *  Content and anonymisation rules: src/case-studies.ts. */
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
+import Arrow from '../../components/Arrow.astro';
+import { SITE } from '../../consts';
+import { CASE_STUDIES, type CaseStudy } from '../../case-studies';
+import { KEY_SERVICES, keyServicePath } from '../../key-services';
+import { PEOPLE, bylineOf } from '../../people';
+
+export function getStaticPaths() {
+  return CASE_STUDIES.map((study) => ({ params: { slug: study.slug }, props: { study } }));
+}
+
+const { study } = Astro.props as { study: CaseStudy };
+const service = KEY_SERVICES.find((entry) => keyServicePath(entry) === study.serviceHref);
+const others = CASE_STUDIES.filter((entry) => entry.slug !== study.slug).slice(0, 2);
+const lead = PEOPLE[0];
+---
+
+<Base
+  title={study.title}
+  description={study.summary}
+  article={{
+    datePublished: '2026-10-25',
+    author: { type: 'Person', name: lead.name, url: new URL(`/about/#${lead.id}`, SITE.url).href, jobTitle: lead.role },
+    section: 'Case studies',
+  }}
+>
+  <article>
+    <PageHero
+      kicker={`Case study / ${study.service}`}
+      title={study.title}
+      lead={study.summary}
+      secondary={{ label: 'All case studies', href: '/case-studies/' }}
+      stats={[
+        { label: 'Client', value: study.client },
+        { label: 'Service', value: study.service },
+        { label: 'When', value: study.period },
+        { label: 'Led by', value: bylineOf(lead) },
+      ]}
+    />
+
+    <div class="nt-section">
+      <div class="nt-prose nt-case">
+        <h2>The situation</h2>
+        {study.situation.map((paragraph) => <p>{paragraph}</p>)}
+
+        <h2>What we did</h2>
+        <ul>
+          {study.work.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <h2>The outcome</h2>
+        <ul>
+          {study.outcome.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <h2>The point for your business</h2>
+        <p class="nt-case__lesson">{study.lesson}</p>
+        {
+          study.related && (
+            <p>
+              <a class="nt-arrow-link" href={study.related.href}>
+                {study.related.label}
+                <Arrow />
+              </a>
+            </p>
+          )
+        }
+
+        <p class="nt-case__note">
+          Anonymised: the client is not named, and figures that could identify a business are
+          rounded. Described from {SITE.name}'s own records of the engagement.
+        </p>
+
+        {
+          service && (
+            <p>
+              <a class="nt-arrow-link" href={study.serviceHref}>
+                {service.name}: what is included, and the fixed fee
+                <Arrow />
+              </a>
+            </p>
+          )
+        }
+      </div>
+    </div>
+
+    <section class="nt-section">
+      <p class="nt-micro nt-micro--accent nt-micro-idx">More case studies</p>
+      <ul class="nt-ruled nt-brief-list">
+        {
+          others.map((entry) => (
+            <li>
+              <p class="nt-micro">{entry.service} · {entry.period}</p>
+              <h2 class="nt-h3">
+                <a href={`/case-studies/${entry.slug}/`}>{entry.title}</a>
+              </h2>
+              <p class="nt-small">{entry.summary}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
+
+  <NextBand
+    title="Facing something similar?"
+    body="A 30-minute call. Tell us what is due and what is blocking it — we will tell you plainly what it takes, and the fixed fee."
+  />
+</Base>

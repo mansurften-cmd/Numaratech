@@ -12,7 +12,8 @@ const ROUTES = ['/','/advisory/','/advisory/accounting-audit/','/advisory/tax/',
   '/insights/first-corporate-tax-return-what-breaks/','/insights/closing-the-books-in-five-days/',
   '/insights/audit-trail-as-a-design-requirement/','/contact/','/contact/sent/','/privacy/','/terms/','/404.html',
   '/platform/small-business-relief-check/','/insights/small-business-relief-extended-to-2029/',
-  '/insights/regulatory-brief/','/insights/regulatory-brief/week-to-2026-10-18/'];
+  '/insights/regulatory-brief/','/insights/regulatory-brief/week-to-2026-10-18/',
+  '/advisory/tax/corporate-tax-registration/','/advisory/tax/corporate-tax-return/','/advisory/tax/vat-registration/','/advisory/tax/vat-return-filing/','/advisory/accounting-audit/bookkeeping/','/advisory/risk-compliance/goaml-registration/','/fees/','/case-studies/','/case-studies/late-corporate-tax-registrations/','/case-studies/full-return-to-keep-a-loss/','/case-studies/vat-registration-after-record-amendment/','/case-studies/our-own-goaml-registration/'];
 const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
 
@@ -386,6 +387,31 @@ const R = []; const t = (name, ok, d='') => R.push([name, !!ok, d]);
   for (const r of ['/','/contact/']) { await p.goto(B+r,{waitUntil:'domcontentloaded'}); wa.push(await p.evaluate(() => [...document.querySelectorAll('a[href^="https://wa.me/"]')].map(x=>x.getAttribute('href')))); }
   const scripts = await p.evaluate(() => [...document.scripts].map(s=>s.src).filter(s=>s && !s.startsWith(location.origin)));
   t('WhatsApp: plain wa.me links in the footer and on /contact/, same number as tel:, no third-party script', wa[0].length>=1 && wa[1].length>=2 && wa.flat().every(h=>h==='https://wa.me/971529742697') && scripts.length===0, JSON.stringify({ wa, scripts }));
+  await p.close(); }
+
+// FIXED FEES — one source. Every amount a service page shows must be one the
+// fees page lists, each service page must offer its fee in structured data,
+// and each group-page section with a dedicated page must link to it.
+{ const p = await b.newPage(); const bad = [];
+  await p.goto(B+'/fees/',{waitUntil:'domcontentloaded'});
+  const listed = await p.evaluate(() => [...document.querySelectorAll('.nt-fees tbody td.nt-fig')].map(td => td.textContent.trim()));
+  if (listed.length < 6) bad.push(`fees table has ${listed.length} rows`);
+  const amounts = new Set(listed);
+  for (const r of ROUTES.filter(r => /^\/advisory\/[^/]+\/[^/]+\/$/.test(r))) {
+    await p.goto(B+r,{waitUntil:'domcontentloaded'});
+    const m = await p.evaluate(() => ({
+      shown: [...document.querySelectorAll('.nt-svc__fee-amount')].map(e => e.textContent.trim()),
+      offers: [...document.querySelectorAll('script[type="application/ld+json"]')].flatMap(x => { const j = JSON.parse(x.textContent); return (j['@graph'] ?? [j]); }).filter(n => n['@type']==='Service').flatMap(n => n.offers ?? []).length,
+      faq: [...document.querySelectorAll('script[type="application/ld+json"]')].some(x => /FAQPage/.test(x.textContent)),
+      token: /\{fee:/.test(document.body.innerHTML) }));
+    for (const s of m.shown) { const base = s.replace(/ (per return|a month)$/, ''); if (!amounts.has(base)) bad.push(`${r} shows ${s}, not on /fees/`); }
+    if (!m.shown.length || m.offers !== m.shown.length) bad.push(`${r}: ${m.shown.length} fees shown, ${m.offers} offers`);
+    if (!m.faq) bad.push(`${r}: no FAQPage`);
+    if (m.token) bad.push(`${r}: unfilled {fee:} token`); }
+  await p.goto(B+'/advisory/tax/',{waitUntil:'domcontentloaded'});
+  const deep = await p.evaluate(() => [...document.querySelectorAll('.nt-svc__deeplinks a')].map(a => a.getAttribute('href')));
+  for (const want of ['/advisory/tax/corporate-tax-registration/','/advisory/tax/corporate-tax-return/','/advisory/tax/vat-registration/','/advisory/tax/vat-return-filing/']) if (!deep.includes(want)) bad.push(`/advisory/tax/ does not link ${want}`);
+  t('fixed fees: every service-page amount is on /fees/, each is a structured-data offer, FAQPage present, no unfilled tokens, group page links its dedicated pages', bad.length===0, bad.slice(0,5).join(' | '));
   await p.close(); }
 
 await b.close();

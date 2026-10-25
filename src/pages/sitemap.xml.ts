@@ -2,6 +2,8 @@ import type { APIRoute } from 'astro';
 import { SITE } from '../consts';
 import { INSIGHTS } from '../insights';
 import { BRIEFS, BRIEF_SERIES } from '../briefs';
+import { KEY_SERVICES, keyServicePath } from '../key-services';
+import { CASE_STUDIES } from '../case-studies';
 
 // Hand-rolled rather than pulled from @astrojs/sitemap: the site is small
 // enough that an explicit list is clearer than a build integration, and the
@@ -12,6 +14,10 @@ const STATIC_ROUTES: { path: string; priority: string; changefreq: string }[] = 
   { path: '/advisory/accounting-audit/', priority: '0.8', changefreq: 'monthly' },
   { path: '/advisory/tax/', priority: '0.8', changefreq: 'monthly' },
   { path: '/advisory/risk-compliance/', priority: '0.8', changefreq: 'monthly' },
+  ...KEY_SERVICES.map((page) => ({ path: keyServicePath(page), priority: '0.9', changefreq: 'monthly' })),
+  { path: '/fees/', priority: '0.8', changefreq: 'monthly' },
+  { path: '/case-studies/', priority: '0.7', changefreq: 'monthly' },
+  ...CASE_STUDIES.map((study) => ({ path: `/case-studies/${study.slug}/`, priority: '0.6', changefreq: 'yearly' })),
   { path: '/platform/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/corporate-tax/', priority: '0.9', changefreq: 'monthly' },
   { path: '/platform/fs-studio/', priority: '0.8', changefreq: 'monthly' },

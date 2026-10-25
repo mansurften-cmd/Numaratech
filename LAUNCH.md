@@ -136,7 +136,7 @@ curl -sI https://numaratech.com/ | grep -iE \
 
 ## 8. Verify canonicals, sitemap and structured data
 
-- [ ] `curl -s https://numaratech.com/sitemap.xml | grep -c "<loc>"` → **22**.
+- [ ] `curl -s https://numaratech.com/sitemap.xml | grep -c "<loc>"` → **34**.
 - [ ] Every `<loc>` is `https://numaratech.com/...` with a trailing slash.
 - [ ] `curl -s https://numaratech.com/about/ | grep canonical` → the apex, not workers.dev.
 - [ ] Paste the homepage and one insight post into

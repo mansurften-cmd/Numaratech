@@ -11,6 +11,8 @@ import { renderOgPng, ogSlug } from '../../og';
 import { SERVICE_GROUPS } from '../../services';
 import { INSIGHTS } from '../../insights';
 import { BRIEFS, BRIEF_SERIES } from '../../briefs';
+import { KEY_SERVICES, keyServicePath } from '../../key-services';
+import { CASE_STUDIES } from '../../case-studies';
 
 const CARDS: { path: string; title: string; kicker?: string }[] = [
   { path: '/', title: 'Finance that can be defended.', kicker: 'Advisory and platform' },
@@ -31,6 +33,10 @@ const CARDS: { path: string; title: string; kicker?: string }[] = [
   // Astro reports the 404 route's pathname as /404, so the slug must match
   // what Base.astro derives — not the .html filename it is emitted under.
   { path: '/404', title: 'That page is not here.', kicker: 'Not found' },
+  { path: '/fees/', title: 'The price, before the work.', kicker: 'Fixed fees' },
+  { path: '/case-studies/', title: 'What the work actually looked like.', kicker: 'Case studies' },
+  ...KEY_SERVICES.map((page) => ({ path: keyServicePath(page), title: page.title, kicker: 'Fixed-fee service' })),
+  ...CASE_STUDIES.map((study) => ({ path: `/case-studies/${study.slug}/`, title: study.title, kicker: 'Case study' })),
   // Advisory groups and insights come from their own sources, so adding either
   // gets a card without anyone remembering to edit this file.
   ...SERVICE_GROUPS.map((group) => ({

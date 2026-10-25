@@ -5,7 +5,9 @@ import Base from '../../layouts/Base.astro';
 import { SITE, spell } from '../../consts';
 import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
+import Arrow from '../../components/Arrow.astro';
 import { SERVICE_GROUPS } from '../../services';
+import { keyServicesFor, keyServicePath, feeSummary } from '../../key-services';
 
 export function getStaticPaths() {
   return SERVICE_GROUPS.map((group) => ({
@@ -87,6 +89,18 @@ const serviceSchema = group.services.map((service) => ({
             <ul class="nt-points">
               {service.points.map((point) => <li>{point}</li>)}
             </ul>
+            {keyServicesFor(group.slug, service.slug).length > 0 && (
+              <ul class="nt-svc__deeplinks">
+                {keyServicesFor(group.slug, service.slug).map((page) => (
+                  <li>
+                    <a class="nt-arrow-link" href={keyServicePath(page)}>
+                      {page.name}: {feeSummary(page)}
+                      <Arrow />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </article>
       ))

@@ -1,0 +1,111 @@
+---
+/** /fees/ — every fixed fee, from src/fees.ts, with the terms they are
+ *  quoted under. */
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import NextBand from '../components/NextBand.astro';
+import { SITE } from '../consts';
+import { FEES, FEE_TERMS, feeAmount } from '../fees';
+
+const nf = new Intl.NumberFormat('en-AE');
+const lowest = Math.min(...FEES.map((fee) => fee.amount));
+
+const unitLabel = { 'one-off': 'one-off', 'per return': 'per return', 'a month': 'a month' } as const;
+
+// The fee list as an OfferCatalog on the business.
+const schema = [
+  {
+    '@type': 'OfferCatalog',
+    '@id': `${SITE.url}/fees/#catalog`,
+    name: `${SITE.name} fixed fees`,
+    url: `${SITE.url}/fees/`,
+    itemListElement: FEES.map((fee) => ({
+      '@type': 'Offer',
+      name: fee.label,
+      description: fee.note,
+      priceCurrency: 'AED',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        priceCurrency: 'AED',
+        ...(fee.from ? { minPrice: fee.amount } : { price: fee.amount }),
+      },
+      ...(fee.href ? { url: new URL(fee.href, SITE.url).href } : {}),
+      seller: { '@id': `${SITE.url}/#organisation` },
+    })),
+  },
+];
+---
+
+<Base
+  title="Fixed fees"
+  seoTitle="Fixed Fees: Accounting & Tax Services in Dubai"
+  description="Fixed fees for Corporate Tax registration and returns, VAT registration and returns, bookkeeping and goAML registration in Dubai, UAE. Agreed before we start."
+  schema={schema}
+>
+  <PageHero
+    kicker="Advisory / Fixed fees"
+    title="The price, before the work."
+    lead="Most compliance work is knowable in advance, so we price it in advance. These are our fees for a straightforward case; if yours needs more, you get the fixed figure in writing before anything starts."
+    primary={{ label: 'Ask for a quote', href: '/contact/' }}
+    secondary={{ label: 'Case studies', href: '/case-studies/' }}
+    stats={[
+      { label: 'Fixed fees listed', value: String(FEES.length) },
+      { label: 'From', value: `AED ${nf.format(lowest)}`, live: true },
+      { label: 'Quoted', value: 'in writing, before work starts' },
+      { label: 'Hourly billing', value: 'none on these services' },
+    ]}
+  />
+
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>01</b><span>Fees</span></div>
+    <h2 class="nt-h2">What each service costs.</h2>
+    <section class="nt-table-scroll" aria-label="Fixed fees" tabindex="0">
+      <table class="nt-table nt-fees">
+        <caption>All fees in AED, for one entity</caption>
+        <thead>
+          <tr>
+            <th scope="col">Service</th>
+            <th scope="col" class="nt-fig">Fee</th>
+            <th scope="col">Basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            FEES.map((fee) => (
+              <tr>
+                <th scope="row">
+                  {fee.href ? <a href={fee.href}>{fee.label}</a> : fee.label}
+                  <span class="nt-fees__note">{fee.note}</span>
+                </th>
+                <td class="nt-fig">{feeAmount(fee)}</td>
+                <td>{unitLabel[fee.unit]}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <section class="nt-section">
+    <div class="nt-split--even nt-split">
+      <div>
+        <div class="nt-eyebrow"><b>02</b><span>Terms</span></div>
+        <h2 class="nt-h2">How these fees work.</h2>
+      </div>
+      <div>
+        {FEE_TERMS.map((term) => <p class="nt-small nt-svc__term">{term}</p>)}
+        <p class="nt-small nt-svc__term">
+          Anything not listed here — audit file preparation, CFO support, transfer pricing, AML
+          frameworks — is quoted as a fixed fee after a first call, once we know the scope.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <NextBand
+    title="Not sure which of these you need?"
+    body="Send us your licence and your year end. We will tell you what is due, and what it costs, before you commit to anything."
+    cta="Ask for a quote"
+  />
+</Base>

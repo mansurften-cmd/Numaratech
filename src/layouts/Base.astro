@@ -14,6 +14,8 @@ import { SERVICE_GROUPS } from '../services';
 import { INSIGHTS } from '../insights';
 import { PEOPLE } from '../people';
 import { BRIEFS, BRIEF_SERIES } from '../briefs';
+import { KEY_SERVICES } from '../key-services';
+import { CASE_STUDIES } from '../case-studies';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
@@ -107,6 +109,10 @@ const SEGMENT_LABELS = new Map<string, string>([
   ...SERVICE_GROUPS.map((group) => [group.slug, group.name] as [string, string]),
   ...INSIGHTS.map((insight) => [insight.slug, insight.title] as [string, string]),
   ...BRIEFS.map((brief) => [brief.slug, brief.title] as [string, string]),
+  ...KEY_SERVICES.map((page) => [page.slug, page.name] as [string, string]),
+  ...CASE_STUDIES.map((study) => [study.slug, study.title] as [string, string]),
+  ['fees', 'Fixed fees'],
+  ['case-studies', 'Case studies'],
   ['regulatory-brief', BRIEF_SERIES.name],
   ['small-business-relief-check', 'Small Business Relief Check'],
   ['platform', 'Platform'],

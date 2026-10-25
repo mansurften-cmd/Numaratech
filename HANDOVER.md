@@ -205,6 +205,12 @@ rules in `src/lib/sbr.ts`), and the **UAE Regulatory Brief** (`src/briefs.ts`,
 `/insights/regulatory-brief/`). Each brief edition is reviewed by the owner
 before it is published. The site has 24 routes, 22 of them indexable.
 
+### Service pages, fees, case studies (25 October 2026)
+See `AUDIT-2026-10.md` §13. Prices live only in `src/fees.ts` (set as
+starting figures, for the owner to change). Dedicated service pages come from
+`src/key-services.ts` (`/advisory/<group>/<service>/`), case studies from
+`src/case-studies.ts`. 36 routes, 34 of them indexable.
+
 ### Recommended next, from `AUDIT-LOCAL.md` (as originally written)
 1. **Print is broken (High).** `src/styles/global.css:1180–1186` hides
    `.nt-site-header`, `.nt-site-footer`, `.nt-nav-toggle` — **System A class

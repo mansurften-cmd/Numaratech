@@ -1,0 +1,72 @@
+---
+/** /case-studies/ — anonymised engagements, from src/case-studies.ts. */
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import NextBand from '../../components/NextBand.astro';
+import { SITE } from '../../consts';
+import { CASE_STUDIES } from '../../case-studies';
+
+const schema = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${SITE.url}/case-studies/`,
+    name: 'Case studies',
+    url: `${SITE.url}/case-studies/`,
+    publisher: { '@id': `${SITE.url}/#organisation` },
+    hasPart: CASE_STUDIES.map((study) => ({
+      '@type': 'Article',
+      headline: study.title,
+      url: `${SITE.url}/case-studies/${study.slug}/`,
+    })),
+  },
+];
+---
+
+<Base
+  title="Case studies"
+  seoTitle="Case Studies: UAE Tax & Compliance Work"
+  description="Anonymised UAE engagements: late Corporate Tax registrations, a loss kept by not electing Small Business Relief, a blocked VAT registration, goAML."
+  schema={schema}
+>
+  <PageHero
+    kicker="Advisory / Case studies"
+    title="What the work actually looked like."
+    lead="Real engagements, anonymised: what the client faced, what we did, and what came out of it. No names, and no outcome we cannot show in our own records."
+    primary={{ label: 'Talk to us', href: '/contact/' }}
+    secondary={{ label: 'Fixed fees', href: '/fees/' }}
+    stats={[
+      { label: 'Case studies', value: String(CASE_STUDIES.length) },
+      { label: 'Clients named', value: 'none' },
+      { label: 'Covers', value: 'CT · VAT · goAML' },
+      { label: 'Period', value: '2026' },
+    ]}
+  />
+
+  <section class="nt-section">
+    <div class="nt-cells" style="--nt-cols:2">
+      {
+        CASE_STUDIES.map((study) => (
+          <article class="nt-cell">
+            <div class="nt-cell__head">
+              <div class="nt-kicker">{study.service}</div>
+              <span class="nt-stage">{study.period}</span>
+            </div>
+            <h2 class="nt-h3" style="font-size:24px">{study.title}</h2>
+            <p>{study.summary}</p>
+            <div class="nt-cell__notes">
+              <div>{study.client}</div>
+            </div>
+            <a class="nt-link" href={`/case-studies/${study.slug}/`} style="margin-top:8px">
+              Read it<span class="nt-sr-only">: {study.title}</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <NextBand
+    title="Recognise your own situation?"
+    body="Most of these started with a missed date or a blocked application. A 30-minute call is enough to tell you where you stand."
+  />
+</Base>

@@ -201,6 +201,16 @@ export const NAV: NavItem[] = [
         href: '/advisory/risk-compliance/',
         note: 'AML, UBO, goAML',
       },
+      {
+        label: 'Fixed fees',
+        href: '/fees/',
+        note: 'What each service costs, before we start',
+      },
+      {
+        label: 'Case studies',
+        href: '/case-studies/',
+        note: 'Anonymised engagements',
+      },
     ],
   },
   {
@@ -247,6 +257,8 @@ export const FOOTER_NAV = [
       { label: 'Accounting & Audit Support', href: '/advisory/accounting-audit/' },
       { label: 'Tax & Advisory', href: '/advisory/tax/' },
       { label: 'Risk & Compliance', href: '/advisory/risk-compliance/' },
+      { label: 'Fixed fees', href: '/fees/' },
+      { label: 'Case studies', href: '/case-studies/' },
     ],
   },
   {

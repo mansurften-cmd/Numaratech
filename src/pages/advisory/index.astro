@@ -4,6 +4,8 @@ import PageHero from '../../components/PageHero.astro';
 import NextBand from '../../components/NextBand.astro';
 import { SERVICE_GROUPS, ALL_SERVICES } from '../../services';
 import { SITE, spell } from '../../consts';
+import Arrow from '../../components/Arrow.astro';
+import { KEY_SERVICES, keyServicePath, feeSummary } from '../../key-services';
 ---
 
 <Base
@@ -53,10 +55,33 @@ import { SITE, spell } from '../../consts';
     </div>
   </section>
 
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>02</b><span>Fixed fees</span></div>
+    <h2 class="nt-h2">The services most people come for.</h2>
+    <p class="nt-body">
+      Each has its own page: who needs it, what is included, what we need from you, and the fixed
+      fee. <a class="nt-link" href="/fees/">Every fixed fee</a> is on one page, and the
+      <a class="nt-link" href="/case-studies/">case studies</a> show the work.
+    </p>
+    <ul class="nt-svc__index">
+      {
+        KEY_SERVICES.map((page) => (
+          <li>
+            <a href={keyServicePath(page)}>
+              <span class="nt-svc__index-name">{page.name}</span>
+              <span class="nt-svc__index-fee">{feeSummary(page)}</span>
+              <Arrow />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
   <section class="nt-section nt-dark nt-dark--navy nt-section--flush">
     <div class="nt-grid--v"></div>
     <div class="nt-layer">
-      <div class="nt-eyebrow"><b>02</b><span>How we work</span></div>
+      <div class="nt-eyebrow"><b>03</b><span>How we work</span></div>
       <h2 class="nt-h2">Advisory when you need judgement. Software when you need it repeatable.</h2>
       <p class="nt-body">
         The same team builds the platform our own filings run through. What can be made mechanical

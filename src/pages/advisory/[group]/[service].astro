@@ -1,0 +1,235 @@
+---
+/** Dedicated service pages: /advisory/<group>/<service>/. One per entry in
+ *  src/key-services.ts — the services people search for by name. Every
+ *  price on the page comes from src/fees.ts. */
+import Base from '../../../layouts/Base.astro';
+import PageHero from '../../../components/PageHero.astro';
+import NextBand from '../../../components/NextBand.astro';
+import Arrow from '../../../components/Arrow.astro';
+import { SITE } from '../../../consts';
+import { findGroup } from '../../../services';
+import { KEY_SERVICES, keyServicePath, fillFees, type KeyService } from '../../../key-services';
+import { findFee, feeAmount, feeText, FEE_TERMS } from '../../../fees';
+import { caseStudiesFor } from '../../../case-studies';
+import { PEOPLE, bylineOf } from '../../../people';
+
+export function getStaticPaths() {
+  return KEY_SERVICES.map((service) => ({
+    params: { group: service.group, service: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props as { service: KeyService };
+const group = findGroup(service.group)!;
+const path = keyServicePath(service);
+const pageUrl = new URL(path, SITE.url).href;
+const fees = service.fees.map((entry) => ({ ...entry, fee: findFee(entry.id) }));
+const studies = caseStudiesFor(path);
+const lead = PEOPLE[0];
+const pad = (n: number) => String(n + 1).padStart(2, '0');
+
+// Service, with its fixed fees as offers; and the questions as a FAQPage.
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': `${pageUrl}#service`,
+    name: service.name,
+    serviceType: service.name,
+    description: fillFees(service.description),
+    url: pageUrl,
+    provider: { '@id': `${SITE.url}/#organisation` },
+    areaServed: { '@type': 'Country', name: 'United Arab Emirates', identifier: 'AE' },
+    offers: fees.map(({ fee }) => ({
+      '@type': 'Offer',
+      name: fee.label,
+      priceCurrency: 'AED',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        priceCurrency: 'AED',
+        ...(fee.from ? { minPrice: fee.amount } : { price: fee.amount }),
+      },
+    })),
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    mainEntity: service.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: fillFees(faq.q),
+      acceptedAnswer: { '@type': 'Answer', text: fillFees(faq.a) },
+    })),
+  },
+];
+
+let n = 0;
+const next = () => pad(n++);
+---
+
+<Base title={service.name} seoTitle={service.seoTitle} description={fillFees(service.description)} schema={schema}>
+  <PageHero
+    kicker={`Advisory / ${group.name}`}
+    title={service.title}
+    lead={fillFees(service.lead)}
+    primary={{ label: 'Start this', href: '/contact/' }}
+    secondary={{ label: 'All fixed fees', href: '/fees/' }}
+    stats={[
+      ...fees.map(({ label, fee }, i) => ({ label, value: feeAmount(fee), live: i === 0 })),
+      ...service.stats,
+    ].slice(0, 4)}
+  />
+
+  <section class="nt-section">
+    <div class="nt-eyebrow"><b>{next()}</b><span>Who it is for</span></div>
+    <h2 class="nt-h2">{service.who.title}</h2>
+    <p class="nt-body">{service.who.intro}</p>
+    <ul class="nt-points nt-svc__list">
+      {service.who.items.map((item) => <li>{fillFees(item)}</li>)}
+    </ul>
+  </section>
+
+  <section class="nt-section">
+    <div class="nt-split--even nt-split">
+      <div>
+        <div class="nt-eyebrow"><b>{next()}</b><span>Included</span></div>
+        <h2 class="nt-h2">What we do.</h2>
+        <ul class="nt-points">
+          {service.included.map((item) => <li>{fillFees(item)}</li>)}
+        </ul>
+      </div>
+      <div>
+        <div class="nt-eyebrow"><b>{next()}</b><span>From you</span></div>
+        <h2 class="nt-h2">What we need.</h2>
+        <ul class="nt-points">
+          {service.need.map((item) => <li>{fillFees(item)}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="nt-section nt-dark nt-dark--navy nt-section--flush">
+    <div class="nt-grid--v"></div>
+    <div class="nt-layer">
+      <div class="nt-eyebrow"><b>{next()}</b><span>How it runs</span></div>
+      <h2 class="nt-h2">Four steps, each one agreed.</h2>
+      <ol class="nt-cells nt-cells--4 nt-svc__steps" style="--nt-cols:4">
+        {
+          service.steps.map((step, i) => (
+            <li class="nt-cell">
+              <div class="nt-cell__num">{pad(i)}</div>
+              <h3 class="nt-h3">{step.title}</h3>
+              <p>{fillFees(step.body)}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="nt-section" id="fee">
+    <div class="nt-eyebrow"><b>{next()}</b><span>Fee</span></div>
+    <h2 class="nt-h2">A fixed fee, agreed before we start.</h2>
+    <div class="nt-split--even nt-split">
+      <ul class="nt-svc__fees">
+        {
+          fees.map(({ fee }) => (
+            <li>
+              <span class="nt-svc__fee-label">{fee.label}</span>
+              <span class="nt-svc__fee-amount">{feeText(fee)}</span>
+              <span class="nt-svc__fee-note">{fee.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <div>
+        {FEE_TERMS.map((term) => <p class="nt-small nt-svc__term">{term}</p>)}
+        <p class="nt-small nt-svc__term">
+          <a class="nt-link" href="/fees/">Every fixed fee</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {
+    studies.length > 0 && (
+      <section class="nt-section">
+        <div class="nt-eyebrow"><b>{next()}</b><span>Case study</span></div>
+        {studies.map((study) => (
+          <article class="nt-svc__case">
+            <p class="nt-kicker">{study.client}</p>
+            <h2 class="nt-h3">{study.title}</h2>
+            <p class="nt-small">{study.summary}</p>
+            <a class="nt-arrow-link" href={`/case-studies/${study.slug}/`}>
+              Read the case study
+              <span class="nt-sr-only">: {study.title}</span>
+              <Arrow />
+            </a>
+          </article>
+        ))}
+      </section>
+    )
+  }
+
+  <section class="nt-section" id="questions">
+    <div class="nt-eyebrow"><b>{next()}</b><span>Questions</span></div>
+    <h2 class="nt-h2">What people ask first.</h2>
+    <div class="nt-svc__faqs">
+      {
+        service.faqs.map((faq) => (
+          <div class="nt-svc__faq">
+            <h3 class="nt-h3">{fillFees(faq.q)}</h3>
+            <p class="nt-small">{fillFees(faq.a)}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="nt-section">
+    <div class="nt-split--even nt-split">
+      <div>
+        <div class="nt-eyebrow"><b>{next()}</b><span>Who does the work</span></div>
+        <p class="nt-body">
+          Led by <a class="nt-link" href={`/about/#${lead.id}`}>{bylineOf(lead)}</a>, founder of
+          {' '}{SITE.name}. The practice holds {SITE.licence.type} licence No. {SITE.licence.number},
+          issued by the {SITE.licence.authority}.
+        </p>
+        <p class="nt-small nt-svc__related-head">Read next</p>
+        <ul class="nt-svc__related">
+          {
+            service.related.map((link) => (
+              <li>
+                <a class="nt-arrow-link" href={link.href}>
+                  {link.label}
+                  <Arrow />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="nt-micro">Rules on this page, as published by</p>
+        <ul class="nt-svc__sources">
+          {
+            service.sources.map((source) => (
+              <li>
+                <a href={source.href} rel="noopener">{source.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="nt-small nt-svc__note">
+          Checked 25 October 2026. General information, not advice on your position — that comes
+          under an engagement letter.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <NextBand
+    title={`Start your ${service.name.toLowerCase()}.`}
+    body="Send us your licence and what is due. We confirm the fixed fee and what we need from you before any work starts."
+    cta="Start this"
+  />
+</Base>
